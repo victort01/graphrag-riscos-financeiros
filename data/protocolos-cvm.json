@@ -1,0 +1,78 @@
+[
+  {
+    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2024.zip",
+    "registros": [
+      {
+        "CNPJ_CIA": "16.404.287/0001-55",
+        "DT_REFER": "2024-12-31",
+        "VERSAO": "1",
+        "DENOM_CIA": "SUZANO S.A.",
+        "CD_CVM": "013986",
+        "CATEG_DOC": "DFP",
+        "ID_DOC": "144744",
+        "DT_RECEB": "2025-02-12",
+        "LINK_DOC": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=144744"
+      },
+      {
+        "CNPJ_CIA": "89.637.490/0001-45",
+        "DT_REFER": "2024-12-31",
+        "VERSAO": "1",
+        "DENOM_CIA": "KLABIN S.A.",
+        "CD_CVM": "012653",
+        "CATEG_DOC": "DFP",
+        "ID_DOC": "145024",
+        "DT_RECEB": "2025-02-26",
+        "LINK_DOC": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=145024"
+      },
+      {
+        "CNPJ_CIA": "92.791.243/0001-03",
+        "DT_REFER": "2024-12-31",
+        "VERSAO": "1",
+        "DENOM_CIA": "IRANI PAPEL E EMBALAGEM S.A.",
+        "CD_CVM": "002429",
+        "CATEG_DOC": "DFP",
+        "ID_DOC": "144913",
+        "DT_RECEB": "2025-02-21",
+        "LINK_DOC": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=144913"
+      }
+    ]
+  },
+  {
+    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip",
+    "registros": [
+      {
+        "CNPJ_CIA": "16.404.287/0001-55",
+        "DT_REFER": "2025-12-31",
+        "VERSAO": "1",
+        "DENOM_CIA": "SUZANO S.A.",
+        "CD_CVM": "013986",
+        "CATEG_DOC": "DFP",
+        "ID_DOC": "154674",
+        "DT_RECEB": "2026-02-10",
+        "LINK_DOC": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=154674"
+      },
+      {
+        "CNPJ_CIA": "89.637.490/0001-45",
+        "DT_REFER": "2025-12-31",
+        "VERSAO": "1",
+        "DENOM_CIA": "KLABIN S.A.",
+        "CD_CVM": "012653",
+        "CATEG_DOC": "DFP",
+        "ID_DOC": "154693",
+        "DT_RECEB": "2026-02-11",
+        "LINK_DOC": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=154693"
+      },
+      {
+        "CNPJ_CIA": "92.791.243/0001-03",
+        "DT_REFER": "2025-12-31",
+        "VERSAO": "1",
+        "DENOM_CIA": "IRANI PAPEL E EMBALAGEM S.A.",
+        "CD_CVM": "002429",
+        "CATEG_DOC": "DFP",
+        "ID_DOC": "154822",
+        "DT_RECEB": "2026-02-23",
+        "LINK_DOC": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=154822"
+      }
+    ]
+  }
+]

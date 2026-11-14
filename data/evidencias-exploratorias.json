@@ -1,0 +1,162 @@
+[
+  {
+    "id": "E01",
+    "documento_id": "suzano-dfp-2024",
+    "pagina_pdf": 40,
+    "secao": "4.4.1",
+    "assunto": "Exposição estrutural, receitas de exportação e financiamento em dólar",
+    "termo_de_conferencia": "hedge natural",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E02",
+    "documento_id": "suzano-dfp-2024",
+    "pagina_pdf": 41,
+    "secao": "4.4.1.2",
+    "assunto": "Derivativos cambiais e parcela da receita",
+    "termo_de_conferencia": "24 meses",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E03",
+    "documento_id": "suzano-dfp-2025",
+    "pagina_pdf": 105,
+    "secao": "4.4.1",
+    "assunto": "Moedas das receitas, custos e financiamentos",
+    "termo_de_conferencia": "hedge natural",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E04",
+    "documento_id": "suzano-dfp-2025",
+    "pagina_pdf": 106,
+    "secao": "4.4.1.2",
+    "assunto": "Escopo de derivativos cambiais e horizonte",
+    "termo_de_conferencia": "24 meses",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E05",
+    "documento_id": "klabin-dfp-2024",
+    "pagina_pdf": 121,
+    "secao": "28.1.1(a)",
+    "assunto": "Exposição em dólar, dívida, swap e receitas futuras",
+    "termo_de_conferencia": "altamente provável",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E06",
+    "documento_id": "klabin-dfp-2024",
+    "pagina_pdf": 132,
+    "secao": "29.1",
+    "assunto": "Designação de dívida e derivativos como hedge de receitas",
+    "termo_de_conferencia": "instrumentos de dívida",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E07",
+    "documento_id": "klabin-dfp-2024",
+    "pagina_pdf": 134,
+    "secao": "29.2",
+    "assunto": "Programa de fluxo de caixa de taxa de juros IPCA/CDI",
+    "termo_de_conferencia": "IPCA para CDI",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E08",
+    "documento_id": "klabin-dfp-2025",
+    "pagina_pdf": 124,
+    "secao": "27.1.1(a)",
+    "assunto": "Dívida em moeda estrangeira, receitas e derivativos ZCC/NDF",
+    "termo_de_conferencia": "Zero Cost Collar",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E09",
+    "documento_id": "klabin-dfp-2025",
+    "pagina_pdf": 135,
+    "secao": "28.1",
+    "assunto": "Designação de instrumentos para receitas futuras",
+    "termo_de_conferencia": "receitas futuras",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E10",
+    "documento_id": "klabin-dfp-2025",
+    "pagina_pdf": 138,
+    "secao": "28.3",
+    "assunto": "Condições de proteção da exposição líquida",
+    "termo_de_conferencia": "25% a 50%",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E11",
+    "documento_id": "klabin-dfp-2025",
+    "pagina_pdf": 139,
+    "secao": "28.4.1",
+    "assunto": "Reclassificação de hedge de IPCA em 2025",
+    "termo_de_conferencia": "valor justo",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E12",
+    "documento_id": "irani-dfp-2024",
+    "pagina_pdf": 116,
+    "secao": "Fatores de risco financeiro",
+    "assunto": "Finalidade de swap de taxa de juros",
+    "termo_de_conferencia": "indexador de taxa de juros",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E13",
+    "documento_id": "irani-dfp-2024",
+    "pagina_pdf": 117,
+    "secao": "Risco de exposição cambial",
+    "assunto": "ACC e recebíveis de exportações",
+    "termo_de_conferencia": "ACC",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E14",
+    "documento_id": "irani-dfp-2024",
+    "pagina_pdf": 118,
+    "secao": "Risco de exposição cambial (continuação)",
+    "assunto": "Pagamentos cambiais e carteira de exportação",
+    "termo_de_conferencia": "clientes de exportações",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E15",
+    "documento_id": "irani-dfp-2025",
+    "pagina_pdf": 124,
+    "secao": "Fatores de risco financeiro e exposição cambial",
+    "assunto": "Swaps de juros e ACC com finalidades distintas",
+    "termo_de_conferencia": "ACC",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  },
+  {
+    "id": "E16",
+    "documento_id": "irani-dfp-2025",
+    "pagina_pdf": 125,
+    "secao": "Risco de exposição cambial (continuação)",
+    "assunto": "Limite financeiro com carteira de exportações",
+    "termo_de_conferencia": "clientes de exportações",
+    "origem": "leitura humana exploratoria",
+    "uso": "desenvolvimento; excluida da avaliacao reservada"
+  }
+]

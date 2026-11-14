@@ -13,8 +13,8 @@ O objetivo é comparar exposições declaradas e medidas descritas. A classifica
 ## Decisões iniciais e dependências
 
 - Recorte prioritário de exposição cambial, dívida em moeda estrangeira e proteção cambial. Risco de juros pode ser incluído se a amostra demonstrar relações documentadas suficientes.
-- Meta inicial de três empresas não financeiras do mesmo setor e dois exercícios anuais fechados comparáveis. A seleção das empresas depende da fase de viabilidade.
-- Acervo preferencial de Formulários de Referência completos e notas explicativas das demonstrações financeiras. Para três empresas, dois períodos e dois tipos de documento, a referência inicial é até doze documentos. Essa quantidade é uma proposta de escopo e poderá ser ajustada à qualidade das fontes.
+- Recorte validado na fase 1 com Suzano, Klabin e Irani, da cadeia de papel, celulose e embalagens, e dois exercícios anuais fechados comparáveis. A classificação da Irani como Embalagens será preservada nas comparações.
+- Corpus inicial validado com seis demonstrações financeiras anuais completas e suas notas explicativas, dos exercícios de 2024 e 2025. Formulários de Referência poderão complementar uma necessidade identificada durante a modelagem ou a extração.
 - Documentos oficiais da CVM e de relações com investidores são as fontes principais. CSVs da CVM auxiliam a identificação e a conferência. A extração de entidades e relações deverá partir dos textos e tabelas contextualizadas.
 - Banco adotado Neo4j, citado nominalmente no enunciado. Uma alternativa de banco poderá ser avaliada depois da conclusão do projeto, mediante nova decisão do grupo. O escopo atual usa exclusivamente Neo4j.
 - Python para aquisição, extração, validação, recuperação e API. Neo4j em Docker com versão fixada. FastAPI para servir perguntas e subgrafos. Streamlit com componente Cytoscape.js para a interface. A fase técnica verificará a integração e o comportamento do componente.

@@ -1,0 +1,33 @@
+{
+  "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/CAD/DADOS/cad_cia_aberta.csv",
+  "sha256": "d82fb8abf3125ffb7ec7645e39c2c6b2e00db91f0d294e6596942689ae8e3826",
+  "empresas": [
+    {
+      "CNPJ_CIA": "92.791.243/0001-03",
+      "DENOM_SOCIAL": "IRANI PAPEL E EMBALAGEM S.A.",
+      "DT_REG": "1977-07-20",
+      "DT_CANCEL": "",
+      "SIT": "ATIVO",
+      "CD_CVM": "2429",
+      "SETOR_ATIV": "Embalagens"
+    },
+    {
+      "CNPJ_CIA": "89.637.490/0001-45",
+      "DENOM_SOCIAL": "KLABIN S.A.",
+      "DT_REG": "1997-08-06",
+      "DT_CANCEL": "",
+      "SIT": "ATIVO",
+      "CD_CVM": "12653",
+      "SETOR_ATIV": "Papel e Celulose"
+    },
+    {
+      "CNPJ_CIA": "16.404.287/0001-55",
+      "DENOM_SOCIAL": "SUZANO S.A.",
+      "DT_REG": "1992-04-15",
+      "DT_CANCEL": "",
+      "SIT": "ATIVO",
+      "CD_CVM": "13986",
+      "SETOR_ATIV": "Papel e Celulose"
+    }
+  ]
+}

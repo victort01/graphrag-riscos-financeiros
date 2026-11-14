@@ -1,0 +1,124 @@
+[
+  {
+    "id": "P01",
+    "tipo": "comparacao_multi_documento",
+    "pergunta": "Como Suzano e Klabin relacionam dívida em dólar e receitas de exportação em 2024?",
+    "evidencias": [
+      "E01",
+      "E05",
+      "E06"
+    ],
+    "resposta_exploratoria": "Suzano descreve conciliação entre recebimentos externos e pagamentos de financiamentos como hedge natural. Klabin designa dívida e/ou instrumentos convertidos por swaps como hedge de receitas futuras altamente prováveis.",
+    "caminho_conceitual": "Empresa → Obrigação → Moeda; Obrigação → Proteção → Fluxo de receita",
+    "uso": "exploracao e desenvolvimento; nao usar como teste reservado"
+  },
+  {
+    "id": "P02",
+    "tipo": "comparacao_multi_documento",
+    "pergunta": "Quais mecanismos para receitas ou caixa em dólar são descritos por Suzano e Klabin em 2025 e quais limites aparecem?",
+    "evidencias": [
+      "E03",
+      "E04",
+      "E08",
+      "E10"
+    ],
+    "resposta_exploratoria": "Suzano descreve vendas futuras e opções limitadas a parcela da exposição em 24 meses. Klabin descreve ZCC/NDF para exposição líquida projetada e intervalo de cobertura de 25% a 50% em até 24 meses.",
+    "caminho_conceitual": "Empresa → Medida de proteção → Exposição → Moeda; Medida → Limite/Período",
+    "uso": "exploracao e desenvolvimento; nao usar como teste reservado"
+  },
+  {
+    "id": "P03",
+    "tipo": "temporal_multi_documento",
+    "pergunta": "Como mudou o enquadramento do programa de proteção de juros IPCA da Klabin entre os relatórios de 2024 e 2025?",
+    "evidencias": [
+      "E07",
+      "E11"
+    ],
+    "resposta_exploratoria": "O documento de 2024 apresenta o programa de juros sob fluxo de caixa. O de 2025 relata a passagem para valor justo no terceiro trimestre de 2025. A comparação deve preservar programa e período.",
+    "caminho_conceitual": "Empresa → Programa de proteção → Indexador; Programa → Categoria → Período",
+    "uso": "exploracao e desenvolvimento; nao usar como teste reservado"
+  },
+  {
+    "id": "P04",
+    "tipo": "temporal_multi_documento",
+    "pergunta": "A relação entre ACC e clientes de exportação aparece nos documentos da Irani de 2024 e 2025?",
+    "evidencias": [
+      "E13",
+      "E14",
+      "E15",
+      "E16"
+    ],
+    "resposta_exploratoria": "Ambos os documentos relacionam ACC às variações dos saldos dos clientes de exportação e descrevem a busca de pagamentos anuais compatíveis com a carteira de exportações.",
+    "caminho_conceitual": "Empresa → ACC → Exposição cambial; ACC → Carteira de recebíveis → Período",
+    "uso": "exploracao e desenvolvimento; nao usar como teste reservado"
+  },
+  {
+    "id": "P05",
+    "tipo": "comparacao_multi_documento",
+    "pergunta": "Os swaps descritos pela Irani e os instrumentos cambiais descritos pela Klabin em 2025 protegem o mesmo tipo de risco?",
+    "evidencias": [
+      "E15",
+      "E08",
+      "E10"
+    ],
+    "resposta_exploratoria": "A Irani declara swaps para troca de indexador de juros. A Klabin descreve swaps de conversão cambial, além de ZCC e NDF para exposição de caixa. É necessário preservar o objetivo de cada instrumento.",
+    "caminho_conceitual": "Empresa → Instrumento → Finalidade → Fator de risco",
+    "uso": "exploracao e desenvolvimento; nao usar como teste reservado"
+  },
+  {
+    "id": "P06",
+    "tipo": "direta_condicional",
+    "pergunta": "A declaração da Suzano de 2025 autoriza concluir que toda a receita está protegida por derivativos cambiais?",
+    "evidencias": [
+      "E03",
+      "E04"
+    ],
+    "resposta_exploratoria": "A documentação fala em parcela da receita/exposição e limites no horizonte de 24 meses. Ela não sustenta proteção de toda a receita.",
+    "caminho_conceitual": "Empresa → Proteção → Escopo/Condição",
+    "uso": "exploracao e desenvolvimento; nao usar como teste reservado"
+  },
+  {
+    "id": "P07",
+    "tipo": "direta_condicional",
+    "pergunta": "Qual faixa de proteção e horizonte a Klabin declara para a exposição cambial líquida em 2025?",
+    "evidencias": [
+      "E10"
+    ],
+    "resposta_exploratoria": "A nota declara proteção de 25% a 50% da exposição cambial líquida em até 24 meses.",
+    "caminho_conceitual": "Programa → Exposição → Limite/Período",
+    "uso": "exploracao e desenvolvimento; nao usar como teste reservado"
+  },
+  {
+    "id": "P08",
+    "tipo": "sem_resposta",
+    "pergunta": "Qual foi a perda cambial efetiva dessas empresas em 2027?",
+    "evidencias": [],
+    "resposta_exploratoria": "O acervo principal abrange 2024 e 2025. Não há comprovação de perda efetiva em 2027 no conjunto selecionado.",
+    "caminho_conceitual": "Pergunta → Período fora do acervo",
+    "uso": "exploracao e desenvolvimento; nao usar como teste reservado"
+  },
+  {
+    "id": "P09",
+    "tipo": "distincao_de_objetivos",
+    "pergunta": "A menção a um swap na Irani de 2024 comprova que esse derivativo é proteção cambial?",
+    "evidencias": [
+      "E12",
+      "E13"
+    ],
+    "resposta_exploratoria": "A declaração atribui ao swap a troca do indexador de juros. A presença de ACC na seção cambial tem outro objetivo. A classificação deve usar a finalidade explicitada.",
+    "caminho_conceitual": "Instrumento → Finalidade; Obrigação → Exposição",
+    "uso": "exploracao e desenvolvimento; nao usar como teste reservado"
+  },
+  {
+    "id": "P10",
+    "tipo": "condicao_de_protecao",
+    "pergunta": "A declaração da Klabin de 2024 designa qualquer dívida para proteger qualquer receita?",
+    "evidencias": [
+      "E05",
+      "E06"
+    ],
+    "resposta_exploratoria": "O documento se refere a parte dos empréstimos e a receitas futuras altamente prováveis na mesma moeda. O vínculo precisa preservar essas condições.",
+    "caminho_conceitual": "Obrigação → Proteção → Receita → Moeda/Condição",
+    "uso": "exploracao e desenvolvimento; nao usar como teste reservado"
+  }
+]
