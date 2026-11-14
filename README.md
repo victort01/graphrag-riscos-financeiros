@@ -52,6 +52,17 @@ Aguarde a mensagem Started. no log antes de configurar. O banco fica disponível
 
 ## Equipe
 
+## Ingestão de narrativas
+
+```powershell
+python scripts/ingerir.py
+python scripts/ingerir.py --id irani-dfp-2025 --somente-preparar
+```
+
+A carga publica relações com evidência, empresa e período em uma transação por documento. Ela é retomável e mantém o estado de tabelas como pendente. A [documentação da fase 3](docs/fase-3-ingestao.md) descreve as regras de extração e os limites atuais.
+
+## Equipe
+
 - Arysson André Oliveira da Luz.
 - Caio Justino de Andrade.
 - Luiz Henrique Monteiro dos Santos.

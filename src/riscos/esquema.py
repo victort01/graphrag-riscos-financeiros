@@ -12,6 +12,7 @@ RELACOES = {
     "ASSOCIADA_A": (("Exposicao",), ("FatorRisco",)),
     "DENOMINADO_EM": (("ObrigacaoFinanceira", "FluxoFinanceiro", "Exposicao"), ("Moeda",)),
     "PROTEGE": (("MedidaProtecao", "ObrigacaoFinanceira"), ("ObrigacaoFinanceira", "FluxoFinanceiro", "Exposicao")),
+    "COMPENSA_VARIACOES_DE": (("ObrigacaoFinanceira",), ("FluxoFinanceiro",)),
     "SENSIVEL_A": (("ObrigacaoFinanceira", "FluxoFinanceiro", "Exposicao"), ("FatorRisco", "Indexador")),
     "CONVERTE_DE": (("MedidaProtecao",), ("Indexador", "Moeda")),
     "CONVERTE_PARA": (("MedidaProtecao",), ("Indexador", "Moeda")),

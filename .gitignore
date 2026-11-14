@@ -5,4 +5,5 @@ __pycache__/
 data/raw/
 data/processed/
 data/reports/
+data/extracted/
 .pytest_cache/
