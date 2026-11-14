@@ -36,6 +36,20 @@ O repositório inclui [fontes e checksums](data/manifesto.json), [métricas de e
 
 O banco adotado é Neo4j. O escopo atual está no planejamento em docs/plano-execucao.md.
 
+## Inicializar o Neo4j
+
+Copie .env.example para .env e defina uma senha local com pelo menos oito caracteres. Execute os comandos no diretório do repositório.
+
+```powershell
+docker compose up -d
+docker compose logs neo4j
+python scripts/configurar_banco.py
+$env:TESTAR_NEO4J='1'
+python -m unittest discover -s tests -v
+```
+
+Aguarde a mensagem Started. no log antes de configurar. O banco fica disponível em http://127.0.0.1:17474. A [modelagem LPG](docs/fase-2-modelagem.md) documenta declarações, temporalidade e regras de evidência. A fase 2 foi verificada com constraints, índices Range/Fulltext/vetorial e consultas operacionais.
+
 ## Equipe
 
 - Arysson André Oliveira da Luz.
