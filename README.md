@@ -1,146 +1,101 @@
 # GraphRAG de riscos financeiros
 
-Projeto final de Tendências em Ciência da Computação do Centro Universitário de João Pessoa (Unipê).
+Aplicação de consulta a exposições cambiais, obrigações e medidas de proteção descritas em relatórios oficiais de Suzano, Klabin e Irani. Combina busca vetorial e textual, Cypher gerado por um modelo de linguagem e caminhos financeiros no Neo4j. A interface exibe fontes, páginas, consultas e o subgrafo usado como contexto.
 
-Repositório público: https://github.com/victort01/graphrag-riscos-financeiros. Os [links de entrega e o estado da hospedagem](docs/entrega.md) ficam reunidos em um único documento. A aplicação em nuvem ainda não tem endereço público validado; o requisito definido é hospedagem permanente e gratuita.
+O acervo reúne seis relatórios de 2024 e 2025, com 954 páginas. O índice cobre 3.918 trechos narrativos elegíveis e o grafo contém 85 declarações extraídas. A cobertura é narrativa: tabelas e montantes não estão validados para cálculo de exposição líquida ou classificação de risco entre empresas. Os resultados disponíveis são de desenvolvimento; não demonstram superioridade geral nem redução de alucinações em teste independente.
 
-Consulte o [andamento por fase](docs/andamento.md) e a [matriz de requisitos do enunciado](docs/matriz-requisitos.md) para distinguir as entregas verificadas das pendências.
+## Materiais
 
-O sistema consulta exposições cambiais, obrigações em moeda estrangeira e mecanismos de proteção declarados em documentos de companhias brasileiras. A implementação e a avaliação ainda estão em andamento.
+- [Artigo técnico](docs/artigo/artigo-revisao.pdf).
+- [Apresentação em PDF](docs/apresentacao/apresentacao-revisao.pdf) e [PowerPoint](docs/apresentacao/apresentacao-revisao.pptx).
+- [Arquitetura e modelo de dados](docs/arquitetura.md).
+- [Avaliação e reprodução dos experimentos](docs/avaliacao.md).
 
-A fase 1 está concluída. Foram baixadas e extraídas seis demonstrações financeiras completas de Suzano, Klabin e Irani, dos exercícios de 2024 e 2025. O conjunto tem 954 páginas, dez perguntas exploratórias e dezesseis localizadores de evidência. A diferença de subsegmento entre as empresas e os limites das tabelas extraídas estão documentados no [relatório de viabilidade](docs/fase-1-viabilidade.md).
+O artigo e a apresentação são versões para revisão. A aplicação tem implantação local; ainda não há endereço público de execução validado.
 
-## Reproduzir a validação documental
+## Requisitos
 
-Com Python 3.11 ou superior, crie um ambiente virtual e instale as dependências.
+Python 3.11 ou superior, Docker com Neo4j 5.26 Community e um servidor llama.cpp compatível com o modelo GGUF do catálogo. O ambiente completo verificado usa Windows e Python 3.13. Os pesos ocupam aproximadamente 1,24 GB, além do cache do tokenizer.
+
+## Instalação e dados
+
+Execute a partir da raiz do repositório. No Windows:
 
 ```powershell
 python -m venv .venv
-.venv/Scripts/python -m pip install -r requirements.txt
-.venv/Scripts/python scripts/validar_fontes.py
-.venv/Scripts/python scripts/verificar_corpus.py
+.venv/Scripts/python -m pip install -r requirements.txt -r requirements-modelos.txt -r requirements-ui.txt
+Copy-Item .env.example .env
 ```
 
-Em Linux ou macOS, use o executável .venv/bin/python. O primeiro comando de validação baixa os PDFs oficiais e grava o texto por página e os diagnósticos em data/. Se os arquivos já estiverem no cache, pode ser executado com --offline. A opção --id permite selecionar um documento do manifesto.
+Defina `NEO4J_PASSWORD` no `.env`. Para reproduzir as dependências transitivas do ambiente Windows com Python 3.13, use `requirements-lock-win-py313.txt` em lugar dos três arquivos de requisitos por função.
 
-O ambiente completo verificado no Windows com Python 3.13 tem dependências transitivas fixadas em `requirements-lock-win-py313.txt`. Nesse ambiente, pode-se instalar tudo com `.venv/Scripts/python -m pip install -r requirements-lock-win-py313.txt`. O lock é específico dessa plataforma; os arquivos `requirements*.txt` por função continuam disponíveis para outros ambientes.
+```powershell
+.venv/Scripts/python scripts/validar_fontes.py
+.venv/Scripts/python scripts/verificar_corpus.py
+.venv/Scripts/python scripts/baixar_modelos.py
+```
 
-O repositório inclui [fontes e checksums](data/manifesto.json), [métricas de extração](data/qualidade-extracao.json), [evidências de exploração](data/evidencias-exploratorias.json) e [perguntas de desenvolvimento](data/perguntas-exploratorias.json). Os PDFs e o texto integral são adquiridos localmente. A fase 3 tratará tabelas embutidas como imagem e a validação de suas unidades e colunas.
+Os scripts baixam os PDFs e modelos dos endereços catalogados e conferem os checksums. `validar_fontes.py --offline` usa o cache existente; `--id` seleciona um documento. [Fontes](data/manifesto.json), [identidades CVM](data/identidades-cvm.json) e [modelos](data/modelos.json) são versionados. PDFs, extrações integrais, pesos, credenciais e execuções ficam fora do Git.
 
-## Execução por fases
-
-1. Viabilidade dos documentos e fechamento do recorte.
-2. Ontologia e modelagem LPG.
-3. Aquisição e Text-to-Graph automatizados.
-4. Resolução de entidades e qualidade da extração.
-5. Recuperação híbrida e geração de Cypher.
-6. Algoritmo de grafo e regras de conhecimento.
-7. Respostas, procedência e confiança documental.
-8. Interface e subgrafo interativo.
-9. Avaliação científica e testes operacionais.
-10. Artigo, apresentação e defesa.
-
-O banco adotado é Neo4j. O escopo atual está no planejamento em docs/plano-execucao.md.
-
-## Inicializar o Neo4j
-
-Copie .env.example para .env e defina uma senha local com pelo menos oito caracteres. Execute os comandos no diretório do repositório.
+## Banco, ingestão e indexação
 
 ```powershell
 ./scripts/modo_banco.ps1 -Modo ingestao
-docker compose logs neo4j
 .venv/Scripts/python scripts/configurar_banco.py
-$env:TESTAR_NEO4J='1'
-.venv/Scripts/python -m unittest discover -s tests -v
-```
-
-Aguarde a mensagem Started. no log antes de configurar. O banco fica disponível em http://127.0.0.1:17474. A [modelagem LPG](docs/fase-2-modelagem.md) documenta declarações, temporalidade e regras de evidência. A fase 2 foi verificada com constraints, índices Range/Fulltext/vetorial e consultas operacionais.
-
-## Ingestão de narrativas
-
-```powershell
 .venv/Scripts/python scripts/ingerir.py
-.venv/Scripts/python scripts/ingerir.py --id irani-dfp-2025 --somente-preparar
-```
-
-A carga publica relações com evidência, empresa e período em uma transação por documento. Ela é retomável e mantém o estado de tabelas como pendente. A [documentação da fase 3](docs/fase-3-ingestao.md) descreve as regras de extração e os limites atuais.
-
-Uma revisão documental usa outro ID no manifesto, um número de versão maior e o campo `substitui` com o ID vigente da mesma empresa/tipo/exercício. A versão anterior permanece no histórico e sai da busca corrente. Os testes de integração usam revisões sintéticas; as seis fontes oficiais continuam na versão 1. A migração dos IDs preservou as 85 declarações e os 553 vetores por conteúdo, conforme [auditoria](data/validacao-migracao-versionamento.json).
-
-## Modelos, busca e interface
-
-Instale as dependências adicionais no mesmo ambiente virtual usado anteriormente.
-
-```powershell
-.venv/Scripts/python -m pip install -r requirements-modelos.txt -r requirements-ui.txt
-.venv/Scripts/python scripts/baixar_modelos.py
-$env:EMBEDDING_ONNX_PATH=(Resolve-Path data/models/minilm-quint8.onnx).Path
 .venv/Scripts/python scripts/indexar.py
 ./scripts/modo_banco.ps1 -Modo consulta
 ```
 
-O download dos dois modelos ocupa aproximadamente 1,24 GB, além do cache do tokenizer. Os arquivos grandes ficam fora do Git. Os pesos têm revisão e checksum em [data/modelos.json](data/modelos.json). A primeira indexação pode baixar os arquivos do tokenizer pelo Hugging Face Hub.
+O banco HTTP fica em `http://127.0.0.1:17474`. A carga é transacional por documento e pode ser reexecutada. `ingerir.py --id irani-dfp-2025 --somente-preparar` prepara a extração sem publicá-la. `indexar.py --reindexar` recalcula os vetores. Habilite ingestão para escrever e retorne a consulta antes de usar o LLM. A troca de modo preserva o volume de dados.
 
-Use [llama.cpp b7770](https://github.com/ggml-org/llama.cpp/releases/tag/b7770) para servir o GGUF. No Windows, o binário CPU verificado é `llama-b7770-bin-win-cpu-x64.zip`; seu SHA-256 é `96aaa9fa5db8a3a49dcf42547cf8f131e493902111e28fa6085dccd52e5406c5`. Extraia seus arquivos em `data/models/llama`. O script abaixo usa os caminhos padrão do projeto. Mantenha esse terminal ativo.
+## Modelo e interface
+
+Use [llama.cpp b7770](https://github.com/ggml-org/llama.cpp/releases/tag/b7770) para servir o GGUF. O binário Windows CPU verificado é `llama-b7770-bin-win-cpu-x64.zip`, SHA-256 `96aaa9fa5db8a3a49dcf42547cf8f131e493902111e28fa6085dccd52e5406c5`. Extraia em `data/models/llama`.
+
+Em um terminal:
 
 ```powershell
 ./scripts/iniciar_modelo.ps1
 ```
 
-Em outro terminal, usando o mesmo ambiente, execute a consulta ou a interface.
+Em outro terminal:
 
 ```powershell
-$env:EMBEDDING_ONNX_PATH=(Resolve-Path data/models/minilm-quint8.onnx).Path
-.venv/Scripts/python scripts/consultar.py "Como a Irani conecta ACC a recebíveis de exportações?" --empresa 92791243000103 --periodo 2025-12-31
+./scripts/iniciar_aplicacao.ps1
+```
+
+A interface abre em `http://127.0.0.1:18501`. Exemplo de pergunta: **Como a Irani conecta ACC a recebíveis de exportações?** Selecione Irani e o exercício 2025.
+
+Para executar pelo terminal:
+
+```powershell
 .venv/Scripts/python scripts/responder.py "Como a Irani conecta ACC a recebíveis de exportações?" --empresa 92791243000103 --periodo 2025-12-31 --salvar data/reports/exemplo.json
-.venv/Scripts/python -m streamlit run app.py --server.address 127.0.0.1 --server.port 18501
 ```
 
-A interface fica em http://127.0.0.1:18501. Em Linux/macOS, use `.venv/bin/python`, execute `llama-server` com os argumentos do script e alterne o banco com `NEO4J_READ_ONLY=false docker compose up -d` para ingestão e `NEO4J_READ_ONLY=true docker compose up -d` para consulta.
+As respostas preservam contexto, candidatos, fontes, caminhos, consultas, saída original e validação. A interface permite carregar uma execução arquivada ou retomar uma tarefa após desconexão do navegador. Reiniciar o servidor interrompe a inferência. O deployment atual usa um único processo e uma consulta em andamento por vez.
 
-No Windows, `./scripts/iniciar_aplicacao.ps1` também inicia a interface pelo ambiente virtual do projeto. Os parâmetros `-Servidor` e `-Modelo` de `iniciar_modelo.ps1` permitem outros caminhos. Se trocar o artefato, atualize `LLM_ARTIFACT` no `.env` e repita a avaliação.
+Em Linux/macOS, use `.venv/bin/python`, inicie o servidor GGUF com os argumentos de `scripts/iniciar_modelo.ps1` e execute `python -m streamlit run app.py --server.address 127.0.0.1 --server.port 18501`. Para alternar o banco, use `NEO4J_READ_ONLY=false docker compose up -d` na ingestão e `NEO4J_READ_ONLY=true docker compose up -d` na consulta, aguardando `scripts/aguardar_banco.py` após cada troca. Esses comandos substituem os scripts PowerShell.
 
-Cada resposta concluída pela interface ou pelo CLI é arquivada em `data/reports/execucoes/`, fora do Git. A opção **Carregar última execução salva** reabre o resultado com a pergunta, data, modelo e versão originais, sem nova inferência. O JSON exportado preserva contexto, candidatos, consultas, caminhos, saída original e validação.
-
-A interface processa uma consulta por vez em segundo plano e mostra sua etapa. Se a página for recarregada ou desconectada, use **Retomar última consulta**; o processamento continua enquanto o servidor Streamlit estiver ativo. A reinicialização do servidor marca tarefas perdidas como interrompidas; a inferência não possui checkpoint retomável. O deployment atual usa um único processo de interface no computador local.
-
-O banco inicia somente leitura por padrão. Antes de alterar esquema, ingerir ou indexar, habilite o modo de ingestão; ao terminar, volte para consulta. Esse fluxo preserva o volume de dados. Não use `docker compose down -v` para trocar modos.
-
-O [módulo de busca](docs/fase-5-recuperacao.md) combina Fulltext, vetor e Cypher gerado pelo modelo. Os [caminhos financeiros](docs/fase-6-caminhos.md) acrescentam relações e evidências antes da resposta. As regras de [confiança documental](docs/fase-7-respostas.md) e o estado da [interface](docs/fase-8-interface.md) documentam o que já foi verificado e o que permanece pendente.
-
-## Testes e limites atuais
+## Testes e avaliação
 
 ```powershell
 .venv/Scripts/python -m unittest discover -s tests -v
-./scripts/modo_banco.ps1 -Modo ingestao
-$env:TESTAR_NEO4J='1'
-$env:TESTAR_CORPUS='1'
-.venv/Scripts/python -m unittest discover -s tests -v
-./scripts/modo_banco.ps1 -Modo consulta
 ```
 
-Os testes de corpus exigem ingestão prévia dos seis documentos. Os testes unitários não precisam de modelos ou banco. As métricas de NER/RE publicadas são de desenvolvimento, sobre oito excertos usados para corrigir regras; não são resultado de teste independente. A extração de tabelas, a revisão humana das anotações, a avaliação reservada e a consolidação do artigo e da defesa permanecem pendentes.
+Os testes unitários não exigem modelos ou banco. As verificações opcionais usam `TESTAR_NEO4J=1` para escrita no banco de teste e `TESTAR_CORPUS=1` para o corpus já ingerido. Execute testes de escrita com o banco em modo de ingestão e retorne a consulta ao terminar.
 
-Os [formulários de revisão da extração](docs/revisao-extracao.md) já estão preparados para dois integrantes, com fontes e campos de anotação vazios. O comparador recusa revisões pendentes e relata divergências; ele mede concordância entre revisores, sem tratar concordância como acurácia do extrator.
+O [protocolo de avaliação](docs/avaliacao.md) descreve extração, recuperação, respostas e revisão documental. As anotações de desenvolvimento participaram do ajuste das regras. O smoke de recuperação contém duas perguntas conhecidas; métricas de localização de evidência não medem correção semântica da resposta.
 
-A [avaliação de recuperação](docs/fase-9-protocolo.md) compara vetor, híbrido e híbrido com caminhos sobre os mesmos 3.918 trechos elegíveis. O smoke completo tem duas perguntas de desenvolvimento, sem valor de generalização. `scripts/avaliar_respostas.py` gera respostas a partir de contextos congelados, com o mesmo contrato de IDs reais e guardas para todas as variantes. As [revisões de respostas](docs/revisao-respostas.md) já têm seis casos reais preparados e ainda não receberam anotação humana.
+## Estrutura
 
-## Materiais para revisão
+| Caminho | Conteúdo |
+|---|---|
+| `app.py` e `ui/` | Interface Streamlit e visualização do grafo. |
+| `src/riscos/` | Extração, identidades, ingestão, busca, caminhos, resposta e auditoria. |
+| `scripts/` | Aquisição, configuração, execução e avaliação. |
+| `tests/` | Testes unitários e de integração. |
+| `data/` | Catálogos, conjuntos de desenvolvimento e resultados auditáveis. |
+| `docs/` | Artigo, apresentação e documentação técnica. |
 
-- [Apresentação editável](docs/apresentacao/apresentacao-revisao.pptx) e [PDF de exibição](docs/apresentacao/apresentacao-revisao.pdf), com 14 slides e fontes nas notas.
-- [Artigo em PDF](docs/artigo/artigo-revisao.pdf) e [fonte LaTeX](docs/artigo/artigo-revisao.tex), usando IEEEtran conference, com instruções de [compilação e procedência](docs/artigo/README.md).
-
-São versões para revisão, correspondentes aos resultados de desenvolvimento disponíveis. A entrega final exige incorporar revisão independente, conjunto reservado e resultados consolidados. A [matriz de requisitos](docs/matriz-requisitos.md) e o [andamento por fase](docs/andamento.md) registram as pendências.
-
-Em caso de falha, consulte `docker compose logs neo4j`, confirme os endpoints no `.env` e verifique se o servidor GGUF está ativo. `WriteOnReadOnlyAccessDatabase` durante ingestão indica que é necessário trocar o modo. O modelo local pode ser lento em máquinas com pouca memória disponível; timeouts e rejeições de consulta são falhas de execução, não respostas sem evidência.
-
-O perfil padrão do Neo4j usa heap de 128–384 MB e page cache de 64 MB, ajustáveis no `.env`. O limite global de transação é 60 s; o Cypher gerado recebe limite de 15 s. O encoder é liberado após gerar o vetor da pergunta para reduzir a disputa de RAM com o LLM; a indexação em lotes mantém sua sessão. Esse perfil foi verificado no acervo atual e precisa ser reavaliado ao ampliar o corpus.
-
-## Equipe
-
-- Arysson André Oliveira da Luz.
-- Caio Justino de Andrade.
-- Luiz Henrique Monteiro dos Santos.
-- Paulo Victor Oliveira de Barros Araújo.
-
-O professor pode acessar o código pelo repositório público. Nenhum convite individual foi enviado.
+Projeto de Tendências em Ciência da Computação do Centro Universitário de João Pessoa (Unipê). Fontes, bibliotecas, modelos e assistência de IA estão registrados em [ATTRIBUTIONS.md](ATTRIBUTIONS.md).

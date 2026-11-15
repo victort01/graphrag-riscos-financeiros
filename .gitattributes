@@ -1,8 +1,7 @@
 * text=auto
-*.pdf -text
-*.pptx -text
-*.docx -text
-*.png -text
-*.jpg -text
-*.zip -text
-docs/artigo/IEEEtran.cls -text -diff
+*.pdf binary
+*.pptx binary
+*.docx binary
+*.png binary
+*.jpg binary
+*.zip binary

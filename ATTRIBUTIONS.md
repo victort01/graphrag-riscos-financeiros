@@ -13,4 +13,6 @@ Os relatórios de Suzano, Klabin e Irani são obtidos nos endereços oficiais ca
 | Streamlit 1.44.1 | Interface de consulta, licença Apache-2.0. |
 | Cytoscape.js 3.31.2 | Renderização interativa; arquivo distribuído com licença MIT em ui/vendor/. |
 
-O desenvolvimento foi assistido por Codex, incluindo propostas de arquitetura, código, testes e documentação. O grupo deverá revisar, compreender e validar esses artefatos antes de atribuir contribuições individuais e apresentar o trabalho. Os resultados automatizados não substituem revisão humana das evidências financeiras nem avaliação independente.
+O desenvolvimento e a documentação receberam assistência de IA. As anotações e os resultados assistidos estão identificados nos arquivos correspondentes e não substituem avaliação independente.
+
+O artigo usa o formato IEEEtran conference. A ilustração da capa da apresentação foi gerada por IA e não representa dados ou resultados do sistema.

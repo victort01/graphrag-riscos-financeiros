@@ -8,6 +8,7 @@ data/reports/
 data/extracted/
 data/models/
 .pytest_cache/
-docs/apresentacao/.build/
+**/.build/
 data/tools/
-docs/artigo/.build/
+data/revisao-extracao/
+data/revisao-respostas-smoke/
