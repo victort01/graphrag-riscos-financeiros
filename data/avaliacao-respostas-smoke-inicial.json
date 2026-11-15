@@ -66,7 +66,6 @@
       "sha256_contexto": "456e9eb1ccbcda1e74cf3afc2ede3a9f3ca7301fdec8bcbe3cac46b90b047109",
       "erro": null,
       "resposta": {
-        "afirmacoes": [],
         "cobertura": "insuficiente",
         "possivel_conflito": false,
         "confianca": {
@@ -80,45 +79,14 @@
           "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
         }
       },
-      "resposta_original_modelo": {
-        "afirmacoes": [
-          {
-            "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
-            "fontes": [
-              "E3"
-            ],
-            "caminhos": [
-              "E3"
-            ]
-          },
-          {
-            "texto": "Os pagamentos do longo prazo, considerando seus fluxos de caixa futuros (não descontados) estão assim distribuídos:",
-            "fontes": [
-              "E4"
-            ],
-            "caminhos": [
-              "E4"
-            ]
-          },
-          {
-            "texto": "Demos um passo importante nessa jornada com a criação da Política de Diversidade, diretriz que consolida o respeito, a equidade e a valorização das diferenças em nossa cultura. Esses avanços confirmam que a inclusão e o pertencimento são prioridades estratégicas para a Irani.",
-            "fontes": [
-              "E5"
-            ],
-            "caminhos": [
-              "E5"
-            ]
-          }
-        ],
-        "cobertura": "direta",
-        "possivel_conflito": false
-      },
       "complementos_procedencia": [],
       "afirmacoes_removidas_por_vocabulario": [
         2,
         3
       ],
-      "latencia_geracao_segundos": 68.924
+      "latencia_geracao_segundos": 68.924,
+      "quantidade_afirmacoes_originais": 3,
+      "quantidade_afirmacoes_finais": 0
     },
     {
       "pergunta_id": "S01",
@@ -127,7 +95,6 @@
       "sha256_contexto": "ea02739ac6f5969e5fc4d762a861fb56cd46c389fb911a26fa403334df83ff46",
       "erro": null,
       "resposta": {
-        "afirmacoes": [],
         "cobertura": "insuficiente",
         "possivel_conflito": false,
         "confianca": {
@@ -144,44 +111,11 @@
           "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
         }
       },
-      "resposta_original_modelo": {
-        "afirmacoes": [
-          {
-            "texto": "A Irani Papel e Embalagem S.A. declara instrumentos de proteção de juros como swaps em vigência.",
-            "fontes": [
-              "E1",
-              "E2"
-            ],
-            "caminhos": [
-              "E1",
-              "E2"
-            ]
-          },
-          {
-            "texto": "A Irani Papel e Embalagem S.A. possui controladas integrais que possuem instrumentos de proteção de juros.",
-            "fontes": [
-              "E3"
-            ],
-            "caminhos": [
-              "E3"
-            ]
-          },
-          {
-            "texto": "A Irani Papel e Embalagem S.A. declara instrumentos de proteção de juros como swaps em vigência e instrumentos derivativos como debêntures.",
-            "fontes": [
-              "E4"
-            ],
-            "caminhos": [
-              "E4"
-            ]
-          }
-        ],
-        "cobertura": "parcial",
-        "possivel_conflito": false
-      },
       "complementos_procedencia": [],
       "afirmacoes_removidas_por_vocabulario": [],
-      "latencia_geracao_segundos": 53.001
+      "latencia_geracao_segundos": 53.001,
+      "quantidade_afirmacoes_originais": 3,
+      "quantidade_afirmacoes_finais": 0
     },
     {
       "pergunta_id": "S01",
@@ -190,17 +124,6 @@
       "sha256_contexto": "64a5ef010011b4f84e46d73a4aa54aec273ccc4c9398cae1285ab54150cf2930",
       "erro": null,
       "resposta": {
-        "afirmacoes": [
-          {
-            "texto": "A Irani Papel e Embalagem S.A. declara instrumentos de proteção de juros como swaps para troca de indexador de juros.",
-            "fontes": [
-              "E1"
-            ],
-            "caminhos": [
-              "C1"
-            ]
-          }
-        ],
         "cobertura": "direta",
         "possivel_conflito": false,
         "confianca": {
@@ -212,24 +135,11 @@
           "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
         }
       },
-      "resposta_original_modelo": {
-        "afirmacoes": [
-          {
-            "texto": "A Irani Papel e Embalagem S.A. declara instrumentos de proteção de juros como swaps para troca de indexador de juros.",
-            "fontes": [
-              "E1"
-            ],
-            "caminhos": [
-              "C1"
-            ]
-          }
-        ],
-        "cobertura": "direta",
-        "possivel_conflito": false
-      },
       "complementos_procedencia": [],
       "afirmacoes_removidas_por_vocabulario": [],
-      "latencia_geracao_segundos": 12.623
+      "latencia_geracao_segundos": 12.623,
+      "quantidade_afirmacoes_originais": 1,
+      "quantidade_afirmacoes_finais": 1
     },
     {
       "pergunta_id": "S02",
@@ -238,7 +148,6 @@
       "sha256_contexto": "524c33576b21612f2bd51a7dd4a6e191f8b12de0bf3e6e5b7493b7dd8b6d38d2",
       "erro": null,
       "resposta": {
-        "afirmacoes": [],
         "cobertura": "insuficiente",
         "possivel_conflito": false,
         "confianca": {
@@ -252,45 +161,14 @@
           "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
         }
       },
-      "resposta_original_modelo": {
-        "afirmacoes": [
-          {
-            "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
-            "fontes": [
-              "E1"
-            ],
-            "caminhos": [
-              "E1"
-            ]
-          },
-          {
-            "texto": "Preços médios líquidos de impostos Irani (R$/mil m2) +6,0% 2.902 3.153 3.076 2.763 3.064 -2,4% +10,9% 4T24 3T25 4T25 2024 2025 A participação das vendas da Irani por subsetores em 2025 é apresentada no gráfico a seguir:",
-            "fontes": [
-              "E2"
-            ],
-            "caminhos": [
-              "E2"
-            ]
-          },
-          {
-            "texto": "Evolução do Preço de Aparas (Preço Líquido R$/t|CIF) Irani Total +0,7% 1.051 1.209 1.058 1.158 894 -12,5% +29,5% 4T24 3T25 4T25 2024 2025 A composição do custo por segmento de atuação da Irani em 2025 pode ser verificada nos gráficos a seguir:",
-            "fontes": [
-              "E3"
-            ],
-            "caminhos": [
-              "E3"
-            ]
-          }
-        ],
-        "cobertura": "direta",
-        "possivel_conflito": false
-      },
       "complementos_procedencia": [],
       "afirmacoes_removidas_por_vocabulario": [
         2,
         3
       ],
-      "latencia_geracao_segundos": 73.932
+      "latencia_geracao_segundos": 73.932,
+      "quantidade_afirmacoes_originais": 3,
+      "quantidade_afirmacoes_finais": 0
     },
     {
       "pergunta_id": "S01",
@@ -299,7 +177,6 @@
       "sha256_contexto": "d3d4ad24a6403c3a28fd8590e138e30c08c1ab28a0ac0c698e543cbb3d20689e",
       "erro": null,
       "resposta": {
-        "afirmacoes": [],
         "cobertura": "insuficiente",
         "possivel_conflito": false,
         "confianca": {
@@ -313,45 +190,14 @@
           "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
         }
       },
-      "resposta_original_modelo": {
-        "afirmacoes": [
-          {
-            "texto": "Irani declara instrumentos de proteção de juros como debêntures simples privadas.",
-            "fontes": [
-              "E2"
-            ],
-            "caminhos": [
-              "trecho:1841da01b1bde41d0c6c867ac010d716"
-            ]
-          },
-          {
-            "texto": "Irani declara garantias como parte das iniciativas apoiadas pela Companhia.",
-            "fontes": [
-              "E3"
-            ],
-            "caminhos": [
-              "trecho:48478e41f577e6c8c6e792e0083b55c2"
-            ]
-          },
-          {
-            "texto": "Irani declara amortização de intangíveis como movimentações nos exercícios de 2025 e 2024.",
-            "fontes": [
-              "E6"
-            ],
-            "caminhos": [
-              "trecho:894177c73dd9fe72e3faa5f1dc48801b"
-            ]
-          }
-        ],
-        "cobertura": "direta",
-        "possivel_conflito": false
-      },
       "complementos_procedencia": [],
       "afirmacoes_removidas_por_vocabulario": [
         2,
         3
       ],
-      "latencia_geracao_segundos": 63.845
+      "latencia_geracao_segundos": 63.845,
+      "quantidade_afirmacoes_originais": 3,
+      "quantidade_afirmacoes_finais": 0
     },
     {
       "pergunta_id": "S02",
@@ -360,17 +206,6 @@
       "sha256_contexto": "ae8c5dec326ed7ab96e311ac7be525c0be14090e34780ac678412ed598ca92d7",
       "erro": null,
       "resposta": {
-        "afirmacoes": [
-          {
-            "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
-            "fontes": [
-              "E1"
-            ],
-            "caminhos": [
-              "C1"
-            ]
-          }
-        ],
         "cobertura": "parcial",
         "possivel_conflito": false,
         "confianca": {
@@ -382,45 +217,14 @@
           "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
         }
       },
-      "resposta_original_modelo": {
-        "afirmacoes": [
-          {
-            "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
-            "fontes": [
-              "E1"
-            ],
-            "caminhos": [
-              "C1"
-            ]
-          },
-          {
-            "texto": "Preços médios líquidos de impostos Irani (R$/mil m2) +6,0% 2.902 3.153 3.076 2.763 3.064 -2,4% +10,9% 4T24 3T25 4T25 2024 2025 A participação das vendas da Irani por subsetores em 2025 é apresentada no gráfico a seguir:",
-            "fontes": [
-              "E2"
-            ],
-            "caminhos": [
-              "C1"
-            ]
-          },
-          {
-            "texto": "Evolução do Preço de Aparas (Preço Líquido R$/t|CIF) Irani Total +0,7% 1.051 1.209 1.058 1.158 894 -12,5% +29,5% 4T24 3T25 4T25 2024 2025 A composição do custo por segmento de atuação da Irani em 2025 pode ser verificada nos gráficos a seguir:",
-            "fontes": [
-              "E3"
-            ],
-            "caminhos": [
-              "C1"
-            ]
-          }
-        ],
-        "cobertura": "direta",
-        "possivel_conflito": false
-      },
       "complementos_procedencia": [],
       "afirmacoes_removidas_por_vocabulario": [
         2,
         3
       ],
-      "latencia_geracao_segundos": 36.484
+      "latencia_geracao_segundos": 36.484,
+      "quantidade_afirmacoes_originais": 3,
+      "quantidade_afirmacoes_finais": 1
     }
   ],
   "diagnostico": "Quatro respostas rejeitadas por referencias de caminhos inexistentes nas variantes sem grafo. Resultado de desenvolvimento anterior ao contrato de IDs dinamicos; nao mede suporte semantico."

@@ -19,6 +19,21 @@ Em 15/11/2026, uma nova rodada terminou sem falhas nas seis execuções, com os 
 
 O algoritmo acrescentou um caminho ao contexto de cada pergunta, sem ganho de recall sobre o híbrido. Todos os contextos ficaram abaixo de 3.500 caracteres. O denominador é uma evidência esperada por pergunta; não é a integralidade de todas as fontes possíveis. Duas perguntas conhecidas de uma única companhia não permitem generalizar o resultado. A rodada não gerou respostas nem mediu alucinação. O diagnóstico anterior de seleção entre três empresas utilizou o índice piloto de 553 passagens e permanece identificado como histórico de desenvolvimento.
 
+## Geração sobre contextos congelados
+
+O avaliador de respostas reutiliza os contextos salvos e confere o hash do conjunto de perguntas. Não repete a recuperação. Registra separadamente a versão da recuperação e a da geração, modelo, contrato, ordem determinística embaralhada e hash de cada contexto. Checkpoints podem ser retomados sem duplicar pares já registrados; uma falha técnica não vira abstenção.
+
+```powershell
+.venv/Scripts/python scripts/avaliar_recuperacao.py --conjunto data/perguntas-smoke-recuperacao.json --saida data/reports/recuperacao-nova.json
+.venv/Scripts/python scripts/avaliar_respostas.py --recuperacao data/reports/recuperacao-nova.json --conjunto data/perguntas-smoke-recuperacao.json --saida data/reports/respostas-novas.json
+```
+
+A [primeira rodada de geração](../data/avaliacao-respostas-smoke-inicial.json) concluiu seis inferências, mas quatro respostas sem grafo foram rejeitadas por confundir IDs de fontes/trechos com caminhos. O contrato foi corrigido para restringir fontes e caminhos aos IDs disponíveis, mantendo os mesmos critérios nas três variantes. A saída original continua no arquivo integral local identificado por hash.
+
+A [rodada contextual](../data/avaliacao-respostas-smoke-contextual-resumo.json) também concluiu seis inferências. Nenhuma gerou referência de caminho inexistente; cinco mantiveram afirmações parciais. A variante com grafo em S01 foi rejeitada por declarar cobertura insuficiente junto de afirmações. Isso é diagnóstico de contrato e operação, não medida de correção semântica. Validade de referência não demonstra suporte da fonte e não permite concluir superioridade do grafo.
+
+Os [formulários de revisão](revisao-respostas.md) omitem o rótulo da variante e preservam os localizadores das fontes. A presença de caminhos pode revelar o método; essa limitação de cegamento está declarada. Os formulários ainda estão pendentes, e nenhuma concordância ou taxa de alucinação humana foi calculada.
+
 ## Rodada científica pendente
 
 Preparar quinze perguntas de desenvolvimento e trinta reservadas, cobrindo consulta direta, multi-hop, comparação entre empresas, comparação temporal, condição/negação e ausência de suporte. Registrar fontes e respostas esperadas antes de executar os métodos no reservado. Dois integrantes devem conferir uma parte comum das anotações e resolver divergências. Congelar conjunto, corpus, versões, regras e configuração no Git antes da rodada final.

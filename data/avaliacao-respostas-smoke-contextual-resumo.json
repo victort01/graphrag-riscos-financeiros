@@ -1,0 +1,170 @@
+{
+  "uso": "Smoke de desenvolvimento. Não é conjunto reservado ou evidência de generalização.",
+  "data_utc": "2026-11-15T11:16:48.723235+00:00",
+  "sha256_recuperacao": "a3a48a9f3a5f8b29f7a2325816d01bd54301ee5ce3d88951364ae62dd58117ea",
+  "versao_recuperacao": {
+    "sha256_codigo_catalogos_dependencias": "2375556f7b58e9f720881fb97f69e59d35fc6a95f0ec64f6e139c33f316d8dad",
+    "python": "3.13.14",
+    "plataforma": "Windows",
+    "arquitetura": "AMD64",
+    "commit_git": "51de8c44583da7ff92476dd7f94531c0ae358d2b",
+    "arvore_git_alterada": false
+  },
+  "versao_geracao": {
+    "sha256_codigo_catalogos_dependencias": "0c2cb417b13af1eb4e29bcfe9ef5928fb3c69cdbc096d3727104810317dfedaa",
+    "python": "3.13.14",
+    "plataforma": "Windows",
+    "arquitetura": "AMD64",
+    "commit_git": "b934068edc2968751368e6a8ae50a2a156d3e310",
+    "arvore_git_alterada": true
+  },
+  "modelo": {
+    "artefato": "Qwen2.5-1.5B-Instruct-GGUF@91cad51170dc346986eccefdc2dd33a9da36ead9:Q4_K_M",
+    "alias": "qwen-riscos-local",
+    "temperatura": 0,
+    "seed": 42,
+    "max_tokens": 800
+  },
+  "estado": "concluida",
+  "ordem": [
+    [
+      "S02",
+      "vetorial"
+    ],
+    [
+      "S01",
+      "hibrido"
+    ],
+    [
+      "S01",
+      "grafo"
+    ],
+    [
+      "S02",
+      "hibrido"
+    ],
+    [
+      "S01",
+      "vetorial"
+    ],
+    [
+      "S02",
+      "grafo"
+    ]
+  ],
+  "limites": [
+    "Não mede suporte semântico automaticamente; nenhuma taxa de alucinação é calculada.",
+    "Latência de geração descritiva; não inclui a recuperação anterior.",
+    "O conjunto smoke contém perguntas já utilizadas no desenvolvimento."
+  ],
+  "sha256_relatorio_integral": "03f1e89b898be312cd3512db511abd3c584a20140dd7e2d9d9ea8ee3efd069cc",
+  "nota": "Resultado de desenvolvimento; revisao semantica humana pendente. Referencias validas nao comprovam suporte documental.",
+  "linhas": [
+    {
+      "pergunta_id": "S02",
+      "metodo": "vetorial",
+      "erro": null,
+      "latencia_geracao_segundos": 65.895,
+      "afirmacoes_originais": 3,
+      "afirmacoes_finais": 1,
+      "cobertura": "parcial",
+      "confianca": {
+        "nivel": "limitada",
+        "motivo": "Cobertura parcial da pergunta. Escopo jurídico sem qualificação unívoca na extração das fontes citadas."
+      },
+      "erros_validacao": [],
+      "removidas_por_vocabulario": [
+        2,
+        3
+      ]
+    },
+    {
+      "pergunta_id": "S01",
+      "metodo": "hibrido",
+      "erro": null,
+      "latencia_geracao_segundos": 46.939,
+      "afirmacoes_originais": 3,
+      "afirmacoes_finais": 2,
+      "cobertura": "parcial",
+      "confianca": {
+        "nivel": "limitada",
+        "motivo": "Cobertura parcial da pergunta. Escopo jurídico sem qualificação unívoca na extração das fontes citadas."
+      },
+      "erros_validacao": [],
+      "removidas_por_vocabulario": [
+        3
+      ]
+    },
+    {
+      "pergunta_id": "S01",
+      "metodo": "grafo",
+      "erro": null,
+      "latencia_geracao_segundos": 15.11,
+      "afirmacoes_originais": 2,
+      "afirmacoes_finais": 0,
+      "cobertura": "insuficiente",
+      "confianca": {
+        "nivel": "sem suporte",
+        "motivo": "Não foi possível formar uma resposta validável com o contexto consultado."
+      },
+      "erros_validacao": [
+        "Cobertura insuficiente deve produzir abstenção."
+      ],
+      "removidas_por_vocabulario": []
+    },
+    {
+      "pergunta_id": "S02",
+      "metodo": "hibrido",
+      "erro": null,
+      "latencia_geracao_segundos": 72.772,
+      "afirmacoes_originais": 3,
+      "afirmacoes_finais": 1,
+      "cobertura": "parcial",
+      "confianca": {
+        "nivel": "limitada",
+        "motivo": "Cobertura parcial da pergunta. Escopo jurídico sem qualificação unívoca na extração das fontes citadas."
+      },
+      "erros_validacao": [],
+      "removidas_por_vocabulario": [
+        2,
+        3
+      ]
+    },
+    {
+      "pergunta_id": "S01",
+      "metodo": "vetorial",
+      "erro": null,
+      "latencia_geracao_segundos": 53.94,
+      "afirmacoes_originais": 3,
+      "afirmacoes_finais": 1,
+      "cobertura": "parcial",
+      "confianca": {
+        "nivel": "limitada",
+        "motivo": "Cobertura parcial da pergunta. Escopo jurídico sem qualificação unívoca na extração das fontes citadas."
+      },
+      "erros_validacao": [],
+      "removidas_por_vocabulario": [
+        2,
+        3
+      ]
+    },
+    {
+      "pergunta_id": "S02",
+      "metodo": "grafo",
+      "erro": null,
+      "latencia_geracao_segundos": 38.528,
+      "afirmacoes_originais": 3,
+      "afirmacoes_finais": 1,
+      "cobertura": "parcial",
+      "confianca": {
+        "nivel": "limitada",
+        "motivo": "Cobertura parcial da pergunta. Escopo jurídico sem qualificação unívoca na extração das fontes citadas."
+      },
+      "erros_validacao": [],
+      "removidas_por_vocabulario": [
+        2,
+        3
+      ]
+    }
+  ]
+}
