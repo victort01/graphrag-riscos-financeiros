@@ -1,0 +1,37 @@
+name: Testes operacionais
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', 'scripts/**', 'tests/**', 'app.py', 'requirements*.txt', '.github/workflows/testes.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    services:
+      neo4j:
+        image: neo4j:5.26.0-community
+        env:
+          NEO4J_AUTH: neo4j/senha-apenas-do-banco-descartavel
+          NEO4J_server_memory_heap_initial__size: 128m
+          NEO4J_server_memory_heap_max__size: 384m
+          NEO4J_server_memory_pagecache_size: 64m
+        ports:
+          - 17474:7474
+    env:
+      NEO4J_PASSWORD: senha-apenas-do-banco-descartavel
+      TESTAR_NEO4J: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-modelos.txt -r requirements-ui.txt
+      - run: python scripts/aguardar_banco.py --tempo 120
+      - run: python -m unittest discover -s tests -v

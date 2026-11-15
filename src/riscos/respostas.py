@@ -21,6 +21,7 @@ Use a versão vigente do relatório; ela não demonstra o que já era público n
 Escopo nao_especificado não permite atribuir a operação especificamente à controladora ou ao consolidado.
 Uma dívida e uma receita não são equivalentes. Moeda contábil não demonstra exposição cambial.
 Proteção declarada não demonstra eliminação de risco, proteção total ou cobertura de todos os passivos.
+Proteção econômica e hedge natural não demonstram adoção de hedge accounting; preserve negativas explícitas.
 Não calcule exposição líquida ou montantes. As tabelas financeiras ainda não foram validadas.
 Ausência de evidência recuperada não demonstra ausência de risco ou de instrumento.
 Use os caminhos apenas para explicar relações documentadas. Não invente conexões entre empresas.
@@ -163,6 +164,19 @@ def validar_resposta(resposta, contexto, pergunta=""):
             if (empresas_fonte and re.search(r"\b" + nome + r"\b", afirmacao["texto"], re.I)
                     and not re.search(r"\b" + nome + r"\b", empresas_fonte, re.I)):
                 erros.append("Empresa mencionada sem documento correspondente nas fontes: " + nome)
+        contabilidade = r"hedge\s+accounting|contabilidade\s+de\s+hedge"
+        if re.search(contabilidade, afirmacao["texto"], re.I):
+            nomes = [n for n in EMPRESAS if re.search(r"\b" + n + r"\b", afirmacao["texto"], re.I)]
+            for nome in nomes or [""]:
+                fontes_empresa = [contexto["fontes"][f]["texto"] for f in ids
+                    if not nome or re.search(r"\b" + nome + r"\b", contexto["fontes"][f].get("empresa", ""), re.I)]
+                pertinentes = [s for s in fontes_empresa if re.search(contabilidade, s, re.I)]
+                if not pertinentes:
+                    erros.append("Tratamento contábil sem declaração específica nas fontes: " + (nome or "companhia"))
+                elif (re.search(r"\badota(?:m)?\b", afirmacao["texto"], re.I)
+                      and not re.search(r"\bnão\s+adota(?:m)?\b|\bnao\s+adota(?:m)?\b", afirmacao["texto"], re.I)
+                      and all(re.search(r"\b(?:não|nao)\s+adota\b", s, re.I) for s in pertinentes)):
+                    erros.append("Adoção de hedge accounting contradiz negativa explícita nas fontes.")
         escopos = {e for id_ in ids for e in contexto["fontes"][id_].get("escopos", [])}
         for escopo, padrao in (("controladora", r"\bcontroladoras?\b"), ("consolidado", r"\bconsolidad[oa]s?\b")):
             if re.search(padrao, afirmacao["texto"], re.I) and escopo not in escopos:

@@ -126,6 +126,24 @@ class ValidacaoResposta(unittest.TestCase):
         resposta = {"afirmacoes": [{"texto": "A Klabin possui dívida em USD.", "fontes": ["E1"]}], "cobertura": "direta"}
         self.assertTrue(any("Empresa mencionada" in e for e in validar_resposta(resposta, self.contexto)))
 
+    def test_hedge_natural_nao_sustenta_tratamento_contabil(self):
+        self.contexto["fontes"]["E1"].update(empresa="Suzano S.A.", texto="A Companhia contrata dívida como hedge natural de caixa.")
+        r = {"afirmacoes": [{"texto": "A Suzano adota hedge accounting.", "fontes": ["E1"]}], "cobertura": "direta"}
+        self.assertTrue(any("Tratamento contábil" in e for e in validar_resposta(r, self.contexto)))
+
+    def test_negativa_contabil_nao_pode_virar_adocao(self):
+        self.contexto["fontes"]["E1"].update(empresa="Suzano S.A.", texto="A Companhia não adota a modalidade de contabilização hedge accounting.")
+        r = {"afirmacoes": [{"texto": "A Suzano adota hedge accounting.", "fontes": ["E1"]}], "cobertura": "direta"}
+        self.assertTrue(any("negativa explícita" in e for e in validar_resposta(r, self.contexto)))
+        r["afirmacoes"][0]["texto"] = "A Suzano não adota hedge accounting."
+        self.assertFalse(validar_resposta(r, self.contexto))
+
+    def test_tratamento_contabil_exige_suporte_para_cada_empresa(self):
+        self.contexto["fontes"]["E1"].update(empresa="Suzano S.A.", texto="A Suzano utiliza hedge natural de caixa.")
+        self.contexto["fontes"]["E2"] = {"empresa": "Klabin S.A.", "texto": "A Companhia adota a contabilidade de hedge de taxa de juros.", "periodo": "2025-12-31"}
+        r = {"afirmacoes": [{"texto": "Suzano e Klabin adotam hedge accounting.", "fontes": ["E1", "E2"]}], "cobertura": "direta"}
+        self.assertTrue(any("Suzano" in e for e in validar_resposta(r, self.contexto)))
+
 
 if __name__ == "__main__":
     unittest.main()
