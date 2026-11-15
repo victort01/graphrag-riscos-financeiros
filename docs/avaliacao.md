@@ -1,57 +1,73 @@
 # Avaliação
 
-Os conjuntos e resultados publicados são de desenvolvimento. Nenhuma métrica apresentada deve ser interpretada como avaliação reservada, revisão humana concluída ou prova de generalização.
+Os experimentos distinguem integridade dos dados, localização de evidência, validade do contrato de resposta e suporte semântico. Os critérios assistidos sobre corpus conhecido não equivalem a gabarito humano independente.
 
 ## Extração e identidades
 
-`data/anotacoes-desenvolvimento-extracao.json` contém oito excertos, quinze menções e vinte e três relações esperadas, anotados com assistência de IA e usados para ajustar regras. Os resultados correspondentes avaliam esse conjunto conhecido.
+O conjunto `data/anotacoes-desenvolvimento-extracao.json` contém oito excertos, quinze menções e vinte e três relações esperadas, anotados com assistência de IA e usados para ajustar regras. Os resultados avaliam esse conjunto conhecido.
 
 ```powershell
 .venv/Scripts/python scripts/avaliar_extracao.py
+.venv/Scripts/python scripts/auditar_extracao.py --saida data/reports/auditoria-extracao.json
 .venv/Scripts/python scripts/preparar_revisao.py --saida data/reports/revisao-extracao
-.venv/Scripts/python scripts/comparar_revisoes.py data/reports/revisao-extracao/revisor-1.json data/reports/revisao-extracao/revisor-2.json
 ```
 
-Os formulários gerados têm campos vazios e exigem identificação e conclusão da revisão. Cada pessoa confere os PDFs, anota menções e relações e registra defeitos ou ambiguidades. O comparador recusa formulários pendentes. F1 simétrico e Jaccard medem concordância entre anotações; não são acurácia do extrator. Divergências precisam de adjudicação antes de produzir um gabarito consolidado.
+A auditoria automatizada verificou a integridade das 85 declarações em 33 excertos: checksum, tipos, identidade do emissor e ligação com o trecho. Não foram encontradas inconsistências nesses critérios. Isso não mede precisão, recall semântico ou cobertura do relatório. As 85 declarações continuam sem qualificação jurídica reconhecida pelas regras.
+
+A revisão documental deve conferir menções equivalentes, relações, qualificadores e omissões nos PDFs. O comparador recusa formulários pendentes e exige revisores distintos. F1 simétrico e Jaccard medem concordância, não acurácia; divergências exigem adjudicação. Essa revisão não foi registrada como concluída.
+
+## Protocolo prospectivo
+
+`data/perguntas-validacao-v1.json` fixa doze perguntas e critérios antes da execução. O SHA-256 é `a8c51c2f3319b98dff278d9c4a21ecfc19e595a475a0581c2f8843528ac3addd`. Há dez perguntas com evidências esperadas e duas que exigem abstenção: exercício fora do acervo e cálculo/ranking fora do recorte narrativo. V08–V10 são controles próximos ao desenvolvimento. O corpus e a seleção assistida limitam a independência do experimento.
+
+Comparam-se vetor, híbrido e híbrido com caminhos, mantendo filtros, modelo e 3.500 caracteres. A variante com caminhos reutiliza os candidatos híbridos. A geração usa contextos congelados, ordem embaralhada com seed fixa, temperatura zero e as mesmas guardas por rodada.
+
+```powershell
+.venv/Scripts/python scripts/avaliar_recuperacao.py --conjunto data/perguntas-validacao-v1.json --saida data/reports/recuperacao-v1.json
+.venv/Scripts/python scripts/avaliar_respostas.py --recuperacao data/reports/recuperacao-v1.json --conjunto data/perguntas-validacao-v1.json --saida data/reports/respostas-v1.json
+.venv/Scripts/python scripts/resumir_avaliacao.py --conjunto data/perguntas-validacao-v1.json --recuperacao data/reports/recuperacao-v1.json --respostas data/reports/respostas-v1.json --saida data/reports/resumo-v1.json
+```
+
+Os comandos executados com o código atual usam a política corrigida. Os resultados originais V1 antecedem as correções identificadas abaixo; código e hashes de cada execução estão no [resumo versionado](../data/avaliacao-validacao-v1-resumo.json). Não se espera que uma reexecução da versão atual reproduza a política anterior ou a mesma latência.
 
 ## Recuperação
 
-Compara-se vetor, híbrido e híbrido com caminhos. Modelo, filtros e orçamento de 3.500 caracteres são mantidos. A variante com caminhos reutiliza os candidatos híbridos para isolar o efeito do algoritmo.
+As 36 recuperações concluíram sem falhas. Uma evidência é localizada por documento, página e termo normalizado. A média é calculada por pergunta; não representa todas as fontes possíveis nem a correção das respostas. As duas perguntas sem evidência esperada ficam fora desse recall.
+
+| Variante V1 | Recall nos candidatos (10 perguntas) | Recall no contexto (10) | Contexto sem os três controles (7) |
+|---|---:|---:|---:|
+| Vetorial | 40% | 30% | 28,6% |
+| Híbrida | 95% | 70% | 64,3% |
+| Com caminhos | 95% | 65% | 50% |
+
+Em V01, fontes sobre hedge natural expulsaram a negativa explícita sobre hedge accounting localizada pelo híbrido na página PDF 35 da Suzano 2024. A correção mantém as fontes híbridas e acrescenta caminhos e suas evidências apenas quando cabem no orçamento. Na reanálise dos mesmos contextos congelados, o recall com caminhos foi 70%, com nove caminhos em sete perguntas. Essa é uma análise posterior ao diagnóstico; não é novo teste independente nem ganho sobre o híbrido.
+
+## Geração e abstenção
+
+Das 36 execuções, 34 concluíram a inferência e duas tiveram timeout. As falhas foram preservadas e não viraram abstenção factual.
+
+| Variante V1 | Falhas técnicas | Saídas com afirmações | Abstenções | Abstenções nos dois casos obrigatórios |
+|---|---:|---:|---:|---:|
+| Vetorial | 0 | 1 | 11 | 2/2 |
+| Híbrida | 1 | 2 | 9 | 2/2 |
+| Com caminhos | 1 | 5 | 6 | 2/2 |
+
+Mais saídas com afirmações não significam mais respostas corretas. A inspeção assistida encontrou atribuição de tratamento contábil à empresa errada e confusão entre proteção econômica e hedge accounting. Guardas posteriores exigem documento da empresa citada, declaração contábil específica e preservação da negativa de adoção. O filtro de pertinência também foi corrigido para não excluir explicações de liquidez em perguntas sobre financiamento.
+
+A reaplicação às saídas arquivadas manteve uma saída com afirmações no vetor, uma no híbrido e três no grafo. Houve apenas revalidação determinística, sem nova inferência ou revisão humana. Os textos e resultados originais continuam preservados. Bloquear erros conhecidos não comprova mitigação geral de alucinações.
 
 ```powershell
-.venv/Scripts/python scripts/avaliar_recuperacao.py --conjunto data/perguntas-smoke-recuperacao.json --saida data/reports/recuperacao.json
-```
-
-Uma evidência esperada é localizada quando há correspondência de documento, página e termo normalizado. O avaliador mede recall nos candidatos e nas fontes enviadas. Essa métrica não mede interpretação nem correção de resposta. A execução é recusada se o índice vetorial não cobrir todos os trechos elegíveis.
-
-| Pergunta do smoke | Vetor | Híbrido | Híbrido com caminhos |
-|---|---|---|---|
-| S01 — Proteção de juros da Irani | 0/1 | 1/1 | 1/1 |
-| S02 — ACC e recebíveis da Irani | 1/1 | 1/1 | 1/1 |
-
-As seis execuções concluíram sem falhas e as duas consultas Cypher foram aprovadas na primeira tentativa. O algoritmo acrescentou um caminho por pergunta, sem ganho de recall sobre o híbrido. Cada pergunta tem apenas um localizador esperado; ele não representa todas as evidências possíveis. [Resumo da rodada](../data/avaliacao-recuperacao-smoke-completa-resumo.json).
-
-Uma tentativa anterior com timeout foi preservada separadamente e é inválida para comparação. Tempos são descritivos: aquecimento, cache e disputa de recursos variam. O tempo adicional do algoritmo não corresponde à latência total da variante.
-
-## Respostas
-
-A geração reutiliza contextos congelados e confere o hash do conjunto de perguntas. Mantém saída original, transformações, referências, validação, modelo, código e latência. Falhas técnicas não viram abstenção factual.
-
-```powershell
-.venv/Scripts/python scripts/avaliar_respostas.py --recuperacao data/reports/recuperacao.json --conjunto data/perguntas-smoke-recuperacao.json --saida data/reports/respostas.json
-.venv/Scripts/python scripts/revisar_respostas.py preparar data/reports/respostas.json data/reports/revisao-respostas --mapa data/reports/mapa-revisao.json
-```
-
-A rodada inicial rejeitou quatro respostas por referências de caminhos inexistentes nas variantes sem grafo. Após restringir os IDs no contrato de saída, outra rodada concluiu seis inferências sem esse erro; cinco respostas mantiveram afirmações parciais e uma foi rejeitada por inconsistência entre cobertura insuficiente e presença de afirmações. Isso descreve o contrato, não a correção semântica. [Resumo contextual](../data/avaliacao-respostas-smoke-contextual-resumo.json).
-
-Na revisão documental, abrir as páginas citadas e classificar apoio, pertinência, empresa/exercício, cobertura e adequação da abstenção. O rótulo da variante é omitido, mas a presença de caminhos pode permitir inferi-lo. Não alterar o conteúdo avaliado. O comparador exige formulários concluídos por pessoas distintas e lista divergências:
-
-```powershell
+.venv/Scripts/python scripts/revalidar_respostas.py data/reports/respostas-v1.json data/reports/respostas-revalidadas.json
+.venv/Scripts/python scripts/revisar_respostas.py preparar data/reports/respostas-v1.json data/reports/revisao-respostas --mapa data/reports/mapa-revisao.json
 .venv/Scripts/python scripts/revisar_respostas.py comparar data/reports/revisao-respostas/lote.json data/reports/revisao-respostas/revisor-1.json data/reports/revisao-respostas/revisor-2.json
 ```
 
-## Validade e rastreabilidade
+Os 34 itens sem falha técnica foram preparados para revisão. Cada pessoa deve abrir as páginas citadas e classificar apoio por afirmação, pertinência, empresa/exercício, cobertura e adequação da abstenção. O método é omitido, embora caminhos possam permitir inferi-lo. Formulários pendentes e conteúdo alterado são recusados pelo comparador. Nenhuma taxa de alucinação é publicada como validada por pessoas.
 
-Os relatórios registram hashes dos conjuntos, manifesto, código e arquivos integrais locais. Esses registros distinguem configurações e preservam falhas. Revisão posterior dos exemplos usados no desenvolvimento não os transforma em teste independente.
+## Reprodução e limites
 
-Para medir suporte e mitigação de erros, reservar exemplos e respostas esperadas antes das execuções finais, manter os mesmos critérios entre variantes e separar falha de execução, abstenção e afirmação sem apoio. A avaliação independente ainda não foi concluída.
+A [reprodução em Linux](../data/reproducao-linux.json) partiu de checkout limpo e banco vazio, conferiu os seis PDFs, ingeriu o corpus, indexou 3.918 trechos, executou testes por HTTP e Bolt e concluiu uma consulta real. O checksum de conteúdo das 85 declarações coincidiu com o Windows. Os workflows identificam os commits efetivamente verificados; alterações posteriores possuem registros próprios.
+
+Os testes operacionais não comprovam correção semântica. A amostra pequena, o corpus conhecido, os controles próximos ao desenvolvimento e os critérios assistidos limitam conclusões. Latências são descritivas e sofreram disputa de memória; não se atribui causalmente uma diferença ao método. A avaliação humana e um novo conjunto externo à correção seguem necessários para medir suporte e generalização.
+
+O [smoke anterior](../data/avaliacao-recuperacao-smoke-completa-resumo.json), com duas perguntas conhecidas da Irani, permanece como registro de desenvolvimento. Seus resultados não substituem a rodada prospectiva nem a revisão documental.

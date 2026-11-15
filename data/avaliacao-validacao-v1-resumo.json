@@ -1,0 +1,163 @@
+{
+  "uso": "Avaliação prospectiva assistida por IA no corpus conhecido; perguntas e critérios fixados antes das execuções desta rodada. Não é revisão humana independente nem teste em documentos inéditos. V08–V10 retomam temas de desenvolvimento e são controles, não exemplos de generalização.",
+  "estado_recuperacao": "concluida",
+  "estado_geracao": "concluida_com_falhas",
+  "sha256_conjunto": "a8c51c2f3319b98dff278d9c4a21ecfc19e595a475a0581c2f8843528ac3addd",
+  "versao_recuperacao": {
+    "sha256_codigo_catalogos_dependencias": "1a272c890d9c59a571561aef33265abf323e9e24fb3b31a1fa98f41b88b3bd64",
+    "python": "3.13.14",
+    "plataforma": "Windows",
+    "arquitetura": "AMD64",
+    "commit_git": "acd0b2d1caff411dd010eeb11bc66d758a28104a",
+    "arvore_git_alterada": true
+  },
+  "versao_geracao": {
+    "sha256_codigo_catalogos_dependencias": "a7e47338bc893ecb64047cba1bedf26445d92dd56d883d555a4ee7342103390a",
+    "python": "3.13.14",
+    "plataforma": "Windows",
+    "arquitetura": "AMD64",
+    "commit_git": "c7617988e7cb60b4074b7206b3af7f61da54a036",
+    "arvore_git_alterada": true
+  },
+  "total_perguntas": 12,
+  "variantes": {
+    "vetorial": {
+      "recuperacoes": 12,
+      "falhas_recuperacao": 0,
+      "recuperacao": {
+        "com_evidencia": {
+          "perguntas": 10,
+          "execucoes_validas": 10,
+          "recall_contexto_macro": 0.3,
+          "recall_candidatos_macro": 0.4,
+          "nota": "Média somente das execuções válidas; falhas são informadas separadamente."
+        },
+        "sem_controles_desenvolvimento": {
+          "perguntas": 7,
+          "execucoes_validas": 7,
+          "recall_contexto_macro": 0.2857142857142857,
+          "recall_candidatos_macro": 0.42857142857142855,
+          "nota": "Média somente das execuções válidas; falhas são informadas separadamente."
+        }
+      },
+      "geracao": {
+        "execucoes": 12,
+        "falhas": 0,
+        "com_afirmacoes": 1,
+        "abstencoes": 11,
+        "rejeitadas_pelas_guardas": 9,
+        "casos_com_abstencao_obrigatoria": 2,
+        "abstencoes_nesses_casos": 2,
+        "revisao_semantica_humana": "pendente"
+      }
+    },
+    "hibrido": {
+      "recuperacoes": 12,
+      "falhas_recuperacao": 0,
+      "recuperacao": {
+        "com_evidencia": {
+          "perguntas": 10,
+          "execucoes_validas": 10,
+          "recall_contexto_macro": 0.7,
+          "recall_candidatos_macro": 0.95,
+          "nota": "Média somente das execuções válidas; falhas são informadas separadamente."
+        },
+        "sem_controles_desenvolvimento": {
+          "perguntas": 7,
+          "execucoes_validas": 7,
+          "recall_contexto_macro": 0.6428571428571429,
+          "recall_candidatos_macro": 0.9285714285714286,
+          "nota": "Média somente das execuções válidas; falhas são informadas separadamente."
+        }
+      },
+      "geracao": {
+        "execucoes": 12,
+        "falhas": 1,
+        "com_afirmacoes": 2,
+        "abstencoes": 9,
+        "rejeitadas_pelas_guardas": 8,
+        "casos_com_abstencao_obrigatoria": 2,
+        "abstencoes_nesses_casos": 2,
+        "revisao_semantica_humana": "pendente"
+      }
+    },
+    "grafo": {
+      "recuperacoes": 12,
+      "falhas_recuperacao": 0,
+      "recuperacao": {
+        "com_evidencia": {
+          "perguntas": 10,
+          "execucoes_validas": 10,
+          "recall_contexto_macro": 0.65,
+          "recall_candidatos_macro": 0.95,
+          "nota": "Média somente das execuções válidas; falhas são informadas separadamente."
+        },
+        "sem_controles_desenvolvimento": {
+          "perguntas": 7,
+          "execucoes_validas": 7,
+          "recall_contexto_macro": 0.5,
+          "recall_candidatos_macro": 0.9285714285714286,
+          "nota": "Média somente das execuções válidas; falhas são informadas separadamente."
+        }
+      },
+      "geracao": {
+        "execucoes": 12,
+        "falhas": 1,
+        "com_afirmacoes": 5,
+        "abstencoes": 6,
+        "rejeitadas_pelas_guardas": 5,
+        "casos_com_abstencao_obrigatoria": 2,
+        "abstencoes_nesses_casos": 2,
+        "revisao_semantica_humana": "pendente"
+      }
+    }
+  },
+  "limites": [
+    "Localizar a página e o termo não comprova suporte da resposta.",
+    "Abstenção pode evitar erro e também recusar uma pergunta respondível.",
+    "Não há taxa de alucinação ou superioridade semântica calculada automaticamente."
+  ],
+  "reanálise_contextos": {
+    "uso": "Correção posterior à observação dos resultados; mesmos contextos congelados, sem nova recuperação ou avaliação independente.",
+    "recall_contexto_macro": 0.7,
+    "fontes_hibridas_preservadas_em_todas_as_perguntas": true,
+    "caminhos_enviados": 9,
+    "perguntas_com_caminho": 7
+  },
+  "revalidacao_saidas": {
+    "uso": "Reaplicação de guardas sobre saídas arquivadas; sem nova inferência; pós-diagnóstico.",
+    "nova_inferencia": false,
+    "geracao_por_variante": {
+      "vetorial": {
+        "execucoes": 12,
+        "falhas": 0,
+        "com_afirmacoes": 1,
+        "abstencoes": 11,
+        "rejeitadas_pelas_guardas": 10,
+        "casos_com_abstencao_obrigatoria": 2,
+        "abstencoes_nesses_casos": 2,
+        "revisao_semantica_humana": "pendente"
+      },
+      "hibrido": {
+        "execucoes": 12,
+        "falhas": 1,
+        "com_afirmacoes": 1,
+        "abstencoes": 10,
+        "rejeitadas_pelas_guardas": 9,
+        "casos_com_abstencao_obrigatoria": 2,
+        "abstencoes_nesses_casos": 2,
+        "revisao_semantica_humana": "pendente"
+      },
+      "grafo": {
+        "execucoes": 12,
+        "falhas": 1,
+        "com_afirmacoes": 3,
+        "abstencoes": 8,
+        "rejeitadas_pelas_guardas": 7,
+        "casos_com_abstencao_obrigatoria": 2,
+        "abstencoes_nesses_casos": 2,
+        "revisao_semantica_humana": "pendente"
+      }
+    }
+  }
+}

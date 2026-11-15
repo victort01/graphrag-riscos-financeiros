@@ -32,7 +32,7 @@ Uma nova revisão documental recebe outro ID, versão maior e `substitui` aponta
 
 O Neo4j usa constraints, índices Range, Fulltext e vetorial. O vetor tem 384 dimensões, cosseno, mean pooling com máscara e normalização L2. O modelo, a revisão e o truncamento em 256 tokens constam do catálogo.
 
-Vetor e Fulltext consultam os mesmos 3.918 trechos narrativos elegíveis. Uma consulta Cypher completa é gerada pelo LLM e validada por contrato de leitura, tipos permitidos, parâmetros, limite de resultados e plano `EXPLAIN`. Existe uma tentativa de reparo registrada. Consultas geradas recebem limite de 15 segundos e o banco opera somente leitura durante o uso.
+Vetor e Fulltext consultam os mesmos 3.918 trechos narrativos elegíveis. Uma consulta Cypher completa é gerada pelo LLM e validada por contrato de leitura, tipos permitidos, parâmetros, limite de resultados e plano `EXPLAIN`. Existe uma tentativa de reparo registrada. Consultas geradas recebem limite de 15 segundos. A implantação local desabilita escrita durante o uso. No Aura, o driver usa roteamento `READ`, que não substitui permissões de banco; as mesmas guardas de consultas permanecem ativas.
 
 A fusão RRF soma `1 / (60 + posição)` por sinal. Cada sinal retorna até 12 candidatos; a seleção inicial mantém oito trechos. O algoritmo usa `shortestPath` dirigido em relações financeiras permitidas, com até quatro saltos. Duplicatas e prefixos com as mesmas arestas são compactados, e as fontes são distribuídas por empresa/exercício.
 

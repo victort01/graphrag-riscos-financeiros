@@ -18,5 +18,23 @@
   "limites": [
     "A consulta verifica execução e procedência, não correção semântica.",
     "Alterações posteriores possuem seus próprios testes e registros; este resultado identifica somente o commit verificado."
-  ]
+  ],
+  "verificacao_integral_posterior": {
+    "execucao": "https://github.com/victort01/graphrag-riscos-financeiros/actions/runs/43751993735",
+    "commit": "e5104d7",
+    "estado": "concluida",
+    "testes_por_transporte": {
+      "HTTP": 89,
+      "Bolt": 89
+    },
+    "banco_vazio": true,
+    "consulta_real": true
+  },
+  "guardas_posteriores": {
+    "execucao": "https://github.com/victort01/graphrag-riscos-financeiros/actions/runs/43759017508",
+    "estado": "concluida",
+    "testes": 94,
+    "nota": "Três testes de corpus são ignorados no workflow operacional sem ingestão do acervo; casos de escrita e rollback são executados nos dois transportes.",
+    "commit": "67770d7ecba2678d81bd52280bf1c19a623bb147"
+  }
 }
