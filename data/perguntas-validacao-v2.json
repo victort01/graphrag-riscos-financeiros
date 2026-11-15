@@ -1,0 +1,126 @@
+{
+  "uso": "Nova rodada prospectiva assistida por IA, com formulações diferentes de V1, no mesmo corpus já conhecido. Não é teste em corpus externo nem julgamento humano independente. Inclui temas conhecidos da revisão; não sustenta generalização fora desse recorte.",
+  "protocolo": {
+    "versao": 2,
+    "variantes_recuperacao": ["vetorial", "hibrido", "grafo"],
+    "comparacao_modelos": "Os dois modelos recebem exatamente os contextos da variante grafo, recuperados uma única vez com o modelo de 1.5B. A comparação isola a etapa de geração, não a qualidade da geração de Cypher de cada modelo.",
+    "caracteres_contexto": 3500,
+    "criterios": [
+      "Fixar perguntas, localizadores e critérios em commit antes de executar a rodada.",
+      "Preservar contexto integral, sua assinatura, saída bruta, pós-processamento e falhas por execução.",
+      "Não alterar código ou instruções entre os dois modelos; verificar igualdade dos hashes de contexto por pergunta.",
+      "Usar a mesma quantização, runtime, limite de tokens, temperatura e seed; modelos executados um por vez.",
+      "Não converter validade de JSON ou ausência de afirmações em suporte semântico; revisão documental continua necessária.",
+      "Latência é descritiva: ordem de modelos, aquecimento e recursos compartilhados impedem inferência causal de desempenho."
+    ],
+    "revisao_humana": "pendente"
+  },
+  "perguntas": [
+    {
+      "id": "N01",
+      "pergunta": "Como o swap da sexta emissão de debêntures da Irani alinha a dívida à posição de caixa em 2025?",
+      "empresas": ["empresa:92791243000103"], "periodo": "2025-12-31",
+      "tipo": "programa_especifico",
+      "evidencias": [{"documento_id": "irani-dfp-2025", "pagina": 77, "termo": "ao CDI"}],
+      "criterio_documental": "Identificar troca de IPCA para CDI e alinhamento do indexador ao caixa. Não confundir a quarta e a sexta emissões nem afirmar eliminação de todo risco.",
+      "abstencao_esperada": false
+    },
+    {
+      "id": "N02",
+      "pergunta": "Como mudou em 2025 a classificação contábil do programa da Klabin para o risco de variação do IPCA?",
+      "empresas": ["empresa:89637490000145"], "periodo": "2025-12-31",
+      "tipo": "mudanca_contabil",
+      "evidencias": [{"documento_id": "klabin-dfp-2025", "pagina": 139, "termo": "hedge de valor justo"}],
+      "criterio_documental": "Distinguir classificação anterior de fluxo de caixa e posterior de valor justo, limitando a afirmação ao programa IPCA. Não generalizar a mudança para todos os programas.",
+      "abstencao_esperada": false
+    },
+    {
+      "id": "N03",
+      "pergunta": "No programa de taxa pré em dólar da Klabin em 2025, para qual indexador e moeda o swap converte os juros da dívida de exportação?",
+      "empresas": ["empresa:89637490000145"], "periodo": "2025-12-31",
+      "tipo": "conversao_especifica",
+      "evidencias": [{"documento_id": "klabin-dfp-2025", "pagina": 140, "termo": "taxa CDI em BRL"}],
+      "criterio_documental": "Identificar CDI em BRL como destino do fluxo de juros em USD pré-fixado; não substituir por SOFR para pré-fixada ou por ZCC/NDF.",
+      "abstencao_esperada": false
+    },
+    {
+      "id": "N04",
+      "pergunta": "Por que a Suzano usa swap de IPCA para CDI em 2025 e como isso se relaciona com seu caixa em reais?",
+      "empresas": ["empresa:16404287000155"], "periodo": "2025-12-31",
+      "tipo": "finalidade_especifica",
+      "evidencias": [{"documento_id": "suzano-dfp-2025", "pagina": 111, "termo": "posição de caixa em reais"}],
+      "criterio_documental": "Explicar alinhamento de dívida em reais com caixa indexado a DI; isso não demonstra adoção de hedge accounting.",
+      "abstencao_esperada": false
+    },
+    {
+      "id": "N05",
+      "pergunta": "Que diferença entre a moeda dos preços de exportação e a dos custos de produção orienta o hedge cambial da Suzano em 2025?",
+      "empresas": ["empresa:16404287000155"], "periodo": "2025-12-31",
+      "tipo": "relacao_receita_custo",
+      "evidencias": [{"documento_id": "suzano-dfp-2025", "pagina": 105, "termo": "custos de produção está atrelada ao Real"}],
+      "criterio_documental": "Identificar preços de exportação em USD e parte substancial dos custos em BRL. Preservar o alcance parcial da declaração.",
+      "abstencao_esperada": false
+    },
+    {
+      "id": "N06",
+      "pergunta": "Como a Irani acompanha a condição de crédito de seus clientes e utiliza garantias nas vendas a prazo em 2024?",
+      "empresas": ["empresa:92791243000103"], "periodo": "2024-12-31",
+      "tipo": "credito",
+      "evidencias": [{"documento_id": "irani-dfp-2024", "pagina": 119, "termo": "avaliação contínua"}],
+      "criterio_documental": "Descrever análise/concessão de crédito, avaliação contínua e garantias quando apropriadas; não prometer ausência de inadimplência.",
+      "abstencao_esperada": false
+    },
+    {
+      "id": "N07",
+      "pergunta": "Como a Klabin mensura os empréstimos designados como hedge de receitas futuras e onde reconhece a variação cambial em 2024?",
+      "empresas": ["empresa:89637490000145"], "periodo": "2024-12-31",
+      "tipo": "mensuracao_contabil",
+      "evidencias": [{"documento_id": "klabin-dfp-2024", "pagina": 133, "termo": "custo amortizado"}],
+      "criterio_documental": "Empréstimos ao custo amortizado e variação cambial em outros resultados abrangentes; não atribuir aos empréstimos a mensuração de valor justo dos swaps.",
+      "abstencao_esperada": false
+    },
+    {
+      "id": "N08",
+      "pergunta": "Quem aprova as políticas financeiras da Suzano e qual área identifica e avalia os riscos financeiros em 2024?",
+      "empresas": ["empresa:16404287000155"], "periodo": "2024-12-31",
+      "tipo": "governanca_financeira",
+      "evidencias": [{"documento_id": "suzano-dfp-2024", "pagina": 34, "termo": "Tesouraria"}],
+      "criterio_documental": "Distinguir aprovação pelo Conselho de Administração e atribuições da Tesouraria; não trocar responsabilidades.",
+      "abstencao_esperada": false
+    },
+    {
+      "id": "N09",
+      "pergunta": "O objetivo declarado do programa ZCC e NDF da Klabin em 2024 autoriza concluir que toda a exposição cambial foi eliminada?",
+      "empresas": ["empresa:89637490000145"], "periodo": "2024-12-31",
+      "tipo": "limite_de_objetivo",
+      "evidencias": [{"documento_id": "klabin-dfp-2024", "pagina": 135, "termo": "Objetivo de hedge"}],
+      "criterio_documental": "Negar a inferência de eliminação total; trata-se de objetivo de proteção parcial e horizonte limitado, sem precisar produzir cálculo ou percentuais.",
+      "abstencao_esperada": false
+    },
+    {
+      "id": "N10",
+      "pergunta": "A quem o termo Companhia se refere nas notas explicativas da Suzano de 2024: somente à pessoa jurídica ou também às controladas?",
+      "empresas": ["empresa:16404287000155"], "periodo": "2024-12-31",
+      "tipo": "perimetro_documental",
+      "evidencias": [{"documento_id": "suzano-dfp-2024", "pagina": 10, "termo": "coletivamente"}],
+      "criterio_documental": "Usar a definição coletiva da nota 1, sem atribuir automaticamente todas as obrigações consolidadas à controladora.",
+      "abstencao_esperada": false
+    },
+    {
+      "id": "N11",
+      "pergunta": "Quais swaps a Irani declarou no exercício de 2022?",
+      "empresas": ["empresa:92791243000103"], "periodo": "2022-12-31",
+      "tipo": "fora_do_acervo", "evidencias": [],
+      "criterio_documental": "Abster-se por ausência de documento do exercício; contratação antiga mencionada em relatório posterior não responde ao inventário de 2022.",
+      "abstencao_esperada": true
+    },
+    {
+      "id": "N12",
+      "pergunta": "Quantifique quanto os derivativos da Suzano reduziram sua probabilidade de inadimplência em 2025.",
+      "empresas": ["empresa:16404287000155"], "periodo": "2025-12-31",
+      "tipo": "causalidade_quantitativa_fora_do_recorte", "evidencias": [],
+      "criterio_documental": "Abster-se de estimar efeito causal sobre probabilidade de inadimplência; o sistema não possui modelo causal nem calibração para esse cálculo.",
+      "abstencao_esperada": true
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "uso": "Comparação de geração sobre contextos idênticos; modelos carregados sequencialmente.",
+  "modelos": [
+    {
+      "id": "qwen-1.5b",
+      "repositorio": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+      "revisao": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "arquivo": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "destino": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "licenca": "Apache-2.0"
+    },
+    {
+      "id": "qwen-3b",
+      "repositorio": "Qwen/Qwen2.5-3B-Instruct-GGUF",
+      "revisao": "7dabda4d13d513e3e842b20f0d435c732f172cbe",
+      "arquivo": "qwen2.5-3b-instruct-q4_k_m.gguf",
+      "destino": "qwen2.5-3b-instruct-q4_k_m.gguf",
+      "sha256": "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d",
+      "licenca": "Qwen Research License; experimento acadêmico, sem redistribuição dos pesos"
+    }
+  ],
+  "configuracao_comum": {
+    "quantizacao": "Q4_K_M",
+    "runtime": "llama.cpp b7770",
+    "contexto_tokens": 4096,
+    "threads": 2,
+    "temperatura": 0,
+    "seed": 42,
+    "max_tokens": 800,
+    "timeout_segundos": 600
+  }
+}
