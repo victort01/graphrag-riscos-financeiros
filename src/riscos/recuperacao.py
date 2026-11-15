@@ -47,7 +47,7 @@ def sugerir_predicados(pergunta):
               ({"juros", "taxas"}, ["PROTEGE", "SENSIVEL_A", "ADOTA_PROTECAO"]),
               ({"categoria", "classificacao", "enquadramento"}, ["CATEGORIZADA_COMO"])]
     if re.search(r"hedge accounting|contabilidade de hedge", pergunta, re.I):
-        regras.append(({"hedge", "accounting", "contabilidade"}, ["ADOTA_TRATAMENTO", "NAO_ADOTA_TRATAMENTO", "CATEGORIZADA_COMO"]))
+        regras.append(({"hedge", "accounting", "contabilidade"}, ["DECLARA_CONTABILIDADE_HEDGE", "CATEGORIZADA_COMO"]))
     return list(dict.fromkeys(p for conceitos, predicados in regras if termos & conceitos for p in predicados))
 
 
@@ -66,7 +66,7 @@ TEM_OBRIGACAO = company's debt; TEM_RECEITA = company's revenue; TEM_EXPOSICAO =
 DENOMINADO_EM = currency denomination; COMPENSA_VARIACOES_DE = debt offsets receivables;
 CONVERTE_DE, CONVERTE_PARA = swap changes currency/index; ASSOCIADA_A, SENSIVEL_A = risk factor.
 DECORRE_DE = exposure originates from an obligation or revenue; CATEGORIZADA_COMO = hedge accounting category.
-ADOTA_TRATAMENTO = explicit adoption of accounting treatment; NAO_ADOTA_TRATAMENTO = explicit non-adoption.
+DECLARA_CONTABILIDADE_HEDGE = accounting treatment, including explicit non-adoption (negative polarity).
 DO_TIPO = the type of a documented program; sharing a type does not imply equal contracts, indices or purposes.
 Filter c.predicado using the values relevant to the question.
 Example question: Quais instrumentos de proteção a companhia declara?

@@ -21,7 +21,7 @@ WHERE all(r IN relationships(p) WHERE r.empresa_id=$empresa AND r.periodo=$perio
 RETURN [n IN nodes(p) | {id:n.id,nome:n.nome,rotulos:labels(n)}] AS nos,
        [r IN relationships(p) | {id:r.declaracao_id,tipo:type(r),origem:startNode(r).id,
           destino:endNode(r).id,periodo:r.periodo,empresa_id:r.empresa_id,
-          modalidade:coalesce(r.modalidade,'nao_registrada'),condicoes:coalesce(r.condicoes,'')}] AS relacoes,
+          natureza:coalesce(r.natureza,'declaracao'),condicoes:coalesce(r.condicoes,'')}] AS relacoes,
        length(p) AS saltos,$escopo AS escopo
 ORDER BY saltos DESC,fim.id LIMIT 12""" % "|".join(RELACOES)
 
@@ -88,6 +88,8 @@ def enriquecer(pergunta, recuperacao, banco=None):
         MATCH (d)-[:REFERE_SE_A]->(em:Empresa)
         WHERE c.id IN $ids AND coalesce(d.vigente,true)=true RETURN c.id AS declaracao_id,c.predicado AS predicado,
         c.evidencia AS citacao,c.condicoes AS condicoes,c.escopo AS escopo,
+        coalesce(c.natureza,'declaracao') AS natureza,coalesce(c.polaridade,'afirmativa') AS polaridade,
+        coalesce(c.tratamento_contabil,'nao_identificado') AS tratamento_contabil,
         c.empresa_id AS empresa_id,em.id AS empresa_canonica_id,c.periodo AS periodo,
         t.id AS trecho_id,t.texto AS texto,t.pagina_inicio AS pagina_inicio,t.pagina_fim AS pagina_fim,
         d.id AS documento_id,d.empresa AS empresa,d.url AS url,d.versao AS versao,

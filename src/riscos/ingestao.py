@@ -150,7 +150,7 @@ def publicar(banco, dados):
             (o:Entidade {{id:row.objeto_id}}),(doc:Documento {{id:row.documento_id}})
             MERGE (s)-[r:{tipo} {{declaracao_id:row.id}}]->(o)
             SET r.documento_id=row.documento_id,r.periodo=row.periodo,r.empresa_id=row.empresa_id,r.vigente=doc.vigente,
-                r.modalidade=row.modalidade,r.condicoes=row.condicoes""",
+                r.natureza=row.natureza,r.condicoes=row.condicoes,r.polaridade=row.polaridade""",
                          {"linhas": relacoes}))
     banco.transacao(comandos)
     return {"embeddings_preservados": preservados}

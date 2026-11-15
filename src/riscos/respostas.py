@@ -78,6 +78,18 @@ def _montar_contexto_prioritario(recuperacao, grafo, limite_caracteres=3500):
         candidatos.extend(grupo.popleft() for grupo in grupos.values() if grupo)
     fontes = {}
     declaracoes = {e["declaracao_id"]: e["trecho_id"] for e in grafo["evidencias"]}
+    atributos = {e["declaracao_id"]: e for e in grafo["evidencias"]}
+
+    def qualificadores(caminho):
+        # Só o que difere do padrão entra, para não consumir o limite do contexto.
+        saida = []
+        for r in caminho["relacoes"]:
+            e = atributos.get(r["id"], {})
+            q = {k: e[k] for k, padrao in (("natureza", "declaracao"), ("polaridade", "afirmativa"),
+                 ("tratamento_contabil", "nao_identificado")) if e.get(k) not in (None, padrao, "nao_aplicavel")}
+            if q:
+                saida.append({"relacao": r["tipo"], **q})
+        return saida
 
     def compactar(atuais):
         por_trecho = {f["trecho_id"]: id_ for id_, f in atuais.items()}
@@ -88,8 +100,9 @@ def _montar_contexto_prioritario(recuperacao, grafo, limite_caracteres=3500):
                 selecionados.append({"id": caminho["id"], "nos": [n["nome"] for n in caminho["nos"]],
                     "relacoes": [r["tipo"] for r in caminho["relacoes"]],
                     "fontes": sorted(por_trecho[t] for t in trechos), "periodo": caminho["relacoes"][0]["periodo"],
-                    "escopo": caminho.get("escopo", "nao_especificado"),
-                    "modalidades": sorted({r.get("modalidade", "nao_registrada") for r in caminho["relacoes"]})})
+                    "escopo": caminho.get("escopo", "nao_especificado")})
+                if qualificadores(caminho):
+                    selecionados[-1]["qualificadores"] = qualificadores(caminho)
         return selecionados
 
     for trecho in candidatos:
@@ -129,8 +142,7 @@ def combinar_contextos(base, enriquecido, limite_caracteres=3500):
 
 def montar_contexto(recuperacao, grafo, limite_caracteres=3500):
     vazio = {"caminhos": [], "evidencias": []}
-    # A mesma reserva é aplicada a todas as variantes; o grafo não expulsa
-    # uma fonte que o híbrido teria enviado sob esta política.
+    # A reserva é igual nas variantes e cede prioridade à cobertura de emissores.
     reserva = min(500, limite_caracteres // 7)
     completa = _montar_contexto_prioritario(recuperacao, vazio, limite_caracteres)
     base = _montar_contexto_prioritario(recuperacao, vazio, limite_caracteres-reserva)
@@ -152,6 +164,12 @@ def mencao_positiva(texto, expressao):
         if not re.search(r"\b(?:não|nao|nunca|jamais|sem)\b|ausência de|impossível", restante):
             return True
     return False
+
+
+MESES = r"janeiro|fevereiro|mar[cç]o|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro"
+DATAS_E_NOTAS = (r"\b\d{1,2}\s+de\s+(?:" + MESES + r")(?:\s+de\s+20\d{2})?\b"
+                 r"|\b\d{1,2}[/.]\d{1,2}[/.](?:20)?\d{2}\b"
+                 r"|\bnotas?(?:\s+explicativas?)?\s*(?:n[º°o.]\s*)?\d{1,3}\b")
 
 
 def validar_resposta(resposta, contexto, pergunta=""):
@@ -188,12 +206,18 @@ def validar_resposta(resposta, contexto, pergunta=""):
                     erros.append("Adoção de hedge accounting contradiz negativa explícita nas fontes.")
         escopos = {e for id_ in ids for e in contexto["fontes"][id_].get("escopos", [])}
         for escopo, padrao in (("controladora", r"\bcontroladoras?\b"), ("consolidado", r"\bconsolidad[oa]s?\b")):
-            if re.search(padrao, afirmacao["texto"], re.I) and escopo not in escopos:
+            # A extração pode não ter qualificado o escopo que a própria fonte citada declara.
+            if re.search(padrao, afirmacao["texto"], re.I) and escopo not in escopos and not re.search(padrao, apoio, re.I):
                 erros.append("Atribuição de escopo sem qualificação nas fontes: " + escopo)
         numeros_apoio = set(re.findall(r"\d+(?:[.,]\d+)*%?", apoio))
-        for numero in re.findall(r"\d+(?:[.,]\d+)*%?", afirmacao["texto"]):
+        contextuais = [m.span() for m in re.finditer(DATAS_E_NOTAS, afirmacao["texto"], re.I)]
+        for achado in re.finditer(r"\d+(?:[.,]\d+)*%?", afirmacao["texto"]):
+            numero = achado.group()
             if numero not in numeros_apoio:
                 erros.append("Valor ausente das fontes citadas: " + numero)
+            elif any(a <= achado.start() and achado.end() <= b for a, b in contextuais):
+                # Dia de uma data ou número de nota explicativa não é montante financeiro.
+                continue
             elif not re.fullmatch(r"20\d{2}", numero):
                 # O acervo narrativo não valida unidades, montantes ou cálculos de tabelas.
                 erros.append("Valor quantitativo fora do escopo narrativo: " + numero)

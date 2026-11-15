@@ -1,0 +1,1524 @@
+{
+ "meta": {
+  "natureza": "Revisão assistida por IA. Sugestões para conferência humana; não é revisão humana e não preenche os formulários.",
+  "revisao_humana": "pendente",
+  "data": "2026-11-15",
+  "formularios_lidos": {
+   "Revisar extracao.html": "057bc358019feea052710d72df9dfd5531a9abfa53b5a5cc5e34585baab70df8",
+   "Revisar respostas.html": "0baa28410b8b904f6f5ea44431954f94c2c28d22a6cb71196a121ea56dcb66f6"
+  },
+  "pdfs_verificados_sha256_conferem": true,
+  "contagem_status_declaracoes": {
+   "sustentada": 57,
+   "sustentada com ressalva": 16,
+   "parcialmente sustentada": 6,
+   "não sustentada como fato contratado (política/hipótese)": 4,
+   "interpretação não sustentada literalmente": 2
+  }
+ },
+ "extracao": [
+  {
+   "id": "D001",
+   "documento_id": "suzano-dfp-2024",
+   "empresa": "Suzano S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "39",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:ff30dd53d0268c97674496041edba465",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial declarada",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:a58c44d247b38c5d0a34ed461da485f7",
+     "sujeito": "exposição cambial declarada",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Relação cambial sustentada. Omite os demais riscos de mercado listados na mesma frase (juros, índices de correção, preço de celulose e commodities). O nó genérico “exposição cambial declarada” não tem valor nem data. O trecho não qualifica o escopo, mas a nota 4 apresenta quadros Controladora/Consolidado.",
+   "evidencia": "Suzano DFP 2024, p. 39 do PDF (nota 4.4, impressa 37).",
+   "correcao_sugerida": "Acrescentar TEM_EXPOSICAO para juros, índices de correção, celulose e commodities. Manter o escopo como “não identificado no trecho”, não como ausente no documento."
+  },
+  {
+   "id": "D002",
+   "documento_id": "suzano-dfp-2024",
+   "empresa": "Suzano S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "40",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:f2a2c84eadccd2d5d996b5a19b3768de",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_RECEITA",
+     "objeto": "receitas de exportação",
+     "sugestao_status": "sustentada com ressalva"
+    },
+    {
+     "id": "declaracao:886bee06057209322b88aa3b20481e00",
+     "sujeito": "receitas de exportação",
+     "predicado": "DENOMINADO_EM",
+     "objeto": "USD",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "O qualificador “parte substancial” da receita líquida se perdeu. Omite a contraparte do descasamento: custos de produção atrelados ao Real.",
+   "evidencia": "Suzano DFP 2024, p. 40 do PDF (nota 4.4.1).",
+   "correcao_sugerida": "Qualificar TEM_RECEITA (“parte substancial”) e acrescentar “custos de produção DENOMINADO_EM BRL”."
+  },
+  {
+   "id": "D003",
+   "documento_id": "suzano-dfp-2024",
+   "empresa": "Suzano S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "40",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:58d995085b0c46f05a5137803a7db4c6",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "financiamentos de exportação em USD",
+     "sugestao_status": "sustentada com ressalva"
+    },
+    {
+     "id": "declaracao:0b16b56793b2bccbebd7b70f8b136d49",
+     "sujeito": "financiamentos de exportação em USD",
+     "predicado": "DENOMINADO_EM",
+     "objeto": "USD",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:1f5d5d193c9465c0514038c992dae5e6",
+     "sujeito": "Suzano S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "hedge natural de caixa",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:1399428f0840519fdf6c572be01b3d5c",
+     "sujeito": "hedge natural de caixa",
+     "predicado": "PROTEGE",
+     "objeto": "financiamentos de exportação em USD",
+     "sugestao_status": "sustentada com ressalva"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "A frase é modal (“permite que a Companhia contrate”). A obrigação em US$ é confirmada pelo quadro da mesma página: Empréstimos e financiamentos (83.004.915) mil, Consolidado. “Hedge natural PROTEGE financiamentos” é proteção econômica e depende do casamento com recebimentos de exportação. “Hedge natural” é proteção econômica (casamento de fluxos), não hedge accounting: a Suzano declara que “não adota a modalidade de contabilização hedge accounting” (Suzano DFP 2024, p. 35 do PDF; DFP 2025, p. 100). Relação omitida na mesma página: venda de US$ em mercados futuros, incluindo opções, limitada a um percentual do excedente líquido de divisas em 24 meses.",
+   "evidencia": "Suzano DFP 2024, p. 40 (nota 4.4.1 e quadro Consolidado); p. 35 (sem hedge accounting).",
+   "correcao_sugerida": "Marcar a proteção como econômica (tipo=hedge_natural, contabil=false). Acrescentar a relação sobre derivativos de venda de US$, com a condição de limite e horizonte de 24 meses. Registrar o escopo Consolidado a partir do quadro."
+  },
+  {
+   "id": "D004",
+   "documento_id": "suzano-dfp-2024",
+   "empresa": "Suzano S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "40",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:8f2ce13d604b74c9b84301ba76d6dc04",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial declarada",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:3cc28a91a18e8ea6614a33871bd0045e",
+     "sujeito": "exposição cambial declarada",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Exposição sustentada, mas o quadro é rotulado “Consolidado”, logo o escopo é identificável. Omite a exposição líquida passiva de R$ (77.353.811) mil em 31/12/2024 e seus componentes.",
+   "evidencia": "Suzano DFP 2024, p. 40 (quadro de ativos e passivos expostos).",
+   "correcao_sugerida": "Escopo = consolidado. Acrescentar o atributo valor = −77.353.811 (R$ mil, 31/12/2024)."
+  },
+  {
+   "id": "D005",
+   "documento_id": "suzano-dfp-2024",
+   "empresa": "Suzano S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "126",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:e6f118996b36565ae53477295515d1c3",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "obrigações em moeda estrangeira",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:865bbab9a3da94ff1363152a36cd27d2",
+     "sujeito": "Suzano S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "hedge natural de caixa",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Fonte: Relatório da Administração, não as notas explicativas, e a seção não foi registrada. Omite que 82% da dívida está em moeda estrangeira e 90% considerando o efeito do “hedge de dívida”, o que mostra instrumentos além do hedge natural. “Hedge natural” é proteção econômica (casamento de fluxos), não hedge accounting: a Suzano declara que “não adota a modalidade de contabilização hedge accounting” (Suzano DFP 2024, p. 35 do PDF; DFP 2025, p. 100).",
+   "evidencia": "Suzano DFP 2024, p. 126 do PDF (Relatório da Administração, Endividamento).",
+   "correcao_sugerida": "Registrar a seção documental. Marcar o hedge natural como proteção econômica. Acrescentar os percentuais com data."
+  },
+  {
+   "id": "D006",
+   "documento_id": "suzano-dfp-2024",
+   "empresa": "Suzano S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "161",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:fa6a7820d86b38fa2b3c3119cfba7162",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "obrigações em moeda estrangeira",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:bd9c7ab03e3f956f510877fe5216e403",
+     "sujeito": "Suzano S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "hedge natural de caixa",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Texto idêntico ao de D005, mas vindo do Release de Resultados 4T24 anexado à DFP: duplicação de proveniência. A mesma página fala em “dívida consolidada”.",
+   "evidencia": "Suzano DFP 2024, p. 161 do PDF (Release 4T24, impressa 27 de 44).",
+   "correcao_sugerida": "Deduplicar com D005, mantendo as duas proveniências e a seção (release). Escopo = consolidado."
+  },
+  {
+   "id": "D007",
+   "documento_id": "suzano-dfp-2025",
+   "empresa": "Suzano S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "5",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:3ef22d6e52628f205bdaeb2ad58cc2ab",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "obrigações em moeda estrangeira",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:d43f1e3720e1b8d3e5b3303717574f5c",
+     "sujeito": "Suzano S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "hedge natural de caixa",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Mesmo padrão de D005 em 2025 (Relatório da Administração): omite 74% da dívida em ME e 87% com o efeito do hedge de dívida. “Hedge natural” é proteção econômica (casamento de fluxos), não hedge accounting: a Suzano declara que “não adota a modalidade de contabilização hedge accounting” (Suzano DFP 2024, p. 35 do PDF; DFP 2025, p. 100).",
+   "evidencia": "Suzano DFP 2025, p. 5 do PDF (Relatório da Administração); p. 100 (sem hedge accounting).",
+   "correcao_sugerida": "Igual a D005."
+  },
+  {
+   "id": "D008",
+   "documento_id": "suzano-dfp-2025",
+   "empresa": "Suzano S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "40",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:461948a74492d9d1a30bbd155045b29d",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "obrigações em moeda estrangeira",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:551272e18bf2b3eba59e858dbca79965",
+     "sujeito": "Suzano S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "hedge natural de caixa",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Duplica D007 a partir do Release 4T25; a seção não foi registrada.",
+   "evidencia": "Suzano DFP 2025, p. 40 do PDF (Release 4T25).",
+   "correcao_sugerida": "Igual a D006."
+  },
+  {
+   "id": "D009",
+   "documento_id": "suzano-dfp-2025",
+   "empresa": "Suzano S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "104",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:0e2f8c259e24f50592e4a7f4e3e46b6d",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial declarada",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:879747182f16ac28b56f72f4915fdacc",
+     "sujeito": "exposição cambial declarada",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Igual a D001, no exercício 2025.",
+   "evidencia": "Suzano DFP 2025, p. 104 do PDF (nota 4.4, impressa 35).",
+   "correcao_sugerida": "Igual a D001."
+  },
+  {
+   "id": "D010",
+   "documento_id": "suzano-dfp-2025",
+   "empresa": "Suzano S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "105",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:a65df71a107e8f236edae0885c3e0adb",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_RECEITA",
+     "objeto": "receitas de exportação",
+     "sugestao_status": "sustentada com ressalva"
+    },
+    {
+     "id": "declaracao:b547c960249304ff966692089ada76dc",
+     "sujeito": "receitas de exportação",
+     "predicado": "DENOMINADO_EM",
+     "objeto": "USD",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Igual a D002, no exercício 2025.",
+   "evidencia": "Suzano DFP 2025, p. 105 do PDF (nota 4.4.1).",
+   "correcao_sugerida": "Igual a D002."
+  },
+  {
+   "id": "D011",
+   "documento_id": "suzano-dfp-2025",
+   "empresa": "Suzano S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "105",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:ac941f6a01f3308644e524989dd5aadd",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "financiamentos de exportação em USD",
+     "sugestao_status": "sustentada com ressalva"
+    },
+    {
+     "id": "declaracao:f477e58cb688863bcbc49f52f454abd3",
+     "sujeito": "financiamentos de exportação em USD",
+     "predicado": "DENOMINADO_EM",
+     "objeto": "USD",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:72e7711337a5e57062d74f631ae61504",
+     "sujeito": "Suzano S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "hedge natural de caixa",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:88fb56eea24009d74f0895a580522d6d",
+     "sujeito": "hedge natural de caixa",
+     "predicado": "PROTEGE",
+     "objeto": "financiamentos de exportação em USD",
+     "sugestao_status": "sustentada com ressalva"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Igual a D003. Em 2025 o quadro mostra Empréstimos e financiamentos (70.357.356) mil, Consolidado, e o parágrafo seguinte (derivativos de venda de US$, 24 meses) também foi omitido. “Hedge natural” é proteção econômica (casamento de fluxos), não hedge accounting: a Suzano declara que “não adota a modalidade de contabilização hedge accounting” (Suzano DFP 2024, p. 35 do PDF; DFP 2025, p. 100).",
+   "evidencia": "Suzano DFP 2025, p. 105; p. 100.",
+   "correcao_sugerida": "Igual a D003."
+  },
+  {
+   "id": "D012",
+   "documento_id": "suzano-dfp-2025",
+   "empresa": "Suzano S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "105",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:57ad9d574d4577e62ba760a3c1e09d13",
+     "sujeito": "Suzano S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial declarada",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:427d4b856172979c87cdb13725eba95c",
+     "sujeito": "exposição cambial declarada",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Igual a D004. Exposição líquida passiva de R$ (53.657.087) mil em 31/12/2025, em quadro Consolidado, omitida.",
+   "evidencia": "Suzano DFP 2025, p. 105 (quadro Consolidado).",
+   "correcao_sugerida": "Escopo = consolidado. Valor = −53.657.087 (R$ mil, 31/12/2025)."
+  },
+  {
+   "id": "D013",
+   "documento_id": "klabin-dfp-2024",
+   "empresa": "Klabin S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "121",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:50ed6f027f6505ea3fdf293a8d5ba3d3",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "swap de BRL para USD",
+     "sugestao_status": "parcialmente sustentada"
+    },
+    {
+     "id": "declaracao:405ea262cdf01355933eb00ecad1df45",
+     "sujeito": "swap de BRL para USD",
+     "predicado": "CONVERTE_DE",
+     "objeto": "BRL",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:0ac493deee7146fd3e0ddf49c51ef8c8",
+     "sujeito": "swap de BRL para USD",
+     "predicado": "CONVERTE_PARA",
+     "objeto": "USD",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "O swap existe, mas o documento diz que as operações são “pactuadas somente para converter” dívida em moeda nacional (NCE e debêntures) para moeda estrangeira. A dívida convertida é que é “designada como instrumento de hedge de receitas em moeda estrangeira futuras” (hedge accounting, nota 29). ADOTA_PROTECAO no swap encobre essa cadeia. Também omite a exposição líquida (31.923.194) mil do quadro Consolidado.",
+   "evidencia": "Klabin DFP 2024, p. 121 do PDF (nota 28.1.1 a, impressa 90).",
+   "correcao_sugerida": "swap CONVERTE dívida (NCE, debêntures) BRL→USD. Dívida convertida DESIGNADA_COMO_HEDGE_DE receitas futuras em USD (contabil=true, hedge de fluxo de caixa). Escopo consolidado. Valor da exposição líquida."
+  },
+  {
+   "id": "D014",
+   "documento_id": "klabin-dfp-2024",
+   "empresa": "Klabin S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "121",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:5e7a7de18d0eaae210ceac2b685f56f7",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "Zero Cost Collar",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:444fbfbbb00c02244c8925a42d818ed7",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "NDF",
+     "sugestao_status": "sustentada com ressalva"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Estratégia com ZCC e NDF sustentada no texto. Omite a frase anterior da mesma página, “Os fluxos de caixa sobre a exposição líquida são protegidos através dos instrumentos derivativos”, de modo que falta PROTEGE exposição líquida. O quadro de 31/12/2024 lista apenas ZCC (total 655.000 mil US$); a contratação de NDF não aparece.",
+   "evidencia": "Klabin DFP 2024, p. 121; quadro de contratos na p. 135.",
+   "correcao_sugerida": "Acrescentar ZCC/NDF PROTEGE exposição líquida. Marcar NDF como “previsto na estratégia; sem contrato listado em 31/12/2024”."
+  },
+  {
+   "id": "D015",
+   "documento_id": "klabin-dfp-2024",
+   "empresa": "Klabin S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "132",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:3560dcf5e114a30a8a5063e7c3fe3ea1",
+     "sujeito": "Klabin S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "instrumentos de dívida designados para hedge",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:4e26b443866bb71d2a9ac1afc1260d1b",
+     "sujeito": "instrumentos de dívida designados para hedge",
+     "predicado": "PROTEGE",
+     "objeto": "receitas futuras altamente prováveis",
+     "sugestao_status": "sustentada com ressalva"
+    },
+    {
+     "id": "declaracao:4ddb2bcad5cc13b11425e21098071422",
+     "sujeito": "receitas futuras altamente prováveis",
+     "predicado": "DENOMINADO_EM",
+     "objeto": "USD",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Sustentada. Porém é hedge accounting (designação formal, hedge de fluxo de caixa) e usa o mesmo predicado PROTEGE do hedge natural, o que apaga a distinção contábil. Omite 22 contratos e os swaps (debêntures, NCE, CRA) entre os instrumentos.",
+   "evidencia": "Klabin DFP 2024, p. 132 do PDF (nota 29 e 29.1); p. 133.",
+   "correcao_sugerida": "Predicado ou atributo distinto para hedge accounting (DESIGNADO_COMO_HEDGE, categoria=fluxo_de_caixa)."
+  },
+  {
+   "id": "D016",
+   "documento_id": "klabin-dfp-2024",
+   "empresa": "Klabin S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "134",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:aa3f92b1e031787a20e2836ed1ecb61e",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "swap para troca de indexador de juros",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:1b13ad39a03d486732424606d77a6909",
+     "sujeito": "swap para troca de indexador de juros",
+     "predicado": "PROTEGE",
+     "objeto": "exposição a taxas de juros",
+     "sugestao_status": "parcialmente sustentada"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Generaliza o objeto: o documento trata do risco de variação do IPCA em dívidas em BRL, com swap para CDI. A extração perde os indexadores. O nó “swap para troca de indexador de juros” é o mesmo (mesmo ID) que a Klabin recebe em 2025 para SOFR→pré, e tem nome idêntico ao nó da Irani (IPCA→CDI): identidade unida dentro da companhia e homônima entre empresas. Hedge accounting (fluxo de caixa) não marcado.",
+   "evidencia": "Klabin DFP 2024, p. 134 do PDF (29.2); p. 132 (programa (i), IPCA/CDI).",
+   "correcao_sugerida": "Nó específico por instrumento e exercício: “swap IPCA→CDI (debêntures, nov/39)”, PROTEGE “risco IPCA em dívidas BRL”, contabil=true."
+  },
+  {
+   "id": "D017",
+   "documento_id": "klabin-dfp-2024",
+   "empresa": "Klabin S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "135",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:9314a82559f3195a30b7cac4e7d9b824",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "Zero Cost Collar",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:09eb80a85e893d5cb936ce8af4f019c3",
+     "sujeito": "Klabin S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial líquida de caixa",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:b1f506a802884323a8339893c7cf2a15",
+     "sujeito": "Zero Cost Collar",
+     "predicado": "PROTEGE",
+     "objeto": "exposição cambial líquida de caixa",
+     "sugestao_status": "parcialmente sustentada"
+    },
+    {
+     "id": "declaracao:2dd6795d0be22d61c24ca50840be6591",
+     "sujeito": "exposição cambial líquida de caixa",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:60b679ea8ea13c806ec4d84cf402b692",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "NDF",
+     "sugestao_status": "não sustentada como fato contratado (política/hipótese)"
+    },
+    {
+     "id": "declaracao:abe857e394ddde14e57dfe2f7a38ba10",
+     "sujeito": "NDF",
+     "predicado": "PROTEGE",
+     "objeto": "exposição cambial líquida de caixa",
+     "sugestao_status": "não sustentada como fato contratado (política/hipótese)"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "É o objetivo da política: designar ZCC “e/ou” NDF para proteger de 25% a 50% da exposição cambial líquida em até 24 meses. As declarações afirmam proteção sem alcance nem horizonte; o campo de condição contém o texto, mas ele não chega às declarações. O quadro da p. 135 mostra apenas ZCC contratados, portanto NDF é hipótese de política.",
+   "evidencia": "Klabin DFP 2024, p. 135 do PDF (objetivo de hedge e quadro de contratos).",
+   "correcao_sugerida": "Separar política (pode designar ZCC e/ou NDF; 25–50%; ≤24 meses) de contratação (ZCC, 655.000 mil US$). Não criar ADOTA_PROTECAO NDF para 2024."
+  },
+  {
+   "id": "D018",
+   "documento_id": "klabin-dfp-2025",
+   "empresa": "Klabin S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "37",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:fd16a2ff08647396200ce570fc37777e",
+     "sujeito": "Klabin S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "obrigações em moeda estrangeira",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "A fonte é o relatório do auditor (PAA), não as notas. O texto extraído intercala as duas colunas, um erro de parsing que mistura a descrição da companhia com os procedimentos do auditor. O escopo é explícito: “A Companhia e suas controladas”. Omite os programas de hedge accounting e a finalidade (gerenciamento do risco cambial).",
+   "evidencia": "Klabin DFP 2025, p. 37 do PDF (relatório do auditor, PAA nota 28).",
+   "correcao_sugerida": "Corrigir a extração em colunas. Registrar a seção (auditor). Escopo = grupo/consolidado."
+  },
+  {
+   "id": "D019",
+   "documento_id": "klabin-dfp-2025",
+   "empresa": "Klabin S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "124",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:c0136dd37041518e4df36805eb62edcb",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "swap de BRL para USD",
+     "sugestao_status": "parcialmente sustentada"
+    },
+    {
+     "id": "declaracao:4b3603fbb21efe7fa995530dc5c0389f",
+     "sujeito": "swap de BRL para USD",
+     "predicado": "CONVERTE_DE",
+     "objeto": "BRL",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:edf72dbcbc71af045ba0992c0301782a",
+     "sujeito": "swap de BRL para USD",
+     "predicado": "CONVERTE_PARA",
+     "objeto": "USD",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Igual a D013 em 2025: swap de instrumentos de dívida em moeda local para US$, depois designados como hedge de receitas futuras. Exposição líquida (26.262.574) mil, Consolidado, omitida.",
+   "evidencia": "Klabin DFP 2025, p. 124 do PDF (nota 27.1.1 a, impressa 84).",
+   "correcao_sugerida": "Igual a D013."
+  },
+  {
+   "id": "D020",
+   "documento_id": "klabin-dfp-2025",
+   "empresa": "Klabin S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "124",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:d5c19f15c41aa28eb10962c8039835b8",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "Zero Cost Collar",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:c813b4dcb0f9a14c6f1f504ededfc157",
+     "sujeito": "Klabin S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial líquida de caixa",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:c995e3f324c232c91adf77b80a79e89a",
+     "sujeito": "Zero Cost Collar",
+     "predicado": "PROTEGE",
+     "objeto": "exposição cambial líquida de caixa",
+     "sugestao_status": "sustentada com ressalva"
+    },
+    {
+     "id": "declaracao:cfee5545cb8fff8d347e1b379b5c121e",
+     "sujeito": "exposição cambial líquida de caixa",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:56147fc75d4f1ed810e97ee1b8bc025f",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "NDF",
+     "sugestao_status": "sustentada com ressalva"
+    },
+    {
+     "id": "declaracao:81f45969c4d34f406683a86e0f957cce",
+     "sujeito": "NDF",
+     "predicado": "PROTEGE",
+     "objeto": "exposição cambial líquida de caixa",
+     "sugestao_status": "sustentada com ressalva"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "O texto afirma a contratação de ZCC e NDF para proteção da exposição líquida de caixa. O alcance da política (25–50%, até 24 meses) e o tratamento como hedge accounting de fluxo de caixa ficam fora. O quadro de 31/12/2025 não discrimina o tipo de instrumento (só strike range), então a contratação efetiva de NDF não é verificável no quadro.",
+   "evidencia": "Klabin DFP 2025, p. 124; p. 137–138 (programa e quadro).",
+   "correcao_sugerida": "Acrescentar o alcance e contabil=true. Marcar NDF como “afirmado no texto; não discriminado no quadro”."
+  },
+  {
+   "id": "D021",
+   "documento_id": "klabin-dfp-2025",
+   "empresa": "Klabin S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "135",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:275af581b687d40a129fe1043a828b94",
+     "sujeito": "Klabin S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "obrigações em moeda estrangeira",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "TEM_OBRIGACAO sustentada. Omite a relação principal da frase (instrumentos contratados para alinhar os indexadores das dívidas e das aplicações) e os quatro programas da mesma página, incluindo o novo (iv) hedge de valor justo de taxa de juros (IPCA | PRÉ | CDI).",
+   "evidencia": "Klabin DFP 2025, p. 135 do PDF (nota 28).",
+   "correcao_sugerida": "Acrescentar a finalidade de alinhamento de indexadores e os programas com categoria contábil."
+  },
+  {
+   "id": "D022",
+   "documento_id": "klabin-dfp-2025",
+   "empresa": "Klabin S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "135",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:91272b3991ed166c98a5683665626cac",
+     "sujeito": "Klabin S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "instrumentos de dívida designados para hedge",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:748ed3e1a58c4e6a77abf15aa408bd10",
+     "sujeito": "instrumentos de dívida designados para hedge",
+     "predicado": "PROTEGE",
+     "objeto": "receitas futuras altamente prováveis",
+     "sugestao_status": "sustentada com ressalva"
+    },
+    {
+     "id": "declaracao:b1bd9611dff41aa36cc315de330cbbb2",
+     "sujeito": "receitas futuras altamente prováveis",
+     "predicado": "DENOMINADO_EM",
+     "objeto": "USD",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Igual a D015 em 2025 (21 contratos, p. 136).",
+   "evidencia": "Klabin DFP 2025, p. 135–136.",
+   "correcao_sugerida": "Igual a D015."
+  },
+  {
+   "id": "D023",
+   "documento_id": "klabin-dfp-2025",
+   "empresa": "Klabin S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "137",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:2f495b444ca8d6ce35670fce59429aa5",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "swap para troca de indexador de juros",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:84ffaee2148199079690a1dfca4b1afb",
+     "sujeito": "swap para troca de indexador de juros",
+     "predicado": "PROTEGE",
+     "objeto": "exposição a taxas de juros",
+     "sugestao_status": "parcialmente sustentada"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Generaliza: o documento trata do risco da SOFR em dívida de PPE em US$, com swap para taxa pré-fixada, designado como hedge das despesas de juros (hedge accounting de fluxo de caixa; nocional R$ 1.650.720 mil, abr/32). Usa o mesmo nó (mesmo ID na Klabin) de D016 (IPCA→CDI), unindo instrumentos diferentes.",
+   "evidencia": "Klabin DFP 2025, p. 137 do PDF (28.2).",
+   "correcao_sugerida": "Nó próprio “swap SOFR→pré (PPE US$)”, PROTEGE “risco SOFR”, contabil=true."
+  },
+  {
+   "id": "D024",
+   "documento_id": "klabin-dfp-2025",
+   "empresa": "Klabin S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "138",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:4b7802f7b840a6c3de271283184aa03d",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "Zero Cost Collar",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:941e8aafc65cd178e709136016f7b7e8",
+     "sujeito": "Klabin S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial líquida de caixa",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:6aee10dfeeccd934ed7195f067732723",
+     "sujeito": "Zero Cost Collar",
+     "predicado": "PROTEGE",
+     "objeto": "exposição cambial líquida de caixa",
+     "sugestao_status": "parcialmente sustentada"
+    },
+    {
+     "id": "declaracao:3aefca1af3dbe35295cca39440f1d858",
+     "sujeito": "exposição cambial líquida de caixa",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:df181bfac2d82af9ab095e5c8ca5ec3a",
+     "sujeito": "Klabin S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "NDF",
+     "sugestao_status": "não sustentada como fato contratado (política/hipótese)"
+    },
+    {
+     "id": "declaracao:cdcaa5415bfe94a499c9d228d55a39f0",
+     "sujeito": "NDF",
+     "predicado": "PROTEGE",
+     "objeto": "exposição cambial líquida de caixa",
+     "sugestao_status": "não sustentada como fato contratado (política/hipótese)"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Igual a D017 em 2025: objetivo de política (“e/ou”, 25–50%, até 24 meses) convertido em fatos. O quadro (531.500 mil US$, com strike range, típico de opções) não identifica o instrumento; a contratação de NDF não é verificável no quadro.",
+   "evidencia": "Klabin DFP 2025, p. 138 do PDF.",
+   "correcao_sugerida": "Igual a D017."
+  },
+  {
+   "id": "D025",
+   "documento_id": "irani-dfp-2024",
+   "empresa": "Irani Papel e Embalagem S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "23",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:1c71e748b445b4b156816960651dc7cd",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "ACC",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Sustentada. Fonte: relatório/release (4.2 Endividamento), seção não registrada. Omite o aumento de 3,8% da dívida bruta atribuído às captações de ACC.",
+   "evidencia": "Irani DFP 2024, p. 23 do PDF.",
+   "correcao_sugerida": "Registrar a seção e acrescentar o atributo com data."
+  },
+  {
+   "id": "D026",
+   "documento_id": "irani-dfp-2024",
+   "empresa": "Irani Papel e Embalagem S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "116",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:4d9ba7b58c6d2d23ca0c97d8c6d4ad08",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial declarada",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:1af35eb02147788717196afa440bddd3",
+     "sujeito": "exposição cambial declarada",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Sustentada. Omite os riscos de juros, crédito e liquidez da mesma frase.",
+   "evidencia": "Irani DFP 2024, p. 116 do PDF (impressa 61).",
+   "correcao_sugerida": "Acrescentar os demais riscos declarados."
+  },
+  {
+   "id": "D027",
+   "documento_id": "irani-dfp-2024",
+   "empresa": "Irani Papel e Embalagem S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "116",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:32c2ac5f6987a4cfc04522d18b929400",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "swap para troca de indexador de juros",
+     "sugestao_status": "sustentada com ressalva"
+    },
+    {
+     "id": "declaracao:0b45bac348a4f0de57a97fdcfcc117fc",
+     "sujeito": "swap para troca de indexador de juros",
+     "predicado": "PROTEGE",
+     "objeto": "exposição a taxas de juros",
+     "sugestao_status": "interpretação não sustentada literalmente"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "O documento diz que o swap foi contratado para “troca de indexador de taxa de juros para otimizar a estratégia de gestão dos passivos financeiros e do caixa”: IPCA + 5,50% → CDI + 0,71%, alinhando a dívida ao caixa em CDI (nota 16). “PROTEGE exposição a taxas de juros” é interpretação, não literal. Não é hedge accounting. Omite a negação da mesma página: “não efetua aplicações de caráter especulativo”. Nó com nome idêntico ao da Klabin (IDs distintos por companhia).",
+   "evidencia": "Irani DFP 2024, p. 116; nota 16 na p. 98.",
+   "correcao_sugerida": "swap TROCA_INDEXADOR IPCA→CDI (debêntures 4ª emissão); finalidade=otimização/alinhamento; contabil=false. Acrescentar a negação sobre especulação."
+  },
+  {
+   "id": "D028",
+   "documento_id": "irani-dfp-2024",
+   "empresa": "Irani Papel e Embalagem S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "117",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:c3fc449d83c001b5acdcbe2421a4a116",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "obrigações em moeda estrangeira",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:afa16ed88b14d47be48c9833543d84f7",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "ACC",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:3b82c8b3cad2f96216ddc059bac9a9ea",
+     "sujeito": "ACC",
+     "predicado": "COMPENSA_VARIACOES_DE",
+     "objeto": "recebíveis de exportações",
+     "sugestao_status": "sustentada com ressalva"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Sustentada, mas o qualificador “eventuais” se perdeu. ACC e “obrigações em moeda estrangeira” ficam como nós separados, sem relação (o ACC é a própria obrigação em ME). O quadro da mesma página apresenta Controladora = Consolidado.",
+   "evidencia": "Irani DFP 2024, p. 117 do PDF.",
+   "correcao_sugerida": "ACC É_UM obrigação em ME. Preservar “eventuais”. Escopo controladora e consolidado."
+  },
+  {
+   "id": "D029",
+   "documento_id": "irani-dfp-2024",
+   "empresa": "Irani Papel e Embalagem S.A.",
+   "periodo": "2024-12-31",
+   "pagina_pdf": "117–118",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:9ac38f828a13a79360f439d495bd4cd4",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial declarada",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:e7246b9a1fa6f5541a49ed38ebf710c1",
+     "sujeito": "exposição cambial declarada",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Exposição sustentada. Omite a relação principal do excerto (p. 117–118): a companhia “procura manter” pagamentos líquidos anuais de dívida exposta a câmbio equivalentes ou inferiores à carteira de clientes de exportação. É intenção de política, proteção econômica.",
+   "evidencia": "Irani DFP 2024, p. 117–118 do PDF.",
+   "correcao_sugerida": "Acrescentar a relação de política com modalidade “procura” e tipo econômico."
+  },
+  {
+   "id": "D030",
+   "documento_id": "irani-dfp-2025",
+   "empresa": "Irani Papel e Embalagem S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "124",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:bcc7cdffa9aa1664a185cafdd864c513",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial declarada",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:ec7a8aa84fa21869ff2417d030f76031",
+     "sujeito": "exposição cambial declarada",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Igual a D026, em 2025.",
+   "evidencia": "Irani DFP 2025, p. 124 do PDF (impressa 67).",
+   "correcao_sugerida": "Igual a D026."
+  },
+  {
+   "id": "D031",
+   "documento_id": "irani-dfp-2025",
+   "empresa": "Irani Papel e Embalagem S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "124",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:ec4237ba45fbd0a30c5c7b3f822e9751",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "ADOTA_PROTECAO",
+     "objeto": "swap para troca de indexador de juros",
+     "sugestao_status": "sustentada com ressalva"
+    },
+    {
+     "id": "declaracao:b771db1aab4d4bc262245cca595c657e",
+     "sujeito": "swap para troca de indexador de juros",
+     "predicado": "PROTEGE",
+     "objeto": "exposição a taxas de juros",
+     "sugestao_status": "interpretação não sustentada literalmente"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Igual a D027. Em 2025 são dois swaps: IPCA + 5,50% → CDI + 0,71% (4ª emissão) e IPCA + 6,6522% → CDI − 1,13% (6ª emissão, out/2025).",
+   "evidencia": "Irani DFP 2025, p. 124; nota 10 na p. 77.",
+   "correcao_sugerida": "Igual a D027, com os dois instrumentos."
+  },
+  {
+   "id": "D032",
+   "documento_id": "irani-dfp-2025",
+   "empresa": "Irani Papel e Embalagem S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "124",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:f3ddf2ca5a3010cf3bab295aa7f03f42",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "obrigações em moeda estrangeira",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:7380b894c8974d01fab002a6fb9dd4c5",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "TEM_OBRIGACAO",
+     "objeto": "ACC",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:15316c16ba527514f288b9210dddfcf4",
+     "sujeito": "ACC",
+     "predicado": "COMPENSA_VARIACOES_DE",
+     "objeto": "recebíveis de exportações",
+     "sugestao_status": "sustentada com ressalva"
+    }
+   ],
+   "sugestao_resultado": "Correta com ressalvas",
+   "problema": "Igual a D028. A exposição líquida no quadro da mesma página é R$ (1.490) mil em 31/12/2025 (Controladora = Consolidado) e foi omitida.",
+   "evidencia": "Irani DFP 2025, p. 124 do PDF.",
+   "correcao_sugerida": "Igual a D028, com o valor."
+  },
+  {
+   "id": "D033",
+   "documento_id": "irani-dfp-2025",
+   "empresa": "Irani Papel e Embalagem S.A.",
+   "periodo": "2025-12-31",
+   "pagina_pdf": "125",
+   "escopo_extraido": "nao_especificado",
+   "declaracoes": [
+    {
+     "id": "declaracao:460596b244184a15091f56c806c5fe5a",
+     "sujeito": "Irani Papel e Embalagem S.A.",
+     "predicado": "TEM_EXPOSICAO",
+     "objeto": "exposição cambial declarada",
+     "sugestao_status": "sustentada"
+    },
+    {
+     "id": "declaracao:d08d2599f97f4837a7ffa55344120f4a",
+     "sujeito": "exposição cambial declarada",
+     "predicado": "ASSOCIADA_A",
+     "objeto": "variação cambial",
+     "sugestao_status": "sustentada"
+    }
+   ],
+   "sugestao_resultado": "Parcial",
+   "problema": "Igual a D029, em 2025.",
+   "evidencia": "Irani DFP 2025, p. 125 do PDF.",
+   "correcao_sugerida": "Igual a D029."
+  }
+ ],
+ "respostas": [
+  {
+   "id": "R001",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Calcule a exposição cambial líquida em reais de Suzano, Klabin e Irani em 2025 e classifique as empresas por risco.",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção parcialmente adequada",
+   "justificativa": "Valores existentes no acervo: Suzano R$ (53.657.087) mil, Consolidado, p. 105; Klabin R$ (26.262.574) mil, Consolidado, p. 124; Irani R$ (1.490) mil, p. 124 (DFP 2025). Uma classificação “por risco” não é sustentada pelos documentos: as bases diferem (o quadro da Suzano inclui derivativos e contas a pagar de aquisição; o da Klabin não) e o hedge não está no saldo. O contexto continha Klabin p. 124 e Irani p. 124, mas a Suzano veio pela p. 104 (sem quadro). Os erros de validação (“Valor ausente das fontes citadas: 100, 150, 200”) indicam que a geração produziu números sem suporte, que o validador bloqueou.",
+   "camada_da_falha": "Recuperação (Suzano p. 105) + geração"
+  },
+  {
+   "id": "R002",
+   "afirmacao": 1,
+   "texto_original": "Os swaps de juros da Irani e da Klabin em 2025 permitem identificar o mesmo indexador protegido.",
+   "pergunta": "Os swaps de juros da Irani e da Klabin em 2025 permitem identificar o mesmo indexador protegido?",
+   "sugestao_apoio": "Ausente (fontes citadas não sustentam)",
+   "sugestao_pertinencia": "Pertinente, mas não informativa: não nomeia o indexador",
+   "sugestao_empresa_exercicio": "Corretas (2025)",
+   "sugestao_cobertura_abstencao": "Cobertura insuficiente",
+   "justificativa": "E2, Klabin p. 137: swap SOFR→pré. E1, Irani p. 124: não nomeia indexador. E3, Irani p. 77 (não citada na afirmação): IPCA→CDI. Os caminhos C7 e C10 chegam ao mesmo nó genérico “exposição a taxas de juros”: a igualdade vem da normalização do grafo, não do documento. Um indexador comum (IPCA) poderia ser defendido com Klabin p. 139 (IPCA→CDI, hedge de valor justo desde 30/09/2025), página não recuperada; mas a Klabin também tem SOFR→pré (p. 137) e pré-US$→CDI (p. 140).",
+   "camada_da_falha": "Extração (identidade unida) + geração"
+  },
+  {
+   "id": "R003",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Os swaps de juros da Irani e da Klabin em 2025 permitem identificar o mesmo indexador protegido?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção parcialmente adequada",
+   "justificativa": "O contexto tinha Irani p. 77 (IPCA→CDI) e Klabin p. 140 (menciona a descontinuidade do IPCA e o swap pré-US$→CDI), mas não Klabin p. 137 nem p. 139. Uma comparação completa não era possível; uma resposta parcial e qualificada era.",
+   "camada_da_falha": "Recuperação"
+  },
+  {
+   "id": "R004",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Quais indexadores dos empréstimos expõem a Klabin a variações de juros em 2024?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2024 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "Resposta: TJLP, SOFR, IPCA e CDI (Klabin DFP 2024, p. 122). A p. 94, recuperada, lista os empréstimos indexados a IPCA, TLP, CDI e SOFR. O validador acusou “5,7%” como valor fora do escopo narrativo. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração/validação + recuperação (p. 122)"
+  },
+  {
+   "id": "R005",
+   "afirmacao": 1,
+   "texto_original": "A exposição cambial da Klabin é medida através do valor presente dos fluxos futuros projetados descontados pelas taxas de mercado.",
+   "pergunta": "Que conexão entre a Klabin, o swap cambial e a moeda de destino aparece em 2025?",
+   "sugestao_apoio": "Ausente (distorção da fonte)",
+   "sugestao_pertinencia": "Não pertinente",
+   "sugestao_empresa_exercicio": "Klabin 2025 correta",
+   "sugestao_cobertura_abstencao": "Não responde à pergunta",
+   "justificativa": "E1, p. 136: “No caso dos swaps, a mensuração do valor justo é feita através do valor presente...”. A fonte trata do valor justo dos swaps, não da medição da exposição cambial.",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R005",
+   "afirmacao": 2,
+   "texto_original": "As transações em moeda estrangeira são inicialmente registradas aplicando a taxa de câmbio em vigor na data da transação.",
+   "pergunta": "Que conexão entre a Klabin, o swap cambial e a moeda de destino aparece em 2025?",
+   "sugestao_apoio": "Integral",
+   "sugestao_pertinencia": "Não pertinente",
+   "sugestao_empresa_exercicio": "Fonte Klabin 2025; a afirmação não nomeia a empresa",
+   "sugestao_cobertura_abstencao": "Não responde à pergunta",
+   "justificativa": "E3, p. 54: política contábil de conversão, sustentada. A resposta à pergunta estava em E5, p. 124, recuperada: o swap converte instrumentos de dívida de moeda local para dólares americanos, depois designados como hedge de receitas futuras em ME.",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R006",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Como a Irani monitora a liquidez e mantém seus planos de financiamento em 2024?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2024 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "Irani DFP 2024, p. 120 (E1): a liquidez é monitorada pelo fluxo de caixa esperado, conforme a Política de Gestão Financeira, com projeção de fluxos por moeda, nível de ativos líquidos, índices de liquidez “e a manutenção de planos de financiamento de dívida”. O documento não detalha os planos. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R007",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Calcule a exposição cambial líquida em reais de Suzano, Klabin e Irani em 2025 e classifique as empresas por risco.",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção parcialmente adequada",
+   "justificativa": "Valores existentes no acervo: Suzano R$ (53.657.087) mil, Consolidado, p. 105; Klabin R$ (26.262.574) mil, Consolidado, p. 124; Irani R$ (1.490) mil, p. 124 (DFP 2025). Uma classificação “por risco” não é sustentada pelos documentos: as bases diferem (o quadro da Suzano inclui derivativos e contas a pagar de aquisição; o da Klabin não) e o hedge não está no saldo. Contexto: Klabin p. 124 e Irani p. 124, Suzano p. 104. Os caminhos C2, C3, C4 e C6 têm só nós qualitativos, sem valores. Validação: 100 e 150 ausentes das fontes.",
+   "camada_da_falha": "Recuperação + geração + extração (sem valores)"
+  },
+  {
+   "id": "R008",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Como a Irani monitora a liquidez e mantém seus planos de financiamento em 2024?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2024 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "Mesma resposta de R006 (p. 120, recuperada como E3). O validador acusou “3,8%” (de p. 23). Os caminhos C1–C3 (ACC) não tratam de liquidez. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração/validação"
+  },
+  {
+   "id": "R009",
+   "afirmacao": 1,
+   "texto_original": "A Companhia (Suzano) adota a contabilidade de hedge accounting de taxa de juros, com o objetivo de proteção contra o risco de variação do IPCA como indexador de dívidas em BRL alvo de operação de swap para CDI.",
+   "pergunta": "Suzano e Klabin dão o mesmo tratamento de hedge accounting a seus instrumentos em 2024?",
+   "sugestao_apoio": "Contradito",
+   "sugestao_pertinencia": "Pertinente",
+   "sugestao_empresa_exercicio": "Empresa errada",
+   "sugestao_cobertura_abstencao": "—",
+   "justificativa": "O texto vem de Klabin p. 134 (E1) e foi atribuído à Suzano. Suzano DFP 2024, p. 35 do PDF: “A Companhia não adota a modalidade de contabilização hedge accounting.”",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R009",
+   "afirmacao": 2,
+   "texto_original": "A Companhia (Klabin) adota a contabilidade de hedge accounting de fluxo de caixa, com o objetivo de proteção contra o risco de variação do IPCA como indexador de dívidas em BRL alvo de operação de swap para CDI.",
+   "pergunta": "Suzano e Klabin dão o mesmo tratamento de hedge accounting a seus instrumentos em 2024?",
+   "sugestao_apoio": "Parcial",
+   "sugestao_pertinencia": "Pertinente",
+   "sugestao_empresa_exercicio": "Klabin 2024 correta",
+   "sugestao_cobertura_abstencao": "Cobertura parcial; omite a diferença decisiva",
+   "justificativa": "A Klabin classifica todos os programas como hedge de fluxo de caixa (p. 132) e tem hedge de juros IPCA→CDI (p. 134). Mas a fonte citada, E3 (p. 32–33, relatório do auditor), só sustenta o programa de hedge de fluxo de caixa, não o IPCA→CDI. A resposta não diz que a Suzano não adota hedge accounting.",
+   "camada_da_falha": "Geração + recuperação (p. 35)"
+  },
+  {
+   "id": "R010",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "A política da Suzano em 2025 permite operações alavancadas que alterem a finalidade de proteção?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "Resposta: não. Suzano DFP 2025, p. 99 (E2): a companhia “não contrata operações alavancadas ou com outras formas de opções embutidas que alterem sua finalidade de proteção (hedge)”. O validador acusou “31” como valor fora do escopo; possível falso positivo (por exemplo, uma data), não verificável sem o texto gerado. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração/validação"
+  },
+  {
+   "id": "R011",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "A política da Suzano em 2025 permite operações alavancadas que alterem a finalidade de proteção?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "Igual a R010 (p. 99, recuperada como E3). Os caminhos C4–C7 (hedge natural) são irrelevantes para a pergunta. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração/validação"
+  },
+  {
+   "id": "R012",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Que caminho liga a Irani aos recebíveis de exportações por meio do ACC em 2024?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2024 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção adequada ao contexto",
+   "justificativa": "Nenhuma página com ACC foi recuperada (na Irani 2024, ACC aparece só nas p. 23 e 117). A resposta existe no acervo (p. 117). Não indica inexistência da relação.",
+   "camada_da_falha": "Recuperação"
+  },
+  {
+   "id": "R013",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Quais indexadores dos empréstimos expõem a Klabin a variações de juros em 2024?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2024 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção parcialmente adequada",
+   "justificativa": "O contexto tinha p. 134 (IPCA como indexador de dívidas em BRL com swap para CDI): resposta parcial possível. A lista completa (p. 122) não foi recuperada. O validador acusou “29”.",
+   "camada_da_falha": "Recuperação + geração"
+  },
+  {
+   "id": "R014",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Que caminho liga a Irani aos recebíveis de exportações por meio do ACC em 2024?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2024 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "Irani p. 117 (E1) e o caminho C2 (Irani→ACC→recebíveis de exportações) estavam no contexto. O validador acusou “3,8%”. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração/validação"
+  },
+  {
+   "id": "R015",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Calcule a exposição cambial líquida em reais de Suzano, Klabin e Irani em 2025 e classifique as empresas por risco.",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção parcialmente adequada",
+   "justificativa": "Valores existentes no acervo: Suzano R$ (53.657.087) mil, Consolidado, p. 105; Klabin R$ (26.262.574) mil, Consolidado, p. 124; Irani R$ (1.490) mil, p. 124 (DFP 2025). Uma classificação “por risco” não é sustentada pelos documentos: as bases diferem (o quadro da Suzano inclui derivativos e contas a pagar de aquisição; o da Klabin não) e o hedge não está no saldo. A Suzano veio pela p. 99 (política, sem valores). Validação: 100 ausente das fontes.",
+   "camada_da_falha": "Recuperação + geração"
+  },
+  {
+   "id": "R016",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Como a Irani monitora a liquidez e mantém seus planos de financiamento em 2024?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2024 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "Igual a R006 (p. 120 recuperada como E1). (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R017",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "A Suzano adota hedge accounting no exercício de 2024?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2024 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção adequada ao contexto",
+   "justificativa": "A resposta (não adota) está na p. 35, não recuperada; veio a p. 36, adjacente. A abstenção é melhor que a afirmação de R022, mas a resposta existe no acervo. Suzano DFP 2024, p. 35 do PDF: “A Companhia não adota a modalidade de contabilização hedge accounting.”",
+   "camada_da_falha": "Recuperação"
+  },
+  {
+   "id": "R018",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Que conexão entre a Klabin, o swap cambial e a moeda de destino aparece em 2025?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "A Klabin p. 124 (E1 e E5) contém a resposta: swap de câmbio convertendo instrumentos de dívida de moeda local para dólares americanos. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R019",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Quais indexadores dos empréstimos expõem a Klabin a variações de juros em 2024?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2024 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "A p. 94 (E4) lista os indexadores dos empréstimos (IPCA, TLP, CDI, SOFR); p. 134 (E3) cita IPCA→CDI. Resposta completa na p. 122. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração + recuperação"
+  },
+  {
+   "id": "R020",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Os swaps de juros da Irani e da Klabin em 2025 permitem identificar o mesmo indexador protegido?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção adequada ao contexto",
+   "justificativa": "Nenhuma página com os swaps de juros da Klabin (p. 137, 139, 140) foi recuperada; p. 124 trata de câmbio. Comparação impossível com esse contexto.",
+   "camada_da_falha": "Recuperação"
+  },
+  {
+   "id": "R021",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Suzano e Klabin dão o mesmo tratamento de hedge accounting a seus instrumentos em 2024?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2024 corretas (só Klabin)",
+   "sugestao_cobertura_abstencao": "Abstenção adequada ao contexto",
+   "justificativa": "Nenhuma fonte da Suzano foi recuperada. A comparação dependia da p. 35 da Suzano.",
+   "camada_da_falha": "Recuperação"
+  },
+  {
+   "id": "R022",
+   "afirmacao": 1,
+   "texto_original": "A Suzano adota hedge accounting no exercício de 2024.",
+   "pergunta": "A Suzano adota hedge accounting no exercício de 2024?",
+   "sugestao_apoio": "Contradito",
+   "sugestao_pertinencia": "Pertinente",
+   "sugestao_empresa_exercicio": "Corretas (Suzano 2024)",
+   "sugestao_cobertura_abstencao": "Resposta direta, mas errada",
+   "justificativa": "Suzano DFP 2024, p. 35 do PDF: “A Companhia não adota a modalidade de contabilização hedge accounting.” As fontes citadas (p. 126, 161, 40) tratam de hedge natural, proteção econômica. Os caminhos C1–C3 (ADOTA_PROTECAO hedge natural de caixa) não sustentam hedge accounting.",
+   "camada_da_falha": "Extração (sem distinção contábil) + geração + recuperação"
+  },
+  {
+   "id": "R023",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "A política da Suzano em 2025 permite operações alavancadas que alterem a finalidade de proteção?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "Igual a R010 (p. 99 recuperada como E1). (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R024",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Quais indexadores de ativos e passivos aparecem na exposição a juros da Irani em 2025?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "Irani DFP 2025, p. 125 (E5): exposição a juros em passivos e ativos indexados pelo CDI e pelo IPCA. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R025",
+   "afirmacao": 1,
+   "texto_original": "O swap de juros da Klabin em 2025 protege a exposição cambial líquida de caixa da empresa contra a variação cambial.",
+   "pergunta": "Como o swap de juros da Klabin em 2025 relaciona a SOFR à taxa pré-fixada?",
+   "sugestao_apoio": "Contradito",
+   "sugestao_pertinencia": "Não pertinente",
+   "sugestao_empresa_exercicio": "Klabin 2025 correta",
+   "sugestao_cobertura_abstencao": "Não responde",
+   "justificativa": "Klabin p. 137 (E1): o swap protege contra a variação da SOFR, convertendo para taxa pré-fixada, como hedge das despesas de juros de PPE em US$. A exposição cambial líquida é objeto do programa ZCC/NDF (p. 137–138). O caminho C7 (swap→exposição a taxas de juros) contradiz a própria afirmação; C1–C6 são do programa cambial.",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R026",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Como o swap de juros da Klabin em 2025 relaciona a SOFR à taxa pré-fixada?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção adequada ao contexto",
+   "justificativa": "A p. 137 não foi recuperada (só p. 140, 100, 131). O validador rejeitou “consolidado” como escopo sem qualificação, mas a p. 131 diz “(consolidado)”: o validador herda a lacuna de escopo da extração.",
+   "camada_da_falha": "Recuperação + validação"
+  },
+  {
+   "id": "R027",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Quais indexadores de ativos e passivos aparecem na exposição a juros da Irani em 2025?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "A p. 125 (E1, E3) responde: CDI e IPCA. O validador acusou “31” três vezes. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração/validação"
+  },
+  {
+   "id": "R028",
+   "afirmacao": 1,
+   "texto_original": "Suzano e Klabin dão o mesmo tratamento de hedge accounting a seus instrumentos em 2024.",
+   "pergunta": "Suzano e Klabin dão o mesmo tratamento de hedge accounting a seus instrumentos em 2024?",
+   "sugestao_apoio": "Contradito",
+   "sugestao_pertinencia": "Pertinente",
+   "sugestao_empresa_exercicio": "Corretas (2024)",
+   "sugestao_cobertura_abstencao": "Resposta direta, mas errada",
+   "justificativa": "Suzano DFP 2024, p. 35 do PDF: “A Companhia não adota a modalidade de contabilização hedge accounting.” As próprias fontes citadas mostram tratamentos diferentes: Suzano p. 40 (hedge natural, econômico) versus Klabin p. 132 (hedge de fluxo de caixa) e p. 134 (hedge accounting de juros).",
+   "camada_da_falha": "Extração + geração + recuperação"
+  },
+  {
+   "id": "R029",
+   "afirmacao": 1,
+   "texto_original": "A Irani mantém empréstimos e financiamentos em moeda estrangeira (ACC) que têm por objetivo fazer frente às variações do saldo de clientes de exportações.",
+   "pergunta": "Que caminho liga a Irani aos recebíveis de exportações por meio do ACC em 2024?",
+   "sugestao_apoio": "Integral",
+   "sugestao_pertinencia": "Pertinente",
+   "sugestao_empresa_exercicio": "Irani 2024 correta",
+   "sugestao_cobertura_abstencao": "Cobertura substancial",
+   "justificativa": "Irani p. 117 (E1). Perde “eventuais” (variações) e não esclarece que se trata de proteção econômica, não de hedge accounting.",
+   "camada_da_falha": "—"
+  },
+  {
+   "id": "R030",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Quais exposições a juros a Irani declarou no exercício de 2029?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Exercício 2029 fora do acervo (DFP 2024 e 2025)",
+   "sugestao_cobertura_abstencao": "Abstenção adequada",
+   "justificativa": "Sem fontes. Limitação: a mensagem genérica não diferencia “exercício fora do acervo” de falha de recuperação, e a abstenção não equivale a afirmar que não houve exposição.",
+   "camada_da_falha": "—"
+  },
+  {
+   "id": "R031",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Quais exposições a juros a Irani declarou no exercício de 2029?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Exercício 2029 fora do acervo",
+   "sugestao_cobertura_abstencao": "Abstenção adequada",
+   "justificativa": "Igual a R030.",
+   "camada_da_falha": "—"
+  },
+  {
+   "id": "R032",
+   "afirmacao": 1,
+   "texto_original": "A exposição cambial líquida da Klabin S.A. é protegida por derivativos como Opções Zero Cost Collar (ZCCs) e Non-Deliverable Forwards (NDFs).",
+   "pergunta": "Que conexão entre a Klabin, o swap cambial e a moeda de destino aparece em 2025?",
+   "sugestao_apoio": "Parcial",
+   "sugestao_pertinencia": "Baixa (a pergunta é sobre o swap cambial)",
+   "sugestao_empresa_exercicio": "Klabin 2025 correta",
+   "sugestao_cobertura_abstencao": "—",
+   "justificativa": "A p. 124 sustenta a contratação de ZCC e NDF para proteção da exposição líquida de caixa. “É protegida” omite o alcance da política (p. 138: 25–50% em até 24 meses).",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R032",
+   "afirmacao": 2,
+   "texto_original": "A Klabin S.A. possui derivativos de swap de BRL para USD para proteger sua exposição cambial líquida.",
+   "pergunta": "Que conexão entre a Klabin, o swap cambial e a moeda de destino aparece em 2025?",
+   "sugestao_apoio": "Contradito (finalidade); existência sustentada",
+   "sugestao_pertinencia": "Pertinente",
+   "sugestao_empresa_exercicio": "Klabin 2025 correta",
+   "sugestao_cobertura_abstencao": "Cobertura parcial (destino USD correto)",
+   "justificativa": "A p. 124 diz que o swap converte dívida em moeda local para US$, depois designada como hedge de receitas futuras (programa de receita futura, p. 135). A exposição líquida é protegida por ZCC/NDF. O caminho C5 sustenta só “ADOTA_PROTECAO swap”; C1/C2 não ligam o swap à exposição líquida, então a cadeia composta não é sustentada.",
+   "camada_da_falha": "Extração (D019) + geração"
+  },
+  {
+   "id": "R033",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Como o swap de juros da Klabin em 2025 relaciona a SOFR à taxa pré-fixada?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Fontes 2025 corretas",
+   "sugestao_cobertura_abstencao": "Abstenção inadequada",
+   "justificativa": "A p. 137 (E1 e E3) contém a resposta: o swap converte o indexador SOFR da dívida de PPE em US$ para taxa pré-fixada. (Página com a resposta recuperada; o texto exato do trecho não está no formulário, só o localizador.)",
+   "camada_da_falha": "Geração"
+  },
+  {
+   "id": "R034",
+   "afirmacao": 0,
+   "texto_original": null,
+   "pergunta": "Quais exposições a juros a Irani declarou no exercício de 2029?",
+   "sugestao_apoio": "—",
+   "sugestao_pertinencia": "—",
+   "sugestao_empresa_exercicio": "Exercício 2029 fora do acervo",
+   "sugestao_cobertura_abstencao": "Abstenção adequada",
+   "justificativa": "Igual a R030.",
+   "camada_da_falha": "—"
+  }
+ ]
+}

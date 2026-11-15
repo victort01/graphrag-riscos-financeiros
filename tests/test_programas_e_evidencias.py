@@ -32,7 +32,7 @@ class ProgramasEEvidencias(unittest.TestCase):
 
     def test_negativa_contabil_pode_ser_recuperada_no_grafo(self):
         _, _, fatos = self.extrair('A Companhia não adota a modalidade de contabilização hedge accounting.')
-        self.assertEqual([f['predicado'] for f in fatos], ['NAO_ADOTA_TRATAMENTO'])
+        self.assertEqual([f['predicado'] for f in fatos], ['DECLARA_CONTABILIDADE_HEDGE'])
         self.assertEqual(fatos[0]['polaridade'], 'negativa')
 
     def test_programas_de_swaps_com_indexadores_distintos_nao_sao_unidos(self):
