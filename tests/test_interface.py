@@ -32,6 +32,26 @@ class FluxosDaInterface(unittest.TestCase):
             self.assertFalse(any("última" in b.label.lower() for b in app.button))
             self.assertFalse(app.exception)
 
+    def test_recarregamento_retoma_apenas_o_identificador_do_link(self):
+        from streamlit.testing.v1 import AppTest
+        id_ = "20261115T120000123456-" + "a" * 32
+        self.servico.consultar.return_value = {"estado": "em_execucao", "pergunta": "Como o ACC é descrito?", "etapa": "Gerando resposta"}
+        app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=15)
+        app.query_params["consulta"] = id_
+        app.run()
+        self.servico.consultar.assert_called_with(id_)
+        self.servico.iniciar.assert_not_called()
+        self.assertFalse(app.exception)
+
+    def test_link_invalido_nao_chega_ao_gerenciador(self):
+        from streamlit.testing.v1 import AppTest
+        app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=15)
+        app.query_params["consulta"] = "../.env"
+        app.run()
+        self.servico.consultar.assert_not_called()
+        self.assertIn("link de consulta é inválido", app.warning[0].value)
+        self.assertFalse(app.exception)
+
     def test_falha_do_backend_e_explicita(self):
         self.servico.iniciar.return_value = "consulta-teste"
         self.servico.consultar.return_value = {"estado": "falhou", "pergunta": "Como a Irani descreve o ACC?", "erro": "modelo indisponível"}

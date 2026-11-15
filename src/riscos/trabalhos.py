@@ -10,6 +10,8 @@ from uuid import uuid4
 from .config import ROOT
 from .execucoes import salvar, PASTA
 
+FORMATO_ID = re.compile(r"\d{8}T\d{12}-[0-9a-f]{32}")
+
 
 class ConsultaEmAndamento(ValueError):
     pass
@@ -38,7 +40,7 @@ class Gerenciador:
     def iniciar(self, pergunta, empresas, periodo):
         with self.trava:
             if self.futuro is not None and not self.futuro.done():
-                raise ConsultaEmAndamento("Já há uma consulta em processamento. Use Retomar última consulta para acompanhá-la.")
+                raise ConsultaEmAndamento("Já há uma consulta em processamento. Aguarde a conclusão antes de enviar outra pergunta.")
             id_ = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f") + "-" + uuid4().hex
             estado = {"id": id_, "pergunta": pergunta, "empresas": empresas, "periodo": periodo,
                 "data_criacao": datetime.now(timezone.utc).isoformat(), "estado": "aguardando", "etapa": "Preparando consulta"}
@@ -65,7 +67,7 @@ class Gerenciador:
         self._gravar(estado)
 
     def consultar(self, id_):
-        if not re.fullmatch(r"\d{8}T\d{12}-[0-9a-f]{32}", id_):
+        if not FORMATO_ID.fullmatch(id_):
             raise ValueError("Identificador de consulta inválido.")
         return json.loads((self.pasta / (id_ + ".json")).read_text(encoding="utf-8"))
 

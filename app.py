@@ -8,13 +8,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 from riscos.visualizacao import pagina_grafo, rastrear_nos
 from riscos.intencao import EMPRESAS, FiltrosIncompativeis, reconciliar
 from riscos.execucoes import carregar_ultima
-from riscos.trabalhos import gerenciador, ConsultaEmAndamento
+from riscos.trabalhos import gerenciador, ConsultaEmAndamento, FORMATO_ID
 
 st.set_page_config(page_title="GraphRAG | Riscos financeiros", page_icon="◈", layout="wide")
 st.title("Mapa de exposições financeiras")
 st.caption("GraphRAG • Demonstrações financeiras de 2024 e 2025 • Unipê")
 st.info("Consulte exposições e proteções declaradas por Suzano, Klabin e Irani. A cobertura atual é narrativa; tabelas e montantes ainda estão em validação.")
 empresas = EMPRESAS
+
+# O identificador aleatório retoma a tarefa sem publicar uma lista global de consultas.
+vinculo = st.query_params.get("consulta", "")
+if vinculo and "trabalho_id" not in st.session_state and "resultado" not in st.session_state:
+    if FORMATO_ID.fullmatch(vinculo):
+        st.session_state.trabalho_id = vinculo
+    else:
+        st.warning("O link de consulta é inválido. Inicie uma nova consulta.")
 
 
 def solicitar_consulta():
@@ -36,6 +44,7 @@ if st.session_state.pop("enviar_consulta", False):
         try:
             filtros, periodo = reconciliar(pergunta, [empresas[e] for e in escolhidas], "" if ano.startswith("Comparar") else ano+"-12-31")
             st.session_state.trabalho_id = gerenciador().iniciar(pergunta, filtros, periodo)
+            st.query_params["consulta"] = st.session_state.trabalho_id
             st.session_state.pop("resultado", None)
         except (FiltrosIncompativeis, ConsultaEmAndamento) as erro:
             st.session_state.pop("resultado", None)
@@ -80,7 +89,7 @@ def acompanhar_consulta():
         else:
             st.info(estado["etapa"] + ". O processamento continua se esta página for desconectada.")
     except (OSError, ValueError, KeyError) as erro:
-        st.error("Não foi possível acompanhar a consulta: " + str(erro))
+        st.error("A consulta não está mais disponível neste servidor. Inicie uma nova consulta.")
 
 
 if "trabalho_id" in st.session_state:
