@@ -1,0 +1,32 @@
+import json
+import sys
+import unittest
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from riscos.respostas import montar_contexto
+from riscos.visualizacao import pagina_grafo
+
+
+class ContextoEVisualizacao(unittest.TestCase):
+    def test_orcamento_inclui_caminhos_e_grafo_mostra_apenas_contexto_enviado(self):
+        fontes, caminhos, evidencias = [], [], []
+        for i, texto in [(1, "Um financiamento em moeda estrangeira."), (2, "X" * 4000)]:
+            fonte = {"id": f"t{i}", "texto": texto, "empresa": "Empresa teste", "periodo": "2025-12-31",
+                     "pagina_inicio": i, "pagina_fim": i, "documento_id": f"doc{i}", "url": "https://example.org/fonte.pdf"}
+            fontes.append(fonte)
+            caminhos.append({"id": f"C{i}", "saltos": 1,
+                "nos": [{"id": "empresa", "nome": "Empresa teste", "rotulos": ["Empresa"]},
+                        {"id": f"no{i}", "nome": f"conceito_{i}", "rotulos": ["ObrigacaoFinanceira"]}],
+                "relacoes": [{"id": f"r{i}", "origem": "empresa", "destino": f"no{i}", "tipo": "TEM_OBRIGACAO", "periodo": "2025-12-31"}]})
+            evidencias.append({**fonte, "trecho_id": f"t{i}", "declaracao_id": f"r{i}", "citacao": texto})
+        busca, grafo = {"trechos": fontes}, {"caminhos": caminhos, "evidencias": evidencias}
+        contexto = montar_contexto(busca, grafo, limite_caracteres=1200)
+        self.assertLessEqual(len(json.dumps(contexto, ensure_ascii=False)), 1200)
+        self.assertEqual([p["id"] for p in contexto["caminhos"]], ["C1"])
+        pagina = pagina_grafo({"contexto_enviado": contexto, "grafo": grafo, "resposta": {"afirmacoes": []}})
+        self.assertIn('"id": "no1"', pagina)
+        self.assertNotIn('"id": "no2"', pagina)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,0 +1,50 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8">
+<style>
+body{font:14px system-ui,sans-serif;color:#172b44;margin:0;background:#fff}
+.barra{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px;border-bottom:1px solid #dce4eb}
+select,button{font:inherit;padding:7px;border:1px solid #b7c8d8;border-radius:6px;background:white;max-width:500px}
+#grafo{height:370px;background:#f5f8fb;border-bottom:1px solid #dce4eb}
+#detalhe{padding:12px;white-space:pre-wrap;max-height:145px;overflow:auto}
+.dica{font-size:12px;color:#52677e;padding:8px 12px}
+a{color:#075b9a}
+</style>
+<div class="barra"><label>Caminho <select id="caminho"><option value="">Todos</option></select></label>
+<label>Afirmação <select id="afirmacao"><option value="">Todas</option></select></label>
+<button id="ajustar">Ajustar zoom</button></div>
+<div id="grafo" role="img" aria-label="Subgrafo financeiro interativo"></div>
+<div class="dica">Arraste os nós, use a roda para zoom e clique em uma relação para abrir sua evidência. Amarelo indica o caminho selecionado.</div>
+<div id="detalhe">Selecione um nó ou uma relação.</div>
+<script>__BIBLIOTECA__</script><script>
+const dados=__DADOS__;
+const cy=cytoscape({container:document.getElementById('grafo'),elements:dados.elementos,
+ layout:{name:'breadthfirst',directed:true,padding:55,spacingFactor:1.45},
+ style:[{selector:'node',style:{'background-color':'#168b83',label:'data(label)',color:'#172b44',
+ 'text-valign':'bottom','text-margin-y':9,'text-wrap':'wrap','text-max-width':'155px','font-size':12,width:30,height:30}},
+ {selector:'node[?empresa]',style:{'background-color':'#204e80',shape:'round-rectangle',width:45,height:35}},
+ {selector:'edge',style:{width:2,'line-color':'#8b9fb5','target-arrow-color':'#8b9fb5','target-arrow-shape':'triangle',
+ 'curve-style':'bezier',label:'data(label)','font-size':9,'text-rotation':'autorotate','text-background-color':'white','text-background-opacity':0.85}},
+ {selector:'.realce',style:{'line-color':'#d08a00','target-arrow-color':'#d08a00','background-color':'#d08a00'}},
+ {selector:'edge.realce',style:{width:4}},
+ {selector:':selected',style:{'border-width':3,'border-color':'#172b44','line-color':'#172b44'}}]});
+const detalhe=document.getElementById('detalhe');
+function evidencia(aresta){
+ const d=aresta.data();const bloco=document.createElement('div');
+ bloco.textContent=d.tipo+' · '+d.periodo+' · '+d.documento+' · página '+d.pagina+'\n'+d.citacao+'\n';
+ const link=document.createElement('a');link.textContent='Abrir documento na página';
+ if(/^https?:\/\//.test(d.url)){link.href=d.url+'#page='+d.pagina;link.target='_blank';link.rel='noopener noreferrer';bloco.append(link);}
+ detalhe.append(bloco);
+}
+cy.on('tap','edge',e=>{detalhe.replaceChildren();evidencia(e.target)});
+cy.on('tap','node',e=>{detalhe.textContent=e.target.data('nome')+'\nID: '+e.target.id()+'\n';e.target.connectedEdges().forEach(evidencia)});
+function realcar(arestas){cy.elements().removeClass('realce');arestas.forEach(a=>{const e=cy.getElementById(a);e.addClass('realce');e.connectedNodes().addClass('realce')})}
+const caminho=document.getElementById('caminho');
+dados.caminhos.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.saltos+' saltos · '+p.nos.map(n=>n.nome).join(' → ');caminho.append(o)});
+caminho.onchange=()=>{document.getElementById('afirmacao').value='';realcar(caminho.value===''?[]:dados.caminhos[+caminho.value].relacoes.map(r=>r.id))};
+const afirmacao=document.getElementById('afirmacao');
+dados.afirmacoes.forEach((a,i)=>{const o=document.createElement('option');o.value=i;o.textContent=(i+1)+'. '+a.texto;afirmacao.append(o)});
+afirmacao.onchange=()=>{caminho.value='';const ids=afirmacao.value===''?[]:dados.afirmacoes[+afirmacao.value].caminhos;
+ realcar(dados.caminhos.filter(p=>ids.includes(p.id)).flatMap(p=>p.relacoes.map(r=>r.id)));
+ if(afirmacao.value!==''&&!ids.length)detalhe.textContent='Afirmação documental direta. Consulte as fontes citadas na aba Fontes.'};
+document.getElementById('ajustar').onclick=()=>cy.fit(undefined,55);
+if(!dados.elementos.length)detalhe.textContent='Nenhum caminho financeiro foi selecionado para esta pergunta.';
+</script></html>
