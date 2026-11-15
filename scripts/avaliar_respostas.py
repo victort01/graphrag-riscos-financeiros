@@ -50,7 +50,7 @@ def executar(entrada, saida, conjunto, retomar=False):
             "ordem": chaves, "linhas": [], "limites": [
                 "Não mede suporte semântico automaticamente; nenhuma taxa de alucinação é calculada.",
                 "Latência de geração descritiva; não inclui a recuperação anterior.",
-                "O conjunto smoke contém perguntas já utilizadas no desenvolvimento."]}
+                conjunto.name + ": " + recuperacao["uso"]]}
     concluidas = {(l["pergunta_id"], l["metodo"]) for l in relatorio["linhas"]}
     saida.parent.mkdir(parents=True, exist_ok=True)
     for linha in linhas:

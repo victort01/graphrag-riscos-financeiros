@@ -7,7 +7,7 @@ import re
 from .identidade import entidade, chave_hash, normalizar, resolver_mencoes
 from .esquema import RELACOES
 
-VERSAO = "regras-financeiras-v4"
+VERSAO = "regras-financeiras-v5"
 TERMOS = [
     ("Moeda", "USD", r"\bUSD\b|US\$|d[oó]lar(?:es)? (?:americanos?|dos Estados Unidos(?: da Am[eé]rica)?)"),
     ("Moeda", "BRL", r"\bBRL\b|R\$|\breais\b|(?-i:\bReal\b)"),
@@ -47,8 +47,10 @@ def extrair(trecho, fonte):
         natureza = "cenario" if re.search(r"analise de sensibilidade|cenario (?:adverso|remoto|base|provavel)", n) else "declaracao"
         if natureza == "cenario":
             continue
-        condicoes = sentenca if re.search(r"parcela|parte |limita|provav|politica|horizonte|objetivo", n) else ""
-        escopo = "consolidado" if "consolidado" in n else "controladora" if "controladora" in n else "nao_especificado"
+        condicoes = sentenca if re.search(r"parcela|parte |limita|provav|politica|horizonte|objetivo|permite|\bpode\b", n) else ""
+        escopos = {s for s in ("consolidado", "controladora") if re.search(r"\b" + s + r"\b", n)}
+        # Mencionar as duas bases não permite escolher a qual delas pertence o fato.
+        escopo = next(iter(escopos)) if len(escopos) == 1 else "nao_especificado"
 
         def no(tipo, nome):
             registro = entidade(tipo, nome, companhia)

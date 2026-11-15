@@ -17,6 +17,14 @@ class ValidacaoResposta(unittest.TestCase):
         resposta = {"afirmacoes": [{"texto": "A dívida é 900.", "fontes": ["E1"]}], "cobertura": "direta"}
         self.assertTrue(validar_resposta(resposta, self.contexto))
 
+    def test_valor_presente_no_texto_nao_autoriza_calculo_financeiro(self):
+        resposta = {"afirmacoes": [{"texto": "A dívida é 100.", "fontes": ["E1"]}], "cobertura": "direta"}
+        self.assertTrue(any("escopo narrativo" in e for e in validar_resposta(resposta, self.contexto)))
+
+    def test_exercicio_documental_continua_permitido(self):
+        resposta = {"afirmacoes": [{"texto": "Em 2025 há dívida em USD.", "fontes": ["E1"]}], "cobertura": "direta"}
+        self.assertFalse(validar_resposta(resposta, self.contexto))
+
     def test_rejeita_protecao_absoluta(self):
         resposta = {"afirmacoes": [{"texto": "A companhia tem proteção total.", "fontes": ["E1"]}], "cobertura": "direta"}
         self.assertTrue(validar_resposta(resposta, self.contexto))

@@ -1,0 +1,298 @@
+{
+  "uso": "Avaliação prospectiva assistida por IA no corpus conhecido; perguntas e critérios fixados antes das execuções desta rodada. Não é revisão humana independente nem teste em documentos inéditos. V08–V10 retomam temas de desenvolvimento e são controles, não exemplos de generalização.",
+  "protocolo": {
+    "versao": 1,
+    "criado_em_utc": "2026-11-15T18:51:19.544118+00:00",
+    "variantes": [
+      "vetorial",
+      "hibrido",
+      "grafo"
+    ],
+    "caracteres_contexto": 3500,
+    "temperatura": 0,
+    "seed": 42,
+    "revisao_humana": "pendente",
+    "criterios": [
+      "Recall de localizadores por pergunta, separando controles e casos sem evidência esperada.",
+      "Falhas técnicas separadas de abstenções.",
+      "Abstenção obrigatória nos dois casos negativos; não prova suporte nas respostas positivas.",
+      "Suporte semântico, completude e correção por empresa/exercício dependem de revisão documental.",
+      "Depois de observar saídas, correções exigem outra rodada identificada; esta versão não deve ser alterada."
+    ]
+  },
+  "perguntas": [
+    {
+      "id": "V01",
+      "pergunta": "A Suzano adota hedge accounting no exercício de 2024?",
+      "empresas": [
+        "empresa:16404287000155"
+      ],
+      "periodo": "2024-12-31",
+      "tipo": "negacao",
+      "proximidade_desenvolvimento": false,
+      "evidencias": [
+        {
+          "documento_id": "suzano-dfp-2024",
+          "pagina": 35,
+          "termo": "não adota a modalidade de contabilização hedge accounting"
+        }
+      ],
+      "criterio_documental": "Preservar a negativa explícita sobre hedge accounting; não confundir proteção econômica e tratamento contábil.",
+      "conclusoes_indevidas": [
+        "Afirmar adoção de hedge accounting"
+      ],
+      "abstencao_esperada": false
+    },
+    {
+      "id": "V02",
+      "pergunta": "A política da Suzano em 2025 permite operações alavancadas que alterem a finalidade de proteção?",
+      "empresas": [
+        "empresa:16404287000155"
+      ],
+      "periodo": "2025-12-31",
+      "tipo": "condicao",
+      "proximidade_desenvolvimento": false,
+      "evidencias": [
+        {
+          "documento_id": "suzano-dfp-2025",
+          "pagina": 99,
+          "termo": "não contrata operações alavancadas"
+        }
+      ],
+      "criterio_documental": "A política informa que não contrata essas operações; não generalizar para ausência de riscos financeiros.",
+      "conclusoes_indevidas": [
+        "Ausência de todo risco financeiro",
+        "Permissão para especulação"
+      ],
+      "abstencao_esperada": false
+    },
+    {
+      "id": "V03",
+      "pergunta": "Quais indexadores dos empréstimos expõem a Klabin a variações de juros em 2024?",
+      "empresas": [
+        "empresa:89637490000145"
+      ],
+      "periodo": "2024-12-31",
+      "tipo": "direta",
+      "proximidade_desenvolvimento": false,
+      "evidencias": [
+        {
+          "documento_id": "klabin-dfp-2024",
+          "pagina": 122,
+          "termo": "empréstimos indexados pela variação da TJLP, SOFR, IPCA e do CDI"
+        }
+      ],
+      "criterio_documental": "Identificar TJLP, SOFR, IPCA e CDI como indexadores dos empréstimos; não transformar saldos de aplicações em dívidas.",
+      "conclusoes_indevidas": [
+        "Todos os empréstimos são prefixados"
+      ],
+      "abstencao_esperada": false
+    },
+    {
+      "id": "V04",
+      "pergunta": "Como o swap de juros da Klabin em 2025 relaciona a SOFR à taxa pré-fixada?",
+      "empresas": [
+        "empresa:89637490000145"
+      ],
+      "periodo": "2025-12-31",
+      "tipo": "conexao_documental",
+      "proximidade_desenvolvimento": false,
+      "evidencias": [
+        {
+          "documento_id": "klabin-dfp-2025",
+          "pagina": 137,
+          "termo": "swap convertendo para taxa pré-fixada"
+        }
+      ],
+      "criterio_documental": "Relacionar o swap à variação de SOFR nas despesas de juros de dívidas de Pré-Pagamento de Exportação em USD e à conversão para taxa prefixada.",
+      "conclusoes_indevidas": [
+        "Converter USD em BRL",
+        "Eliminar todo risco da empresa"
+      ],
+      "abstencao_esperada": false
+    },
+    {
+      "id": "V05",
+      "pergunta": "Como a Irani monitora a liquidez e mantém seus planos de financiamento em 2024?",
+      "empresas": [
+        "empresa:92791243000103"
+      ],
+      "periodo": "2024-12-31",
+      "tipo": "direta",
+      "proximidade_desenvolvimento": false,
+      "evidencias": [
+        {
+          "documento_id": "irani-dfp-2024",
+          "pagina": 120,
+          "termo": "projeção de fluxos de caixa nas moedas utilizadas"
+        }
+      ],
+      "criterio_documental": "Descrever projeções de caixa, ativos líquidos, monitoramento de índices e planos de financiamento, sem calcular saldos.",
+      "conclusoes_indevidas": [
+        "Garantia de liquidez em qualquer cenário"
+      ],
+      "abstencao_esperada": false
+    },
+    {
+      "id": "V06",
+      "pergunta": "Quais indexadores de ativos e passivos aparecem na exposição a juros da Irani em 2025?",
+      "empresas": [
+        "empresa:92791243000103"
+      ],
+      "periodo": "2025-12-31",
+      "tipo": "direta",
+      "proximidade_desenvolvimento": false,
+      "evidencias": [
+        {
+          "documento_id": "irani-dfp-2025",
+          "pagina": 125,
+          "termo": "passivos e ativos da Companhia indexados pela taxa CDI"
+        }
+      ],
+      "criterio_documental": "CDI e IPCA são explicitamente mencionados para ativos e passivos; não atribuir toda exposição exclusivamente a um lado.",
+      "conclusoes_indevidas": [
+        "Somente SOFR",
+        "Ausência de risco de juros"
+      ],
+      "abstencao_esperada": false
+    },
+    {
+      "id": "V07",
+      "pergunta": "Suzano e Klabin dão o mesmo tratamento de hedge accounting a seus instrumentos em 2024?",
+      "empresas": [
+        "empresa:16404287000155",
+        "empresa:89637490000145"
+      ],
+      "periodo": "2024-12-31",
+      "tipo": "comparacao",
+      "proximidade_desenvolvimento": false,
+      "evidencias": [
+        {
+          "documento_id": "suzano-dfp-2024",
+          "pagina": 35,
+          "termo": "não adota a modalidade de contabilização hedge accounting"
+        },
+        {
+          "documento_id": "klabin-dfp-2024",
+          "pagina": 134,
+          "termo": "adota a contabilidade de hedge accounting de taxa de juros"
+        }
+      ],
+      "criterio_documental": "Contrastar a negativa da Suzano com a adoção declarada pela Klabin para o programa de juros; não estender a todos os instrumentos.",
+      "conclusoes_indevidas": [
+        "Tratamento idêntico",
+        "Todas as operações da Klabin usam a mesma categoria"
+      ],
+      "abstencao_esperada": false
+    },
+    {
+      "id": "V08",
+      "pergunta": "Os swaps de juros da Irani e da Klabin em 2025 permitem identificar o mesmo indexador protegido?",
+      "empresas": [
+        "empresa:92791243000103",
+        "empresa:89637490000145"
+      ],
+      "periodo": "2025-12-31",
+      "tipo": "comparacao",
+      "proximidade_desenvolvimento": true,
+      "evidencias": [
+        {
+          "documento_id": "irani-dfp-2025",
+          "pagina": 124,
+          "termo": "troca de indexador de taxa de juros"
+        },
+        {
+          "documento_id": "klabin-dfp-2025",
+          "pagina": 137,
+          "termo": "variação da SOFR como indexador de dívida"
+        }
+      ],
+      "criterio_documental": "A Irani descreve troca de indexador sem nomeá-lo nessa evidência; a Klabin explicita SOFR. Não concluir identidade dos indexadores apenas da palavra swap.",
+      "conclusoes_indevidas": [
+        "Atribuir SOFR à Irani sem evidência específica"
+      ],
+      "abstencao_esperada": false
+    },
+    {
+      "id": "V09",
+      "pergunta": "Que caminho liga a Irani aos recebíveis de exportações por meio do ACC em 2024?",
+      "empresas": [
+        "empresa:92791243000103"
+      ],
+      "periodo": "2024-12-31",
+      "tipo": "multi_hop_controle",
+      "proximidade_desenvolvimento": true,
+      "evidencias": [
+        {
+          "documento_id": "irani-dfp-2024",
+          "pagina": 117,
+          "termo": "variações do saldo de clientes de exportações"
+        }
+      ],
+      "criterio_documental": "Empresa → obrigação ACC → recebíveis de exportações; explicar finalidade declarada e citar caminho se houver no contexto.",
+      "conclusoes_indevidas": [
+        "Receita é dívida",
+        "Proteção integral garantida"
+      ],
+      "abstencao_esperada": false
+    },
+    {
+      "id": "V10",
+      "pergunta": "Que conexão entre a Klabin, o swap cambial e a moeda de destino aparece em 2025?",
+      "empresas": [
+        "empresa:89637490000145"
+      ],
+      "periodo": "2025-12-31",
+      "tipo": "multi_hop_controle",
+      "proximidade_desenvolvimento": true,
+      "evidencias": [
+        {
+          "documento_id": "klabin-dfp-2025",
+          "pagina": 124,
+          "termo": "de moeda local para dólares americanos"
+        }
+      ],
+      "criterio_documental": "Empresa → swap de câmbio → USD, com origem em moeda local; não inverter a conversão.",
+      "conclusoes_indevidas": [
+        "USD para BRL",
+        "Todos os empréstimos são convertidos"
+      ],
+      "abstencao_esperada": false
+    },
+    {
+      "id": "V11",
+      "pergunta": "Quais exposições a juros a Irani declarou no exercício de 2029?",
+      "empresas": [
+        "empresa:92791243000103"
+      ],
+      "periodo": "2029-12-31",
+      "tipo": "sem_acervo",
+      "proximidade_desenvolvimento": false,
+      "evidencias": [],
+      "criterio_documental": "Abster-se por ausência de documentos de 2029 no manifesto.",
+      "conclusoes_indevidas": [
+        "Extrapolar 2024 ou 2025 para 2029"
+      ],
+      "abstencao_esperada": true
+    },
+    {
+      "id": "V12",
+      "pergunta": "Calcule a exposição cambial líquida em reais de Suzano, Klabin e Irani em 2025 e classifique as empresas por risco.",
+      "empresas": [
+        "empresa:16404287000155",
+        "empresa:89637490000145",
+        "empresa:92791243000103"
+      ],
+      "periodo": "2025-12-31",
+      "tipo": "fora_do_escopo_quantitativo",
+      "proximidade_desenvolvimento": false,
+      "evidencias": [],
+      "criterio_documental": "Abster-se do cálculo e do ranking: o recorte narrativo não valida tabelas, unidades, montantes ou metodologia de classificação.",
+      "conclusoes_indevidas": [
+        "Inventar exposição líquida",
+        "Produzir ranking financeiro"
+      ],
+      "abstencao_esperada": true
+    }
+  ]
+}

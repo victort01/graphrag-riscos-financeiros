@@ -133,6 +133,9 @@ def validar_resposta(resposta, contexto, pergunta=""):
         for numero in re.findall(r"\d+(?:[.,]\d+)*%?", afirmacao["texto"]):
             if numero not in numeros_apoio:
                 erros.append("Valor ausente das fontes citadas: " + numero)
+            elif not re.fullmatch(r"20\d{2}", numero):
+                # O acervo narrativo não valida unidades, montantes ou cálculos de tabelas.
+                erros.append("Valor quantitativo fora do escopo narrativo: " + numero)
         for expressao in ("proteção total", "risco eliminado", "elimina o risco", "integralmente protegida", "sem risco"):
             if mencao_positiva(afirmacao["texto"], expressao) and not mencao_positiva(apoio, expressao):
                 erros.append("Conclusão de cobertura integral sem apoio literal.")

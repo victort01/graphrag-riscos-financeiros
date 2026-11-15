@@ -26,6 +26,18 @@ class TestExtracao(unittest.TestCase):
         self.assertTrue(any(d["predicado"] == "COMPENSA_VARIACOES_DE" for d in declaracoes))
         self.assertTrue(all(d["trecho_id"] == "trecho-teste" for d in declaracoes))
 
+    def test_duas_bases_juridicas_nao_qualificam_um_fato_univocamente(self):
+        _, _, declaracoes = self.extrair_texto(
+            "A controladora e o consolidado mantêm empréstimos em moeda estrangeira (ACC).")
+        self.assertTrue(declaracoes)
+        self.assertEqual({d["escopo"] for d in declaracoes}, {"nao_especificado"})
+
+    def test_base_juridica_explicita_qualifica_declaracao(self):
+        _, _, declaracoes = self.extrair_texto(
+            "A controladora mantém empréstimos em moeda estrangeira (ACC).")
+        self.assertTrue(declaracoes)
+        self.assertEqual({d["escopo"] for d in declaracoes}, {"controladora"})
+
     def test_continuacao_de_frase(self):
         doc = {"documento_id": "teste", "sha256": "teste", "paginas": [
             {"pagina_pdf": 1, "texto": "A Companhia mantém empréstimos em moeda estrangeira (ACC) que tem por objetivo\n\nfazer frente às variações do saldo de clientes de exportações."}]}
