@@ -8,3 +8,4 @@ data/reports/
 data/extracted/
 data/models/
 .pytest_cache/
+docs/apresentacao/.build/

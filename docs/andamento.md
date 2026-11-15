@@ -13,7 +13,7 @@ Este quadro distingue conclusão de implementação, validação científica e e
 | 7. Respostas e confiança | Em validação | Referências, abstenção, filtros, auditoria e qualificação de escopo. Revisão semântica independente pendente. |
 | 8. Interface | Implementação e verificação operacional concluídas | Nova consulta sobreviveu à reconexão e exibiu resposta, confiança, subgrafo e fonte. Arraste, pan, zoom e seleção conferidos. Deployment local de um processo. |
 | 9. Avaliação | Smoke concluído; validação científica pendente | Seis execuções sobre duas perguntas de desenvolvimento, sem falhas, com cobertura vetorial completa. Revisão independente e teste reservado pendentes. |
-| 10. Entrega e defesa | Em preparação | README e atribuições. Artigo SBC/IEEE, slides e falas dos quatro integrantes ainda pendentes. |
+| 10. Entrega e defesa | Materiais para revisão em preparação | Apresentação editável de 14 slides, PDF de exibição e roteiro dos quatro integrantes preparados. Artigo SBC/IEEE e consolidação após avaliação reservada pendentes. |
 
 ## Verificações desta etapa
 
