@@ -2,7 +2,8 @@
 <style>
 body{font:14px system-ui,sans-serif;color:#172b44;margin:0;background:#fff}
 .barra{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px;border-bottom:1px solid #dce4eb}
-select,button{font:inherit;padding:7px;border:1px solid #b7c8d8;border-radius:6px;background:white;max-width:500px}
+select,button{font:inherit;padding:7px;border:1px solid #b7c8d8;border-radius:6px;background:white;max-width:100%}
+.barra label{display:flex;flex-direction:column;gap:4px;min-width:0;max-width:100%;flex:1 1 220px}
 #grafo{height:370px;background:#f5f8fb;border-bottom:1px solid #dce4eb}
 #detalhe{padding:12px;white-space:pre-wrap;max-height:145px;overflow:auto}
 .dica{font-size:12px;color:#52677e;padding:8px 12px}
@@ -16,7 +17,7 @@ a{color:#075b9a}
 <div id="detalhe">Selecione um nó ou uma relação.</div>
 <script>__BIBLIOTECA__</script><script>
 const dados=__DADOS__;
-const cy=cytoscape({container:document.getElementById('grafo'),elements:dados.elementos,
+const cy=cytoscape({container:document.getElementById('grafo'),elements:dados.elementos,minZoom:0.25,maxZoom:3,
  layout:{name:'breadthfirst',directed:true,padding:55,spacingFactor:1.45},
  style:[{selector:'node',style:{'background-color':'#168b83',label:'data(label)',color:'#172b44',
  'text-valign':'bottom','text-margin-y':9,'text-wrap':'wrap','text-max-width':'155px','font-size':12,width:30,height:30}},
@@ -45,6 +46,17 @@ dados.afirmacoes.forEach((a,i)=>{const o=document.createElement('option');o.valu
 afirmacao.onchange=()=>{caminho.value='';const ids=afirmacao.value===''?[]:dados.afirmacoes[+afirmacao.value].caminhos;
  realcar(dados.caminhos.filter(p=>ids.includes(p.id)).flatMap(p=>p.relacoes.map(r=>r.id)));
  if(afirmacao.value!==''&&!ids.length)detalhe.textContent='Afirmação documental direta. Consulte as fontes citadas na aba Fontes.'};
-document.getElementById('ajustar').onclick=()=>cy.fit(undefined,55);
+function ajustar(){
+ const r=document.getElementById('grafo').getBoundingClientRect();
+ if(r.width<100||r.height<100)return;
+ cy.resize();cy.fit(undefined,40);
+}
+document.getElementById('ajustar').onclick=ajustar;
+// O iframe pode ganhar largura somente depois de o Streamlit montar a aba.
+new ResizeObserver(()=>requestAnimationFrame(ajustar)).observe(document.getElementById('grafo'));
+new IntersectionObserver(es=>{
+ if(es.some(e=>e.isIntersecting))requestAnimationFrame(()=>requestAnimationFrame(ajustar));
+}).observe(document.getElementById('grafo'));
+requestAnimationFrame(()=>requestAnimationFrame(ajustar));
 if(!dados.elementos.length)detalhe.textContent='Nenhum caminho financeiro foi selecionado para esta pergunta.';
 </script></html>

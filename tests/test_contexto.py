@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from riscos.respostas import montar_contexto
-from riscos.visualizacao import pagina_grafo
+from riscos.visualizacao import pagina_grafo, rastrear_nos
 
 
 class ContextoEVisualizacao(unittest.TestCase):
@@ -23,9 +23,15 @@ class ContextoEVisualizacao(unittest.TestCase):
         contexto = montar_contexto(busca, grafo, limite_caracteres=1200)
         self.assertLessEqual(len(json.dumps(contexto, ensure_ascii=False)), 1200)
         self.assertEqual([p["id"] for p in contexto["caminhos"]], ["C1"])
-        pagina = pagina_grafo({"contexto_enviado": contexto, "grafo": grafo, "resposta": {"afirmacoes": []}})
+        resultado = {"contexto_enviado": contexto, "grafo": grafo,
+                     "resposta": {"afirmacoes": [{"texto": "Afirmação teste", "fontes": ["E1"], "caminhos": ["C1"]}]}}
+        pagina = pagina_grafo(resultado)
         self.assertIn('"id": "no1"', pagina)
         self.assertNotIn('"id": "no2"', pagina)
+        rastreio = rastrear_nos(resultado)
+        self.assertIn("no2", rastreio["nos_financeiros_recuperados"])
+        self.assertNotIn("no2", rastreio["nos_financeiros_enviados"])
+        self.assertEqual(rastreio["trechos_citados"], {"E1": "t1"})
 
 
 if __name__ == "__main__":

@@ -3,6 +3,22 @@ import json
 from .config import ROOT
 
 
+def rastrear_nos(resultado):
+    caminhos = resultado["grafo"]["caminhos"]
+    enviados = {p["id"] for p in resultado["contexto_enviado"]["caminhos"]}
+    citados = {id_ for a in resultado["resposta"]["afirmacoes"] for id_ in a.get("caminhos", [])}
+
+    def listar(ids):
+        return {n["id"]: n["nome"] for p in caminhos if ids is None or p["id"] in ids for n in p["nos"]}
+
+    fontes = resultado["contexto_enviado"]["fontes"]
+    fontes_citadas = {id_ for a in resultado["resposta"]["afirmacoes"] for id_ in a["fontes"]}
+    return {"nos_financeiros_recuperados": listar(None), "nos_financeiros_enviados": listar(enviados),
+            "nos_financeiros_citados": listar(citados),
+            "trechos_enviados": {id_: f["trecho_id"] for id_, f in fontes.items()},
+            "trechos_citados": {id_: fontes[id_]["trecho_id"] for id_ in sorted(fontes_citadas)}}
+
+
 def pagina_grafo(resultado):
     evidencias = {e["declaracao_id"]: e for e in resultado["grafo"]["evidencias"]}
     enviados = {p["id"] for p in resultado["contexto_enviado"]["caminhos"]}
