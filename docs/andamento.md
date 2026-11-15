@@ -8,7 +8,7 @@ Este quadro distingue conclusão de implementação, validação científica e e
 | 2. Modelagem LPG | Concluída | Neo4j 5.26, ontologia, constraints e índices verificados. |
 | 3. Text-to-Graph | Parcial | Carga narrativa, versionamento explícito, migração auditada e rollback verificados. Tabelas, cobertura ampliada e documento de validação externo pendentes. |
 | 4. Identidades e qualidade | Parcial | Canonicalização e testes funcionais; dois formulários e comparador de revisões preparados. Revisão humana e validação independente pendentes. |
-| 5. Recuperação híbrida | Implementação e verificação operacional concluídas | Fulltext, 553 vetores, RRF e Cypher gerado/validado; qualidade e desempenho ainda em avaliação. |
+| 5. Recuperação híbrida | Implementação e verificação operacional concluídas | Fulltext e vetor sobre os mesmos 3.918 trechos elegíveis, RRF e Cypher gerado/validado; qualidade e desempenho ainda em avaliação. |
 | 6. Algoritmo de grafo | Implementação e verificação operacional concluídas | Caminhos financeiros de dois saltos; ablation comprova alteração do contexto antes da geração. Benefício de qualidade ainda não medido. |
 | 7. Respostas e confiança | Em validação | Referências, abstenção, filtros, auditoria e qualificação de escopo. Revisão semântica independente pendente. |
 | 8. Interface | Implementação e verificação operacional concluídas | Nova consulta sobreviveu à reconexão e exibiu resposta, confiança, subgrafo e fonte. Arraste, pan, zoom e seleção conferidos. Deployment local de um processo. |

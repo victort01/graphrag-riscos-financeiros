@@ -2,6 +2,7 @@
 import hashlib
 import platform
 import sys
+import subprocess
 from .config import ROOT
 
 
@@ -16,5 +17,12 @@ def identificar():
         hash_.update(b"\0")
         hash_.update(arquivo.read_bytes())
         hash_.update(b"\0")
+    git = {"commit_git": None, "arvore_git_alterada": None}
+    try:
+        commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True, timeout=5)
+        estado = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True, check=True, timeout=5)
+        git = {"commit_git": commit.stdout.strip(), "arvore_git_alterada": bool(estado.stdout.strip())}
+    except (OSError, subprocess.SubprocessError):
+        pass
     return {"sha256_codigo_catalogos_dependencias": hash_.hexdigest(), "python": sys.version.split()[0],
-            "plataforma": platform.system(), "arquitetura": platform.machine()}
+            "plataforma": platform.system(), "arquitetura": platform.machine(), **git}

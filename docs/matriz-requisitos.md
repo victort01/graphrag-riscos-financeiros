@@ -12,7 +12,7 @@ Referência: documento “Projeto Final — GraphRAG e KAG em Ciência da Comput
 | LPG no Neo4j | Ontologia em esquema.py, diagramas e dicionário na fase 2. | Verificado. |
 | Constraints de unicidade | Migrações idempotentes; teste de duplicação e rollback. | Verificado no Neo4j 5.26. |
 | Índices de propriedades/BTrees | Índices Range, correspondentes atuais da família de índices de propriedades; chaves e filtros documentados. | Criados e inspecionados. |
-| Fulltext e Vector Index | Consultas reais sobre o corpus; 553 vetores de 384 dimensões. | Verificado. |
+| Fulltext e Vector Index | Consultas reais sobre o corpus; 3.918 vetores de 384 dimensões, cobrindo todos os trechos narrativos elegíveis. | Verificado. |
 | Busca híbrida com cosseno e Cypher | RRF entre vetor, Fulltext e IDs de trechos retornados pelo Cypher gerado. | Implementado e testado no desenvolvimento; avaliação de qualidade pendente. |
 | Geração de Cypher via LLM | Modelo gera a string completa; validação, EXPLAIN, reparo e banco somente leitura. | Execuções válidas e rejeições verificadas. |
 | Travessia de dois ou mais saltos | Empresa → ACC → recebíveis; Empresa → swap de juros → exposição a juros. | Verificado com relações financeiras reais. |
