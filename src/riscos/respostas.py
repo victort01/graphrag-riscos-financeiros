@@ -197,6 +197,28 @@ def concluir(resposta, contexto, erros):
             "validacao": {"erros": [], "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"}}
 
 
+def responder_contexto(pergunta, contexto, andamento=None):
+    """Gera e verifica uma resposta sobre um contexto já recuperado, sem repetir a busca.
+
+    Permite comparar contextos congelados mantendo o mesmo modelo e as mesmas
+    guardas de produção. Erros de inferência continuam sendo erros operacionais.
+    """
+    informar = andamento or (lambda etapa: None)
+    entrada = {"pergunta": pergunta, **contexto}
+    logging.getLogger(__name__).info("Gerando resposta com %s fontes e %s caminhos.", len(contexto["fontes"]), len(contexto["caminhos"]))
+    informar("Gerando a resposta documental")
+    resposta = gerar_json(REGRAS, entrada, ESQUEMA, 800) if contexto["fontes"] else {
+        "afirmacoes": [], "cobertura": "insuficiente", "possivel_conflito": False}
+    original = resposta
+    informar("Verificando referências e conclusões")
+    resposta, removidas = filtrar_pertinencia(resposta, pergunta)
+    resposta, complementos = completar_procedencia(resposta, contexto)
+    erros = validar_resposta(resposta, contexto, pergunta)
+    return {"resposta": concluir(resposta, contexto, erros), "resposta_original_modelo": original,
+            "complementos_procedencia": complementos, "afirmacoes_removidas_por_vocabulario": removidas,
+            "contexto_enviado": entrada}
+
+
 def responder(pergunta, empresas=None, periodo="", usar_cypher=True, usar_caminhos=True, andamento=None):
     inicio = perf_counter()
     if not pergunta.strip():
@@ -210,23 +232,11 @@ def responder(pergunta, empresas=None, periodo="", usar_cypher=True, usar_caminh
     informar("Selecionando caminhos financeiros e evidências")
     grafo = enriquecer(pergunta, busca) if usar_caminhos else {"caminhos": [], "evidencias": [], "rastreio": {}}
     contexto = montar_contexto(busca, grafo)
-    entrada = {"pergunta": pergunta, **contexto}
-    logging.getLogger(__name__).info("Gerando resposta com %s fontes e %s caminhos.", len(contexto["fontes"]), len(contexto["caminhos"]))
-    informar("Gerando a resposta documental")
-    resposta = gerar_json(REGRAS, entrada, ESQUEMA, 800) if contexto["fontes"] else {
-        "afirmacoes": [], "cobertura": "insuficiente", "possivel_conflito": False}
-    original = resposta
-    informar("Verificando referências e conclusões")
-    resposta, removidas = filtrar_pertinencia(resposta, pergunta)
-    resposta, complementos = completar_procedencia(resposta, contexto)
-    erros = validar_resposta(resposta, contexto, pergunta)
-    final = concluir(resposta, contexto, erros)
+    geracao = responder_contexto(pergunta, contexto, informar)
     if busca["rastreio"].get("estado") == "sem_documentos_no_filtro":
-        final["confianca"]["motivo"] = "O acervo não contém documentos para as empresas e o exercício selecionados."
+        geracao["resposta"]["confianca"]["motivo"] = "O acervo não contém documentos para as empresas e o exercício selecionados."
     return {"pergunta": pergunta, "data_utc": datetime.now(timezone.utc).isoformat(),
-            "resposta": final, "resposta_original_modelo": original,
-            "complementos_procedencia": complementos, "afirmacoes_removidas_por_vocabulario": removidas,
-            "contexto_enviado": entrada,
+            **geracao,
             "recuperacao": busca, "grafo": grafo, "versao_execucao": identificar(),
             "latencia_total_segundos": round(perf_counter()-inicio, 3),
             "modelo_resposta": {"alias": ambiente().get("LLM_MODEL", "qwen-riscos-local"),
