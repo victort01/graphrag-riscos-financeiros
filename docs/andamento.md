@@ -12,7 +12,7 @@ Este quadro distingue conclusão de implementação, validação científica e e
 | 6. Algoritmo de grafo | Implementação e verificação operacional concluídas | Caminhos financeiros de dois saltos; ablation comprova alteração do contexto antes da geração. Benefício de qualidade ainda não medido. |
 | 7. Respostas e confiança | Em validação | Referências, abstenção, filtros, auditoria e qualificação de escopo. Revisão semântica independente pendente. |
 | 8. Interface | Implementação e verificação operacional concluídas | Nova consulta sobreviveu à reconexão e exibiu resposta, confiança, subgrafo e fonte. Arraste, pan, zoom e seleção conferidos. Deployment local de um processo. |
-| 9. Avaliação | Infraestrutura inicial implementada | Comparação entre três variantes e protocolo. Rodada smoke interrompida após timeout; resultados insuficientes para comparação. |
+| 9. Avaliação | Smoke concluído; validação científica pendente | Seis execuções sobre duas perguntas de desenvolvimento, sem falhas, com cobertura vetorial completa. Revisão independente e teste reservado pendentes. |
 | 10. Entrega e defesa | Em preparação | README e atribuições. Artigo SBC/IEEE, slides e falas dos quatro integrantes ainda pendentes. |
 
 ## Verificações desta etapa

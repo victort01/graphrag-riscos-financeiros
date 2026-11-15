@@ -8,6 +8,17 @@ Os tempos registrados são descritivos. Aquecimento, disputa de recursos e cache
 
 A primeira tentativa smoke foi interrompida após um timeout do Neo4j na variante vetorial. O resumo preservado em `data/avaliacao-recuperacao-smoke-resumo.json` identifica a rodada como inválida para comparação. Esse erro operacional não é evidência de inferioridade do método vetorial.
 
+## Smoke com indexação completa
+
+Em 15/11/2026, uma nova rodada terminou sem falhas nas seis execuções, com os 3.918 trechos elegíveis indexados pelo mesmo modelo. O [resumo auditável](../data/avaliacao-recuperacao-smoke-completa-resumo.json) registra commit limpo, hashes de código, conjunto, manifesto e relatório integral, versões documentais e tentativas de Cypher. Ambas as consultas geradas passaram na primeira tentativa.
+
+| Pergunta de desenvolvimento | Vetor: evidência no contexto | Híbrido | Híbrido + caminhos |
+|---|---|---|---|
+| S01 — Proteção de juros da Irani | 0/1 | 1/1 | 1/1 |
+| S02 — ACC e recebíveis da Irani | 1/1 | 1/1 | 1/1 |
+
+O algoritmo acrescentou um caminho ao contexto de cada pergunta, sem ganho de recall sobre o híbrido. Todos os contextos ficaram abaixo de 3.500 caracteres. O denominador é uma evidência esperada por pergunta; não é a integralidade de todas as fontes possíveis. Duas perguntas conhecidas de uma única companhia não permitem generalizar o resultado. A rodada não gerou respostas nem mediu alucinação. O diagnóstico anterior de seleção entre três empresas utilizou o índice piloto de 553 passagens e permanece identificado como histórico de desenvolvimento.
+
 ## Rodada científica pendente
 
 Preparar quinze perguntas de desenvolvimento e trinta reservadas, cobrindo consulta direta, multi-hop, comparação entre empresas, comparação temporal, condição/negação e ausência de suporte. Registrar fontes e respostas esperadas antes de executar os métodos no reservado. Dois integrantes devem conferir uma parte comum das anotações e resolver divergências. Congelar conjunto, corpus, versões, regras e configuração no Git antes da rodada final.
