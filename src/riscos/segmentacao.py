@@ -2,7 +2,7 @@
 import re
 from .identidade import chave_hash
 
-VERSAO = "paragrafos-v3"
+VERSAO = "paragrafos-v4"
 
 
 def segmentar(documento):
@@ -34,7 +34,7 @@ def segmentar(documento):
         for inicio in range(0, len(limpo), 2400):
             primeira, ultima = parte["origens"][0], parte["origens"][-1]
             trechos.append({
-                "id": "trecho:" + chave_hash(documento["sha256"], primeira, ultima, inicio, VERSAO),
+                "id": "trecho:" + chave_hash(documento["documento_id"], documento["sha256"], primeira, ultima, inicio, VERSAO),
                 "texto": limpo[inicio:inicio+2400], "texto_original": parte["original"],
                 "documento_id": documento["documento_id"], "sha256": documento["sha256"],
                 "pagina_inicio": primeira["pagina"], "pagina_fim": ultima["pagina"],

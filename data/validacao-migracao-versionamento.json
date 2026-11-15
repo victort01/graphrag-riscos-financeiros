@@ -1,0 +1,73 @@
+{
+  "uso": "Auditoria operacional do corpus do manifesto, sem métrica de qualidade semântica.",
+  "data_utc": "2026-11-15T09:07:35.549157+00:00",
+  "pipeline_codigo": "regras-financeiras-v4/paragrafos-v4/identidades-v2/versoes-v1",
+  "documentos": [
+    {
+      "id": "irani-dfp-2024",
+      "sha256": "a956ed7205662ac69ec240661108805b5b6f3ab6535336751dc8c6f5ed281b98",
+      "pipeline": "regras-financeiras-v4/paragrafos-v4/identidades-v2/versoes-v1",
+      "versao": "1",
+      "vigente": true,
+      "chave_versao": "92791243000103|demonstracoes_financeiras_anuais|2024-12-31|1"
+    },
+    {
+      "id": "irani-dfp-2025",
+      "sha256": "79ae145ecc766ee201cecf0cc703ac4b3e7a68a2f7d2cd6bffbd76fcd6a8b0a5",
+      "pipeline": "regras-financeiras-v4/paragrafos-v4/identidades-v2/versoes-v1",
+      "versao": "1",
+      "vigente": true,
+      "chave_versao": "92791243000103|demonstracoes_financeiras_anuais|2025-12-31|1"
+    },
+    {
+      "id": "klabin-dfp-2024",
+      "sha256": "dcb0e75aea5884baaad050eebbbeab1e6adcfe664796feffac79ea5b8b4d7a41",
+      "pipeline": "regras-financeiras-v4/paragrafos-v4/identidades-v2/versoes-v1",
+      "versao": "1",
+      "vigente": true,
+      "chave_versao": "89637490000145|demonstracoes_financeiras_anuais|2024-12-31|1"
+    },
+    {
+      "id": "klabin-dfp-2025",
+      "sha256": "23984ea9fecc8027a11054d9414e7b7677b193e12f3f89bae3253043a214dfab",
+      "pipeline": "regras-financeiras-v4/paragrafos-v4/identidades-v2/versoes-v1",
+      "versao": "1",
+      "vigente": true,
+      "chave_versao": "89637490000145|demonstracoes_financeiras_anuais|2025-12-31|1"
+    },
+    {
+      "id": "suzano-dfp-2024",
+      "sha256": "516221b892a63835c2da65a502c897af2f8d573ea4565077e6872bc400c75dd3",
+      "pipeline": "regras-financeiras-v4/paragrafos-v4/identidades-v2/versoes-v1",
+      "versao": "1",
+      "vigente": true,
+      "chave_versao": "16404287000155|demonstracoes_financeiras_anuais|2024-12-31|1"
+    },
+    {
+      "id": "suzano-dfp-2025",
+      "sha256": "aa0ed09482826ee8f94d9c191d39d866c7ce1e91861a6fb57e93c364e7fe63b6",
+      "pipeline": "regras-financeiras-v4/paragrafos-v4/identidades-v2/versoes-v1",
+      "versao": "1",
+      "vigente": true,
+      "chave_versao": "16404287000155|demonstracoes_financeiras_anuais|2025-12-31|1"
+    }
+  ],
+  "totais": {
+    "documentos": 6,
+    "declaracoes": 85,
+    "vetores": 553
+  },
+  "sha256_declaracoes_por_conteudo": "9766c6d99819533bbc2d531e527ecf9170967e9782824d408ee61e4dfec3cf31",
+  "sha256_vetores_por_conteudo": "c9919ed2d325c6c0ff0f0e8d659b37e65dd018d306ca8a8e8cfdcf969af35ba3",
+  "trechos_com_origem_divergente": 0,
+  "comparacao": {
+    "baseline_sha256": "64eaca7cb531f3340d25b7ca8938146e9e19c51deeddd943f769975ffe21bec7",
+    "campos_comparados": [
+      "totais",
+      "sha256_declaracoes_por_conteudo",
+      "sha256_vetores_por_conteudo",
+      "trechos_com_origem_divergente"
+    ],
+    "divergencias": []
+  }
+}

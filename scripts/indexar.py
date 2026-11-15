@@ -10,7 +10,7 @@ from riscos.embeddings import IDENTIFICADOR, codificar
 if __name__ == "__main__":
     banco = Banco()
     linhas = banco.consultar("""MATCH (t:Trecho)-[:PERTENCE_A]->(d:Documento)
-        WHERE t.natureza='narrativa' AND t.recorte=false
+        WHERE t.natureza='narrativa' AND t.recorte=false AND coalesce(d.vigente,true)=true
           AND (t.modelo_embedding IS NULL OR t.modelo_embedding<>$modelo)
         RETURN t.id AS id,t.texto AS texto,d.empresa AS empresa,d.data_referencia AS periodo ORDER BY id""",
         {"modelo": IDENTIFICADOR})

@@ -101,7 +101,8 @@ if "resultado" in st.session_state:
     with abas[1]:
         citadas = {f for a in resposta["afirmacoes"] for f in a["fontes"]}
         for id_, fonte in resultado["contexto_enviado"]["fontes"].items():
-            with st.expander(f"{id_} · {fonte['empresa']} · {fonte['periodo']} · p. {fonte['pagina_inicio']}" + (" · citada" if id_ in citadas else " · contexto")):
+            versao = str(fonte.get("versao") or "não registrada")
+            with st.expander(f"{id_} · {fonte['empresa']} · {fonte['periodo']} · v. {versao} · p. {fonte['pagina_inicio']}" + (" · citada" if id_ in citadas else " · contexto")):
                 st.write(fonte["texto"])
                 st.link_button("Abrir documento oficial", fonte["url"]+"#page="+str(fonte["pagina_inicio"]))
                 st.code(fonte["trecho_id"])

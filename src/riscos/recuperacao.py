@@ -10,10 +10,11 @@ from .caminhos import palavras
 from .intencao import reconciliar
 
 CAMPOS = """t.id AS id,t.texto AS texto,t.pagina_inicio AS pagina_inicio,t.pagina_fim AS pagina_fim,
-d.id AS documento_id,d.empresa AS empresa,d.data_referencia AS periodo,d.url AS url"""
+d.id AS documento_id,d.empresa AS empresa,d.data_referencia AS periodo,d.url AS url,d.versao AS versao,
+d.data_recebimento_cvm AS data_recebimento_cvm"""
 FILTROS = """MATCH (t)-[:PERTENCE_A]->(d:Documento)-[:REFERE_SE_A]->(e:Empresa)
 WHERE ($empresas=[] OR e.id IN $empresas) AND ($periodo='' OR d.data_referencia=$periodo)
-AND t.natureza='narrativa' AND t.recorte=false"""
+AND coalesce(d.vigente,true)=true AND t.natureza='narrativa' AND t.recorte=false"""
 
 
 def lexical(pergunta):
@@ -52,6 +53,7 @@ def gerar_cypher(pergunta, filtros, banco):
 Return JSON with a cypher string. All answers must retrieve evidence through this chain:
 (c:Declaracao)-[:EVIDENCIADA_POR]->(t:Trecho)-[:PERTENCE_A]->(d:Documento)-[:REFERE_SE_A]->(e:Empresa)
 The filters are ($empresas=[] OR e.id IN $empresas) AND ($periodo='' OR d.data_referencia=$periodo).
+Also filter coalesce(d.vigente,true)=true to exclude superseded document versions.
 Do not add literal company names, IDs or dates. Filters are provided through parameters.
 Declaracao.predicado describes a financial statement. Available values:
 ADOTA_PROTECAO = adopted hedging instrument; PROTEGE = what the instrument protects;
@@ -64,6 +66,7 @@ Example question: Quais instrumentos de proteção a companhia declara?
 Example query:
 MATCH (c:Declaracao)-[:EVIDENCIADA_POR]->(t:Trecho)-[:PERTENCE_A]->(d:Documento)-[:REFERE_SE_A]->(e:Empresa)
 WHERE ($empresas=[] OR e.id IN $empresas) AND ($periodo='' OR d.data_referencia=$periodo)
+AND coalesce(d.vigente,true)=true
 AND c.predicado IN ['ADOTA_PROTECAO','PROTEGE']
 RETURN DISTINCT t.id AS trecho_id LIMIT 16
 Only MATCH, WHERE, RETURN, LIMIT. Always return DISTINCT t.id AS trecho_id LIMIT 16.
@@ -95,6 +98,7 @@ def recuperar(pergunta, empresas=None, periodo="", usar_llm=True, somente_vetor=
     filtros = {"empresas": empresas or [], "periodo": periodo}
     documentos = banco.consultar("""MATCH (d:Documento)-[:REFERE_SE_A]->(e:Empresa)
         WHERE ($empresas=[] OR e.id IN $empresas) AND ($periodo='' OR d.data_referencia=$periodo)
+        AND coalesce(d.vigente,true)=true
         RETURN count(d) AS total""", filtros)[0]["total"]
     if not documentos:
         return {"trechos": [], "rastreio": {"filtros": filtros, "estado": "sem_documentos_no_filtro",

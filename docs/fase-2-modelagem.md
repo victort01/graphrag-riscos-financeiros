@@ -9,8 +9,8 @@ Cada entidade financeira representa um conceito identificável. Cada declaraçã
 | Rótulo | Identidade e propriedades principais |
 |---|---|
 | Empresa | CNPJ normalizado, nome oficial, código CVM, aliases e setor declarado. |
-| Documento | ID do manifesto, SHA-256, URL, exercício, protocolo e versão publicada. |
-| Trecho | Hash do documento e posição no texto, páginas inicial/final, texto e vetor. |
+| Documento | ID do manifesto, SHA-256, URL, exercício, versão, série documental, vigência e eventual documento substituído. |
+| Trecho | ID do registro documental, checksum do PDF e posição no texto, páginas inicial/final, texto e vetor. |
 | Declaracao | ID estável, sujeito, predicado, objeto, empresa, período, escopo, condição, polaridade, método e evidência. |
 | Periodo | Data de referência da observação. |
 | ObrigacaoFinanceira | Conceito de dívida ou financiamento atribuído à companhia. |
@@ -32,6 +32,8 @@ Cada relação financeira tem declaracao_id. A declaração aponta por SUJEITO e
 
 As relações possuem identificação de declaração para preservar duas observações independentes da mesma relação em publicações diferentes. Uma reexecução deve manter os IDs. A carga de cada documento será transacional.
 
+Documento → SUBSTITUI → Documento registra uma revisão da mesma empresa, tipo e exercício. Essa relação de procedência não integra os caminhos financeiros. A versão anterior permanece disponível para auditoria, mas seus trechos e relações são excluídos da recuperação vigente. Reprocessar uma versão antiga não a reativa.
+
 Uma declaração deve registrar seu escopo como controladora, consolidado ou não especificado e sua natureza como posição, política, cenário ou negação. Condições de cobertura, prazos e referências a receitas altamente prováveis permanecem ligadas à afirmação.
 
 ## Temporalidade e grandezas financeiras
@@ -45,6 +47,8 @@ Os números extraídos de tabelas só poderão ser publicados após validação 
 ## Constraints e índices
 
 Há unicidade por ID em cada classe, inclusive no rótulo-base Entidade. Há índices Range para documento e declarações por companhia/período, Fulltext para trechos e nomes e vetor de 384 dimensões para trechos. Essa dimensão corresponde ao candidato inicial de embeddings MiniLM multilíngue e deverá ser alterada por migração caso a avaliação escolha outra representação.
+
+As constraints `documento_versao` e `documento_vigente` acrescentam unicidade da chave empresa/tipo/exercício/versão e da chave da versão vigente por série. A publicação remove a chave da versão antiga e atribui a chave à nova na mesma transação. Há teste de integração que força uma falha após a substituição e verifica o rollback.
 
 A inicialização usa Neo4j 5.26.0 Community em Docker. Os serviços ficam vinculados ao endereço local e usam senha definida no ambiente. Os índices são aguardados até ONLINE antes dos testes.
 

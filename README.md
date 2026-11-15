@@ -47,9 +47,9 @@ Copie .env.example para .env e defina uma senha local com pelo menos oito caract
 ```powershell
 ./scripts/modo_banco.ps1 -Modo ingestao
 docker compose logs neo4j
-python scripts/configurar_banco.py
+.venv/Scripts/python scripts/configurar_banco.py
 $env:TESTAR_NEO4J='1'
-python -m unittest discover -s tests -v
+.venv/Scripts/python -m unittest discover -s tests -v
 ```
 
 Aguarde a mensagem Started. no log antes de configurar. O banco fica disponível em http://127.0.0.1:17474. A [modelagem LPG](docs/fase-2-modelagem.md) documenta declarações, temporalidade e regras de evidência. A fase 2 foi verificada com constraints, índices Range/Fulltext/vetorial e consultas operacionais.
@@ -57,11 +57,13 @@ Aguarde a mensagem Started. no log antes de configurar. O banco fica disponível
 ## Ingestão de narrativas
 
 ```powershell
-python scripts/ingerir.py
-python scripts/ingerir.py --id irani-dfp-2025 --somente-preparar
+.venv/Scripts/python scripts/ingerir.py
+.venv/Scripts/python scripts/ingerir.py --id irani-dfp-2025 --somente-preparar
 ```
 
 A carga publica relações com evidência, empresa e período em uma transação por documento. Ela é retomável e mantém o estado de tabelas como pendente. A [documentação da fase 3](docs/fase-3-ingestao.md) descreve as regras de extração e os limites atuais.
+
+Uma revisão documental usa outro ID no manifesto, um número de versão maior e o campo `substitui` com o ID vigente da mesma empresa/tipo/exercício. A versão anterior permanece no histórico e sai da busca corrente. Os testes de integração usam revisões sintéticas; as seis fontes oficiais continuam na versão 1. A migração dos IDs preservou as 85 declarações e os 553 vetores por conteúdo, conforme [auditoria](data/validacao-migracao-versionamento.json).
 
 ## Modelos, busca e interface
 
