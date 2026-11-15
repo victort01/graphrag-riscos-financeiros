@@ -270,6 +270,16 @@ def concluir(resposta, contexto, erros):
             "validacao": {"erros": [], "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"}}
 
 
+def processar_saida(pergunta, contexto, original):
+    """Aplica as mesmas guardas à saída nova ou arquivada, preservando o original."""
+    resposta, removidas = filtrar_pertinencia(original, pergunta)
+    resposta, complementos = completar_procedencia(resposta, contexto)
+    erros = validar_resposta(resposta, contexto, pergunta)
+    return {"resposta": concluir(resposta, contexto, erros), "resposta_original_modelo": original,
+            "complementos_procedencia": complementos, "afirmacoes_removidas_por_vocabulario": removidas,
+            "contexto_enviado": {"pergunta": pergunta, **contexto}}
+
+
 def responder_contexto(pergunta, contexto, andamento=None):
     """Gera e verifica uma resposta sobre um contexto já recuperado, sem repetir a busca.
 
@@ -282,14 +292,8 @@ def responder_contexto(pergunta, contexto, andamento=None):
     informar("Gerando a resposta documental")
     resposta = gerar_json(REGRAS, entrada, esquema_contextual(contexto), 800) if contexto["fontes"] else {
         "afirmacoes": [], "cobertura": "insuficiente", "possivel_conflito": False}
-    original = resposta
     informar("Verificando referências e conclusões")
-    resposta, removidas = filtrar_pertinencia(resposta, pergunta)
-    resposta, complementos = completar_procedencia(resposta, contexto)
-    erros = validar_resposta(resposta, contexto, pergunta)
-    return {"resposta": concluir(resposta, contexto, erros), "resposta_original_modelo": original,
-            "complementos_procedencia": complementos, "afirmacoes_removidas_por_vocabulario": removidas,
-            "contexto_enviado": entrada}
+    return processar_saida(pergunta, contexto, resposta)
 
 
 def responder(pergunta, empresas=None, periodo="", usar_cypher=True, usar_caminhos=True, andamento=None):

@@ -34,13 +34,15 @@ O Neo4j usa constraints, índices Range, Fulltext e vetorial. O vetor tem 384 di
 
 Vetor e Fulltext consultam os mesmos 3.918 trechos narrativos elegíveis. Uma consulta Cypher completa é gerada pelo LLM e validada por contrato de leitura, tipos permitidos, parâmetros, limite de resultados e plano `EXPLAIN`. Existe uma tentativa de reparo registrada. Consultas geradas recebem limite de 15 segundos e o banco opera somente leitura durante o uso.
 
-A fusão RRF soma `1 / (60 + posição)` por sinal. Cada sinal retorna até 12 candidatos; a seleção inicial mantém oito trechos. O algoritmo usa `shortestPath` dirigido em relações financeiras permitidas, com até quatro saltos. Caminhos e evidências participam do contexto antes da geração. Duplicatas e prefixos com as mesmas arestas são compactados, e as fontes são distribuídas por empresa/exercício dentro do orçamento total de 3.500 caracteres.
+A fusão RRF soma `1 / (60 + posição)` por sinal. Cada sinal retorna até 12 candidatos; a seleção inicial mantém oito trechos. O algoritmo usa `shortestPath` dirigido em relações financeiras permitidas, com até quatro saltos. Duplicatas e prefixos com as mesmas arestas são compactados, e as fontes são distribuídas por empresa/exercício.
+
+As fontes selecionadas pelo híbrido formam a base do contexto. Caminhos, priorizados por número de saltos, e suas evidências só entram juntos quando cabem no orçamento total de 3.500 caracteres. Um caminho não pode expulsar uma fonte dessa base. Se não houver espaço, a resposta pode usar apenas texto; a seleção não garante ganho de recuperação.
 
 As travessias respeitam empresa, exercício e vigência. Sem escopo reconhecido, as declarações do caminho precisam estar evidenciadas no mesmo trecho. Um fator compartilhado entre empresas não demonstra risco equivalente, correlação ou contágio.
 
 ## Resposta e interface
 
-A saída estruturada admite até três afirmações. A decodificação restringe fontes e caminhos aos IDs existentes no contexto. Guardas verificam referências, números, algumas conclusões absolutas, relevância por vocabulário e qualificação de escopo. A saída original e as transformações ficam preservadas.
+A saída estruturada admite até três afirmações. A decodificação restringe fontes e caminhos aos IDs existentes no contexto. Guardas verificam referências, atribuição de empresa, números, algumas conclusões absolutas, pertinência por vocabulário e qualificação de escopo. Valores quantitativos são recusados mesmo quando aparecem na narrativa; o recorte não valida unidades ou cálculos financeiros. Alegações sobre hedge accounting exigem declaração contábil específica para cada empresa, e uma negativa explícita de adoção não pode virar afirmação positiva. Essas regras cobrem classes delimitadas de erro, não toda implicação semântica. A saída original e as transformações ficam preservadas.
 
 A confiança é documental: sem suporte, limitada ou moderada. Não equivale a probabilidade calibrada de acerto. Referências válidas não comprovam suporte semântico.
 
