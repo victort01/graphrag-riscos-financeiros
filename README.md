@@ -10,6 +10,7 @@ O acervo reúne seis relatórios de 2024 e 2025, com 954 páginas. O índice cob
 - [Apresentação em PDF](docs/apresentacao/apresentacao-revisao.pdf) e [PowerPoint](docs/apresentacao/apresentacao-revisao.pptx).
 - [Arquitetura e modelo de dados](docs/arquitetura.md).
 - [Avaliação e reprodução dos experimentos](docs/avaliacao.md).
+- [Revisão assistida por IA](docs/revisao-assistida-IA/revisao-assistida-IA.md) e [melhorias propostas](docs/melhorias-propostas.md). Sugestões para conferência; a revisão humana permanece pendente.
 
 [Abrir a aplicação](https://graphrag-riscos-financeiros.streamlit.app/). Hospedagem gratuita no Streamlit Community Cloud com Neo4j AuraDB Free e inferência no próprio host. Uma consulta real com fontes, caminho no contexto e retomada após recarregar foi verificada. A geração em CPU pode levar minutos e os serviços podem hibernar. Consulte o [registro da implantação](data/validacao-implantacao.json) e a [configuração para reprodução](deploy/streamlit/README.md).
 
