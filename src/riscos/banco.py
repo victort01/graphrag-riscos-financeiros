@@ -1,9 +1,31 @@
 """Cliente transacional Neo4j: HTTP local ou Bolt com TLS para o Aura."""
 import base64
 import json
+import atexit
+import ssl
+from functools import lru_cache
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 from .config import ambiente
+
+
+@lru_cache(maxsize=4)
+def conexao_bolt(uri, autenticacao, timeout, ca_bundle=""):
+    from neo4j import GraphDatabase
+    opcoes = {}
+    if ca_bundle:
+        endereco = urlsplit(uri)
+        if endereco.scheme not in {"neo4j+s", "bolt+s", "neo4j", "bolt"}:
+            raise ValueError("O certificado personalizado exige URI Neo4j/Bolt com TLS verificado.")
+        # O driver exige esquema simples para receber um SSLContext explícito.
+        # A validação da cadeia e do hostname permanece habilitada.
+        uri = endereco._replace(scheme=endereco.scheme.removesuffix("+s")).geturl()
+        opcoes = {"encrypted": True, "ssl_context": ssl.create_default_context(cafile=ca_bundle)}
+    driver = GraphDatabase.driver(uri, auth=autenticacao,
+        connection_timeout=timeout, max_connection_pool_size=2, max_connection_lifetime=300, **opcoes)
+    atexit.register(driver.close)
+    return driver
 
 
 class Banco:
@@ -20,6 +42,7 @@ class Banco:
         self.uri = config.get("NEO4J_URI", "")
         self.autenticacao = (usuario, senha)
         self.database = config.get("NEO4J_DATABASE", "neo4j")
+        self.ca_bundle = config.get("NEO4J_CA_BUNDLE", "")
         self.modo = config.get("NEO4J_ACCESS_MODE", "READ").upper()
         if self.modo not in {"READ", "WRITE"}:
             raise ValueError("NEO4J_ACCESS_MODE deve ser READ ou WRITE.")
@@ -43,24 +66,22 @@ class Banco:
                 for r in resultado["results"]]
 
     def _bolt(self, comandos, limite_ms):
-        from neo4j import GraphDatabase
         from neo4j.exceptions import Neo4jError
         # A transação explícita preserva a atomicidade entre todos os comandos,
         # inclusive na ingestão; não repetimos escritas implicitamente.
         try:
-            with GraphDatabase.driver(self.uri, auth=self.autenticacao,
-                                      connection_timeout=self.timeout, max_connection_pool_size=2) as driver:
-                with driver.session(database=self.database, default_access_mode=self.modo) as sessao:
-                    with sessao.begin_transaction(timeout=(limite_ms / 1000 if limite_ms else self.timeout)) as tx:
-                        saidas = []
-                        for texto, parametros in comandos:
-                            resultado = tx.run(texto, parametros)
-                            colunas = list(resultado.keys())
-                            linhas = [list(r.values()) for r in resultado]
-                            resumo = resultado.consume()
-                            saidas.append({"colunas": colunas, "linhas": linhas, "plano": resumo.plan})
-                        tx.commit()
-                        return saidas
+            driver = conexao_bolt(self.uri, self.autenticacao, self.timeout, self.ca_bundle)
+            with driver.session(database=self.database, default_access_mode=self.modo) as sessao:
+                with sessao.begin_transaction(timeout=(limite_ms / 1000 if limite_ms else self.timeout)) as tx:
+                    saidas = []
+                    for texto, parametros in comandos:
+                        resultado = tx.run(texto, parametros)
+                        colunas = list(resultado.keys())
+                        linhas = [list(r.values()) for r in resultado]
+                        resumo = resultado.consume()
+                        saidas.append({"colunas": colunas, "linhas": linhas, "plano": resumo.plan})
+                    tx.commit()
+                    return saidas
         except Neo4jError as erro:
             raise RuntimeError(f"{erro.code}: {erro.message}") from erro
 

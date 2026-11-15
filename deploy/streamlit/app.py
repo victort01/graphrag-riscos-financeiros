@@ -6,12 +6,14 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import streamlit as st
+import certifi
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 from riscos.runtime_nuvem import iniciar, pronto
 
 os.environ["PUBLIC_DEPLOYMENT"] = "1"
+os.environ.setdefault("NEO4J_CA_BUNDLE", certifi.where())
 
 
 @st.cache_resource

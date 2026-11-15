@@ -23,6 +23,7 @@ jobs:
           NEO4J_server_memory_pagecache_size: 64m
         ports:
           - 17474:7474
+          - 17687:7687
     env:
       NEO4J_PASSWORD: senha-apenas-do-banco-descartavel
       TESTAR_NEO4J: '1'
@@ -35,3 +36,10 @@ jobs:
       - run: pip install -r requirements.txt -r requirements-modelos.txt -r requirements-ui.txt
       - run: python scripts/aguardar_banco.py --tempo 120
       - run: python -m unittest discover -s tests -v
+      - name: Verificar Bolt
+        env:
+          NEO4J_URI: bolt://127.0.0.1:17687
+          NEO4J_ACCESS_MODE: WRITE
+        run: |
+          pip install neo4j==5.28.3
+          python -m unittest discover -s tests -v
