@@ -14,7 +14,7 @@ Antes da execução, a aplicação verifica tamanho, início da consulta, parâm
 
 Essa validação é um contrato restritivo, não um parser universal de Cypher. A proteção adicional de escrita é feita pelo próprio banco. No modo de consulta, `server.databases.default_to_read_only=true`; no modo de ingestão, a escrita é habilitada explicitamente. O teste de uma operação CREATE no modo de consulta retornou `WriteOnReadOnlyAccessDatabase`. O Neo4j Community usado não oferece a separação de papéis adotada em instalações Enterprise. O banco é local e não recebe consultas arbitrárias pela interface.
 
-O limite global de transações é 15 segundos. O cliente também envia um limite menor para a consulta gerada. Os resultados passam novamente pelos filtros de empresa e exercício antes de entrar na fusão. Similaridade e pontuação RRF não são probabilidades de correção.
+O limite global de transações é 60 segundos. O cliente envia um limite de 15 segundos para compilar e executar a consulta gerada. O perfil foi ajustado após timeouts sob paginação de memória. Os resultados passam novamente pelos filtros de empresa e exercício antes de entrar na fusão. Similaridade e pontuação RRF não são probabilidades de correção.
 
 ## Verificações e limitações
 
@@ -23,6 +23,8 @@ Foi executada a pergunta de desenvolvimento sobre ACC e recebíveis da Irani em 
 A geração de resposta com o modelo de 3B e contexto maior ultrapassou 180 segundos na máquina de desenvolvimento. A variante de 1,5B executou o fluxo completo, incluindo Cypher, caminhos e resposta. A primeira execução levou aproximadamente 328 segundos sob forte disputa de recursos e terminou em abstenção por referências incompletas. O caso permanece documentado. Uma execução posterior produziu resposta parcial e expôs contextualização desnecessária, motivando a revisão do pós-processamento. A qualidade semântica continua em avaliação.
 
 O endpoint é configurável; trocar o backend exige registrar modelo/revisão e repetir a avaliação. A consulta usa exclusivamente o cache local do tokenizer e dos pesos, preparado pelo comando de aquisição. Um filtro de exercício sem documentos produz abstenção sem chamar modelos. Ainda faltam o conjunto reservado e a comparação científica de métodos.
+
+O encoder ONNX é liberado depois de codificar a pergunta; a indexação mantém a sessão entre lotes. A alteração reduz a coexistência de modelos na RAM sem mudar os vetores. No ambiente virtual isolado e com o perfil reduzido do banco, uma consulta de desenvolvimento sem a etapa de Cypher gerado recuperou oito trechos, com doze candidatos vetoriais e doze textuais, e caminhos de dois e um saltos. A recuperação levou 14,541 s nessa execução; esse tempo não inclui a geração da resposta e não é um benchmark.
 
 As verificações operacionais da fase 5 foram concluídas no recorte narrativo. Isso não equivale à validação científica da qualidade da recuperação e das respostas, prevista nas fases 7 e 9.
 

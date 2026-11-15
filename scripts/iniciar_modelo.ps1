@@ -1,6 +1,6 @@
 ﻿param(
-    [Parameter(Mandatory=$true)][string]$Servidor,
-    [Parameter(Mandatory=$true)][string]$Modelo
+    [string]$Servidor = (Join-Path $PSScriptRoot '../data/models/llama/llama-server.exe'),
+    [string]$Modelo = (Join-Path $PSScriptRoot '../data/models/qwen2.5-1.5b-instruct-q4_k_m.gguf')
 )
 $ErrorActionPreference = 'Stop'
 $executavel = (Resolve-Path -LiteralPath $Servidor).Path

@@ -2,6 +2,8 @@
 import re
 from .esquema import RELACOES, ROTULOS
 
+TEMPO_CONSULTA_GERADA_MS = 15000
+
 OPERADORES_LEITURA = {
     "ProduceResults", "Projection", "Filter", "NodeByLabelScan", "AllNodesScan",
     "NodeIndexSeek", "NodeUniqueIndexSeek", "NodeIndexSeekByRange", "NodeIndexScan",
@@ -52,7 +54,7 @@ def validar_consulta(banco, consulta, parametros):
     retorno = re.search(r"RETURN\s+(?:DISTINCT\s+)?(\w+)\.id", consulta, re.I).group(1)
     if tipos.get(retorno) != "Trecho":
         raise ValueError("A variável retornada deve ter rótulo Trecho.")
-    resultado = banco.transacao([("EXPLAIN " + consulta, parametros)], limite_ms=5000)[0]
+    resultado = banco.transacao([("EXPLAIN " + consulta, parametros)], limite_ms=TEMPO_CONSULTA_GERADA_MS)[0]
     plano = resultado["plano"]
     if not plano:
         raise ValueError("O banco não retornou o plano da consulta.")

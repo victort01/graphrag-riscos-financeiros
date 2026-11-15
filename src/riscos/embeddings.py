@@ -27,7 +27,7 @@ def carregar():
     return tokenizer, ort.InferenceSession(caminho, sess_options=opcoes, providers=["CPUExecutionProvider"])
 
 
-def codificar(textos):
+def codificar(textos, manter_carregado=False):
     import numpy as np
     if not textos:
         return []
@@ -40,4 +40,9 @@ def codificar(textos):
     saida = modelo.run(None, entradas)[0]
     mascara = entradas["attention_mask"][..., None]
     media = (saida * mascara).sum(1) / np.maximum(mascara.sum(1), 1)
-    return (media / np.maximum(np.linalg.norm(media, axis=1, keepdims=True), 1e-12)).tolist()
+    vetores = (media / np.maximum(np.linalg.norm(media, axis=1, keepdims=True), 1e-12)).tolist()
+    # A consulta usa o encoder antes do LLM; liberar a sessão evita disputar RAM
+    # com a geração. A indexação em lotes pode manter o encoder carregado.
+    if not manter_carregado:
+        carregar.cache_clear()
+    return vetores

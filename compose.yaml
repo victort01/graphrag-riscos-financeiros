@@ -6,11 +6,11 @@ services:
       - "127.0.0.1:17687:7687"
     environment:
       NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?Configure NEO4J_PASSWORD no arquivo .env}
-      NEO4J_server_memory_heap_initial__size: 256m
-      NEO4J_server_memory_heap_max__size: 512m
-      NEO4J_server_memory_pagecache_size: 128m
+      NEO4J_server_memory_heap_initial__size: ${NEO4J_HEAP_INITIAL:-128m}
+      NEO4J_server_memory_heap_max__size: ${NEO4J_HEAP_MAX:-384m}
+      NEO4J_server_memory_pagecache_size: ${NEO4J_PAGECACHE:-64m}
       NEO4J_server_databases_default__to__read__only: ${NEO4J_READ_ONLY:-true}
-      NEO4J_db_transaction_timeout: 15s
+      NEO4J_db_transaction_timeout: ${NEO4J_TRANSACTION_TIMEOUT:-60s}
       NEO4J_server_bolt_advertised__address: 127.0.0.1:17687
     volumes:
       - neo4j_data:/data

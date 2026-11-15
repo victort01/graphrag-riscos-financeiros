@@ -3,7 +3,7 @@ import re
 import logging
 from time import perf_counter
 from .banco import Banco
-from .consultas import validar_consulta
+from .consultas import validar_consulta, TEMPO_CONSULTA_GERADA_MS
 from .embeddings import IDENTIFICADOR, codificar
 from .llm import gerar_json
 from .caminhos import palavras
@@ -118,7 +118,7 @@ def recuperar(pergunta, empresas=None, periodo="", usar_llm=True, somente_vetor=
     if usar_llm and not somente_vetor:
         logging.getLogger(__name__).info("Gerando e validando Cypher.")
         consulta, operadores, tentativas = gerar_cypher(pergunta, filtros, banco)
-        resultado = banco.transacao([(consulta, filtros)], limite_ms=5000)[0]
+        resultado = banco.transacao([(consulta, filtros)], limite_ms=TEMPO_CONSULTA_GERADA_MS)[0]
         ids = [linha[0] for linha in resultado["linhas"]]
         linhas = banco.consultar("MATCH (t:Trecho) WHERE t.id IN $ids " + FILTROS + "\nRETURN " + CAMPOS,
                                 {**filtros, "ids": ids})
@@ -126,4 +126,7 @@ def recuperar(pergunta, empresas=None, periodo="", usar_llm=True, somente_vetor=
         rastreio.update(cypher_llm=consulta, operadores=operadores, tentativas_cypher=tentativas)
     rastreio["latencia_segundos"] = round(perf_counter() - inicio, 3)
     rastreio["metodos_executados"] = [nome for nome, _ in registros if nome != "fulltext" or not somente_vetor]
-    return {"trechos": combinar(registros)[:8], "rastreio": rastreio}
+    rastreio["candidatos_por_metodo"] = {nome: [linha["id"] for linha in linhas] for nome, linhas in registros}
+    selecionados = combinar(registros)[:8]
+    rastreio["trechos_apos_fusao"] = [t["id"] for t in selecionados]
+    return {"trechos": selecionados, "rastreio": rastreio}

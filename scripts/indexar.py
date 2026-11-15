@@ -19,7 +19,7 @@ if __name__ == "__main__":
     print(f"{len(linhas)} trechos pendentes de indexação", flush=True)
     for inicio in range(0, len(linhas), 8):
         lote = linhas[inicio:inicio+8]
-        vetores = codificar([l["empresa"] + " " + l["periodo"] + " " + l["texto"] for l in lote])
+        vetores = codificar([l["empresa"] + " " + l["periodo"] + " " + l["texto"] for l in lote], manter_carregado=True)
         parametros = [{"id": l["id"], "vetor": vetor} for l, vetor in zip(lote, vetores)]
         banco.transacao([("""UNWIND $linhas AS row MATCH (t:Trecho {id:row.id})
             SET t.embedding=row.vetor,t.modelo_embedding=$modelo""",

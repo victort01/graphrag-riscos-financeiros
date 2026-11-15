@@ -13,11 +13,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--tempo", type=int, default=180)
     args = parser.parse_args()
-    banco = Banco(timeout=30)
+    banco = Banco(timeout=130)
     inicio, ultimo_erro = time.monotonic(), "sem resposta"
     while time.monotonic() - inicio < args.tempo:
         try:
             banco.consultar("RETURN 1 AS pronto")
+            banco.transacao([("CALL db.awaitIndexes(120)", {})], limite_ms=120000)
             print("Neo4j pronto para consultas autenticadas.", flush=True)
             raise SystemExit(0)
         except HTTPError as erro:
