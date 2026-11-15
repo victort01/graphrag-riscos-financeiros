@@ -25,6 +25,16 @@ RETURN [n IN nodes(p) | {id:n.id,nome:n.nome,rotulos:labels(n)}] AS nos,
 ORDER BY saltos DESC,fim.id LIMIT 12""" % "|".join(RELACOES)
 
 
+def sem_prefixos_redundantes(caminhos):
+    unicos = {}
+    for caminho in caminhos:
+        chave = (caminho.get("escopo"), tuple(r["id"] for r in caminho["relacoes"]))
+        unicos.setdefault(chave, caminho)
+    return [c for (escopo, ids), c in unicos.items() if not any(
+        outro_escopo == escopo and len(outros) > len(ids) and outros[:len(ids)] == ids
+        for outro_escopo, outros in unicos)]
+
+
 def enriquecer(pergunta, recuperacao, banco=None):
     banco = banco or Banco()
     ids = [t["id"] for t in recuperacao["trechos"]]
@@ -68,13 +78,16 @@ def enriquecer(pergunta, recuperacao, banco=None):
         encontrados = banco.consultar(CONSULTA_CAMINHOS, parametros)
         caminhos.extend(encontrados)
         consultas.append({"cypher": CONSULTA_CAMINHOS, "parametros": parametros})
+    antes_compactacao = len(caminhos)
+    caminhos = sem_prefixos_redundantes(caminhos)
     for indice, caminho in enumerate(caminhos, 1):
         caminho["id"] = f"C{indice}"
     declaracoes = list(dict.fromkeys(r["id"] for p in caminhos for r in p["relacoes"]))
     evidencias = banco.consultar("""MATCH (c:Declaracao)-[:EVIDENCIADA_POR]->(t:Trecho)-[:PERTENCE_A]->(d:Documento)
+        MATCH (d)-[:REFERE_SE_A]->(em:Empresa)
         WHERE c.id IN $ids AND coalesce(d.vigente,true)=true RETURN c.id AS declaracao_id,c.predicado AS predicado,
         c.evidencia AS citacao,c.condicoes AS condicoes,c.escopo AS escopo,
-        c.empresa_id AS empresa_id,c.periodo AS periodo,
+        c.empresa_id AS empresa_id,em.id AS empresa_canonica_id,c.periodo AS periodo,
         t.id AS trecho_id,t.texto AS texto,t.pagina_inicio AS pagina_inicio,t.pagina_fim AS pagina_fim,
         d.id AS documento_id,d.empresa AS empresa,d.url AS url,d.versao AS versao,
         d.data_recebimento_cvm AS data_recebimento_cvm,
@@ -84,5 +97,7 @@ def enriquecer(pergunta, recuperacao, banco=None):
     return {"caminhos": caminhos, "evidencias": evidencias, "trechos_adicionais": adicionais,
             "rastreio": {"algoritmo": "shortestPath dirigido, por empresa/entidade, período e escopo, até 4 saltos",
                          "regra_escopo": "Não mistura controladora/consolidado; escopo não especificado exige relações do mesmo trecho.",
+                         "compactacao": {"antes": antes_compactacao, "depois": len(caminhos),
+                            "regra": "Duplicatas e prefixos com as mesmas arestas são cobertos pelo caminho maior."},
                          "consultas": consultas, "trechos_antes": ids,
                          "trechos_depois": list(dict.fromkeys(ids + adicionais))}}

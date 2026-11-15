@@ -8,6 +8,8 @@ Todas as arestas do caminho devem pertencer à mesma empresa, exercício e escop
 
 A consulta recebe a lista de declarações permitidas para cada grupo e restringe todas as arestas a essa lista. Não usa relações de Documento/Trecho para contar saltos financeiros. Retorna nós persistentes, relações, IDs de declaração, escopo e número de saltos. O rastreio guarda a consulta, parâmetros e trechos antes/depois do enriquecimento.
 
+Caminhos duplicados ou que sejam prefixos exatos de outro caminho do mesmo escopo são removidos antes da seleção de contexto. A regra compara IDs de arestas, mantendo as evidências cobertas pelo caminho maior; caminhos com outras declarações ou outro escopo permanecem. O rastreio informa as quantidades antes e depois.
+
 ## Caso verificado
 
 No corpus da Irani de 2025 há o caminho Empresa → ADOTA_PROTECAO → swap para troca de indexador de juros → PROTEGE → exposição a taxas de juros. Ele contém dois saltos financeiros, apoiados na página 124 do relatório. Há também Empresa → TEM_OBRIGACAO → ACC → COMPENSA_VARIACOES_DE → recebíveis de exportações.
@@ -15,6 +17,8 @@ No corpus da Irani de 2025 há o caminho Empresa → ADOTA_PROTECAO → swap par
 O teste de integração inicia com um trecho de ACC e pergunta pela proteção de juros. O algoritmo acrescenta a fonte pertinente ao segundo tema, mantém 2025 e a identidade da Irani, e confere a presença literal das citações. Esse é um teste controlado de funcionamento. A avaliação de benefício sobre recuperação híbrida em perguntas independentes continua pendente.
 
 A ablation em `data/validacao-caminhos-desenvolvimento.json` usa os mesmos candidatos híbridos com e sem o algoritmo e o mesmo orçamento total de contexto. O contexto com grafo inclui dois caminhos financeiros. O teste confirma alteração do contexto antes da geração, sem atribuir melhoria de qualidade. As verificações de implementação da fase 6 estão concluídas no recorte atual.
+
+Esse registro antecede a compactação de prefixos e a migração de IDs. O [caso comparativo atual](../data/validacao-contexto-multiempresa.json) recuperou relações de Suzano, Klabin e Irani em 2025 com o mesmo conceito canônico de variação cambial. O subgrafo reúne caminhos financeiros apoiados em três documentos oficiais; compartilhar o fator não demonstra equivalência de exposição, correlação ou contágio. A validação da interpretação da resposta continua pendente.
 
 Na resposta, as evidências dos caminhos têm prioridade dentro do orçamento de contexto. Um caminho só é enviado se as fontes de todas as arestas também forem enviadas. O contexto enviado ao modelo contém nomes, tipos e período; os IDs e fontes completos permanecem no rastreio e na visualização.
 

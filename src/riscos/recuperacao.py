@@ -10,7 +10,8 @@ from .caminhos import palavras
 from .intencao import reconciliar
 
 CAMPOS = """t.id AS id,t.texto AS texto,t.pagina_inicio AS pagina_inicio,t.pagina_fim AS pagina_fim,
-d.id AS documento_id,d.empresa AS empresa,d.data_referencia AS periodo,d.url AS url,d.versao AS versao,
+d.id AS documento_id,d.empresa AS empresa,e.empresa_id AS empresa_id,e.id AS empresa_canonica_id,
+d.data_referencia AS periodo,d.url AS url,d.versao AS versao,
 d.data_recebimento_cvm AS data_recebimento_cvm,
 [(dc:Declaracao)-[:EVIDENCIADA_POR]->(t) | dc.escopo] AS escopos"""
 FILTROS = """MATCH (t)-[:PERTENCE_A]->(d:Documento)-[:REFERE_SE_A]->(e:Empresa)

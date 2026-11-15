@@ -8,6 +8,16 @@ from riscos.visualizacao import pagina_grafo, rastrear_nos
 
 
 class ContextoEVisualizacao(unittest.TestCase):
+    def test_orcamento_cobre_empresas_antes_de_repetir_mesma_empresa(self):
+        fontes = []
+        for id_, empresa in [("a1", "Empresa A"), ("a2", "Empresa A"), ("b1", "Empresa B"), ("c1", "Empresa C")]:
+            fontes.append({"id": id_, "texto": "X" * 200, "empresa": "Alias da empresa A" if id_ == "a2" else empresa,
+                "empresa_canonica_id": "empresa:" + id_[0], "periodo": "2025-12-31",
+                "pagina_inicio": 1, "pagina_fim": 1, "documento_id": id_, "url": "https://example.org/doc.pdf"})
+        contexto = montar_contexto({"trechos": fontes}, {"caminhos": [], "evidencias": []}, limite_caracteres=1500)
+        self.assertEqual({f["empresa"] for f in contexto["fontes"].values()}, {"Empresa A", "Empresa B", "Empresa C"})
+        self.assertLessEqual(len(json.dumps(contexto, ensure_ascii=False)), 1500)
+
     def test_orcamento_inclui_caminhos_e_grafo_mostra_apenas_contexto_enviado(self):
         fontes, caminhos, evidencias = [], [], []
         for i, texto in [(1, "Um financiamento em moeda estrangeira."), (2, "X" * 4000)]:

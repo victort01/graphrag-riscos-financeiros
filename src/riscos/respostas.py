@@ -2,6 +2,7 @@
 import json
 import re
 import logging
+from collections import deque
 from time import perf_counter
 from datetime import datetime, timezone
 from .llm import gerar_json
@@ -21,6 +22,7 @@ Proteção declarada não demonstra eliminação de risco, proteção total ou c
 Não calcule exposição líquida ou montantes. As tabelas financeiras ainda não foram validadas.
 Ausência de evidência recuperada não demonstra ausência de risco ou de instrumento.
 Use os caminhos apenas para explicar relações documentadas. Não invente conexões entre empresas.
+Um fator compartilhado permite comparar declarações; não demonstra risco equivalente, correlação ou contágio entre empresas.
 Se as fontes não responderem, devolva afirmacoes vazias e cobertura insuficiente.
 Cobertura direta exige fontes para a pergunta inteira; use parcial quando faltar alguma parte.
 Sinalize possivel_conflito quando as fontes parecerem incompatíveis, mantendo as duas evidências.
@@ -47,6 +49,15 @@ def montar_contexto(recuperacao, grafo, limite_caracteres=3500):
     # Evidências dos caminhos entram primeiro para evitar enviar conexões sem a fonte de uma aresta.
     ids_caminhos = {e["trecho_id"] for e in grafo["evidencias"]}
     candidatos.sort(key=lambda t: t["id"] not in ids_caminhos)
+    grupos = {}
+    for trecho in candidatos:
+        empresa = trecho.get("empresa_canonica_id") or trecho.get("empresa_id") or trecho["empresa"]
+        grupos.setdefault((empresa, trecho["periodo"]), deque()).append(trecho)
+    # Uma fonte por empresa/exercício precede fontes adicionais do mesmo grupo.
+    # A ordem de relevância e a prioridade de evidências são mantidas no grupo.
+    candidatos = []
+    while any(grupos.values()):
+        candidatos.extend(grupo.popleft() for grupo in grupos.values() if grupo)
     fontes = {}
     declaracoes = {e["declaracao_id"]: e["trecho_id"] for e in grafo["evidencias"]}
 

@@ -1,0 +1,61 @@
+{
+  "uso": "Desenvolvimento; estudo de um caso de selecao de contexto, nao avaliacao independente nem metrica de correcao da resposta.",
+  "pergunta": "Quais fatores de variacao cambial aparecem em comum nos relatorios da Suzano, Klabin e Irani de 2025?",
+  "orcamento_caracteres": 3500,
+  "mesmos_candidatos_na_mesma_ordem": true,
+  "arestas_de_evidencia_preservadas": true,
+  "antes": {
+    "caracteres": 3444,
+    "empresas": [
+      "Klabin S.A.",
+      "Suzano S.A."
+    ],
+    "documentos": [
+      "klabin-dfp-2025",
+      "suzano-dfp-2025"
+    ],
+    "caminhos": 6
+  },
+  "depois": {
+    "caracteres": 3391,
+    "empresas": [
+      "Irani Papel e Embalagem S.A.",
+      "Klabin S.A.",
+      "Suzano S.A."
+    ],
+    "documentos": [
+      "irani-dfp-2025",
+      "klabin-dfp-2025",
+      "suzano-dfp-2025"
+    ],
+    "caminhos": 3
+  },
+  "compactacao": {
+    "antes": 12,
+    "depois": 6,
+    "regra": "Duplicatas e prefixos com as mesmas arestas são cobertos pelo caminho maior."
+  },
+  "fontes_depois": [
+    {
+      "id": "E1",
+      "documento": "suzano-dfp-2025",
+      "pagina": 104
+    },
+    {
+      "id": "E2",
+      "documento": "klabin-dfp-2025",
+      "pagina": 138
+    },
+    {
+      "id": "E3",
+      "documento": "irani-dfp-2025",
+      "pagina": 125
+    },
+    {
+      "id": "E4",
+      "documento": "suzano-dfp-2025",
+      "pagina": 35
+    }
+  ],
+  "limitacao": "As tres declaracoes compartilham um conceito; isso nao demonstra risco equivalente, correlacao ou contagio financeiro."
+}
