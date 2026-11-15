@@ -56,5 +56,11 @@
     "O modo READ do driver roteia transações; não substitui permissões restritas do banco.",
     "Reiniciar o processo interrompe tarefas em andamento."
   ],
-  "interface_sem_login_verificada_em_janela_privada": true
+  "interface_sem_login_verificada_em_janela_privada": true,
+  "abstencao_sem_login": {
+    "verificada": true,
+    "pergunta": "Quais exposições cambiais a Irani declarou em 2029?",
+    "resultado": "sem suporte; acervo sem documentos para o exercício",
+    "afirmacoes": 0
+  }
 }
