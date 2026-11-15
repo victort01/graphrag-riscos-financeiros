@@ -117,9 +117,19 @@ $env:TESTAR_CORPUS='1'
 ./scripts/modo_banco.ps1 -Modo consulta
 ```
 
-Os testes de corpus exigem ingestão prévia dos seis documentos. Os testes unitários não precisam de modelos ou banco. As métricas de NER/RE publicadas são de desenvolvimento, sobre oito excertos usados para corrigir regras; não são resultado de teste independente. A extração de tabelas, a revisão humana das anotações, a avaliação reservada, o artigo e a defesa permanecem pendentes.
+Os testes de corpus exigem ingestão prévia dos seis documentos. Os testes unitários não precisam de modelos ou banco. As métricas de NER/RE publicadas são de desenvolvimento, sobre oito excertos usados para corrigir regras; não são resultado de teste independente. A extração de tabelas, a revisão humana das anotações, a avaliação reservada e a consolidação do artigo e da defesa permanecem pendentes.
 
 Os [formulários de revisão da extração](docs/revisao-extracao.md) já estão preparados para dois integrantes, com fontes e campos de anotação vazios. O comparador recusa revisões pendentes e relata divergências; ele mede concordância entre revisores, sem tratar concordância como acurácia do extrator.
+
+A [avaliação de recuperação](docs/fase-9-protocolo.md) compara vetor, híbrido e híbrido com caminhos sobre os mesmos 3.918 trechos elegíveis. O smoke completo tem duas perguntas de desenvolvimento, sem valor de generalização. `scripts/avaliar_respostas.py` gera respostas a partir de contextos congelados, com o mesmo contrato de IDs reais e guardas para todas as variantes. As [revisões de respostas](docs/revisao-respostas.md) já têm seis casos reais preparados e ainda não receberam anotação humana.
+
+## Materiais para revisão
+
+- [Apresentação editável](docs/apresentacao/apresentacao-revisao.pptx) e [PDF de exibição](docs/apresentacao/apresentacao-revisao.pdf), com 14 slides e fontes nas notas.
+- [Falas dos quatro integrantes](docs/apresentacao/falas.md), incluindo transições, demonstração e perguntas de defesa. Paulo apresenta a parte técnica mais complexa.
+- [Artigo em PDF](docs/artigo/artigo-revisao.pdf) e [fonte LaTeX](docs/artigo/artigo-revisao.tex), usando IEEEtran conference, com instruções de [compilação e procedência](docs/artigo/README.md).
+
+São versões para revisão, correspondentes aos resultados de desenvolvimento disponíveis. A entrega final exige incorporar revisão independente, conjunto reservado e resultados consolidados. A [matriz de requisitos](docs/matriz-requisitos.md) e o [andamento por fase](docs/andamento.md) registram as pendências.
 
 Em caso de falha, consulte `docker compose logs neo4j`, confirme os endpoints no `.env` e verifique se o servidor GGUF está ativo. `WriteOnReadOnlyAccessDatabase` durante ingestão indica que é necessário trocar o modo. O modelo local pode ser lento em máquinas com pouca memória disponível; timeouts e rejeições de consulta são falhas de execução, não respostas sem evidência.
 

@@ -5,3 +5,4 @@
 *.png -text
 *.jpg -text
 *.zip -text
+docs/artigo/IEEEtran.cls -text -diff

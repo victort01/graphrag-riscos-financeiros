@@ -10,10 +10,10 @@ Este quadro distingue conclusão de implementação, validação científica e e
 | 4. Identidades e qualidade | Parcial | Canonicalização e testes funcionais; dois formulários e comparador de revisões preparados. Revisão humana e validação independente pendentes. |
 | 5. Recuperação híbrida | Implementação e verificação operacional concluídas | Fulltext e vetor sobre os mesmos 3.918 trechos elegíveis, RRF e Cypher gerado/validado; qualidade e desempenho ainda em avaliação. |
 | 6. Algoritmo de grafo | Implementação e verificação operacional concluídas | Caminhos financeiros de dois saltos; ablation comprova alteração do contexto antes da geração. Benefício de qualidade ainda não medido. |
-| 7. Respostas e confiança | Em validação | Referências, abstenção, filtros, auditoria e qualificação de escopo. Revisão semântica independente pendente. |
+| 7. Respostas e confiança | Em validação | Referências restritas aos IDs do contexto, abstenção, filtros, auditoria e escopo. Seis respostas reais preparadas para revisão semântica independente. |
 | 8. Interface | Implementação e verificação operacional concluídas | Nova consulta sobreviveu à reconexão e exibiu resposta, confiança, subgrafo e fonte. Arraste, pan, zoom e seleção conferidos. Deployment local de um processo. |
-| 9. Avaliação | Smoke concluído; validação científica pendente | Seis execuções sobre duas perguntas de desenvolvimento, sem falhas, com cobertura vetorial completa. Revisão independente e teste reservado pendentes. |
-| 10. Entrega e defesa | Materiais para revisão em preparação | Apresentação editável de 14 slides, PDF de exibição e roteiro dos quatro integrantes preparados. Artigo SBC/IEEE e consolidação após avaliação reservada pendentes. |
+| 9. Avaliação | Smoke de recuperação e geração concluído; validação científica pendente | Comparação em duas perguntas de desenvolvimento, corpus com cobertura vetorial completa e duas rodadas de geração preservadas. Revisão independente e teste reservado pendentes. |
+| 10. Entrega e defesa | Primeiras versões para revisão preparadas | Apresentação de 14 slides em PPTX/PDF, roteiro dos quatro integrantes e artigo IEEE em LaTeX/PDF. Consolidação após avaliação reservada e ensaio pendentes. |
 
 ## Verificações desta etapa
 
