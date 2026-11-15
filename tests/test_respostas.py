@@ -36,6 +36,35 @@ class ValidacaoResposta(unittest.TestCase):
                     "cobertura": "direta", "possivel_conflito": True}
         self.assertEqual(concluir(resposta, self.contexto, [])["confianca"]["nivel"], "limitada")
 
+    def test_escopo_nao_especificado_limita_confianca_mesmo_com_cobertura_direta(self):
+        self.contexto["caminhos"] = [{"id": "C1", "escopo": "nao_especificado"}]
+        resposta = {"afirmacoes": [{"texto": "Há obrigação financeira.", "fontes": ["E1"], "caminhos": ["C1"]}],
+            "cobertura": "direta", "possivel_conflito": False}
+        final = concluir(resposta, self.contexto, [])
+        self.assertEqual(final["confianca"]["nivel"], "limitada")
+        self.assertIn("Escopo jurídico", final["confianca"]["motivo"])
+        resposta["cobertura"] = "parcial"
+        motivo = concluir(resposta, self.contexto, [])["confianca"]["motivo"]
+        self.assertIn("Cobertura parcial", motivo)
+        self.assertIn("Escopo jurídico", motivo)
+
+    def test_criterio_de_escopo_tambem_vale_sem_caminho_de_grafo(self):
+        resposta = {"afirmacoes": [{"texto": "Há dívida em USD.", "fontes": ["E1"], "caminhos": []}],
+            "cobertura": "direta", "possivel_conflito": False}
+        self.assertEqual(concluir(resposta, self.contexto, [])["confianca"]["nivel"], "limitada")
+        self.contexto["fontes"]["E1"]["escopos"] = ["consolidado"]
+        self.assertEqual(concluir(resposta, self.contexto, [])["confianca"]["nivel"], "moderada")
+
+    def test_atribuicao_a_controladora_exige_qualificacao_inclusive_negativa(self):
+        for texto in ("A controladora tem dívida em USD.", "A controladora não tem dívida em USD."):
+            resposta = {"afirmacoes": [{"texto": texto, "fontes": ["E1"], "caminhos": []}], "cobertura": "direta"}
+            self.assertTrue(any("escopo" in e for e in validar_resposta(resposta, self.contexto)))
+        self.contexto["fontes"]["E1"]["escopos"] = ["consolidado"]
+        self.assertTrue(any("escopo" in e for e in validar_resposta(resposta, self.contexto)))
+        self.contexto["fontes"]["E1"]["escopos"] = ["controladora"]
+        resposta["afirmacoes"][0]["texto"] = "A controladora tem dívida em USD."
+        self.assertFalse(any("escopo" in e for e in validar_resposta(resposta, self.contexto)))
+
     def test_falha_produz_abstencao(self):
         resultado = concluir({"afirmacoes": [], "cobertura": "insuficiente"}, self.contexto, ["Fonte inválida"])
         self.assertEqual(resultado["confianca"]["nivel"], "sem suporte")

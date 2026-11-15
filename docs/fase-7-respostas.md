@@ -9,10 +9,14 @@ O pós-processamento verifica a existência das referências, valores numéricos
 | Nível | Regra operacional |
 |---|---|
 | Sem suporte | Nenhuma afirmação ou erro nas verificações determinísticas. |
-| Limitada | Referências verificadas, mas cobertura parcial ou possível divergência sinalizada pelo modelo. |
-| Moderada | Cobertura direta declarada e verificações determinísticas aprovadas. Interpretação ainda requer avaliação. |
+| Limitada | Referências verificadas, mas cobertura parcial, possível divergência ou escopo jurídico sem qualificação unívoca nas fontes citadas. |
+| Moderada | Cobertura direta declarada, verificações determinísticas aprovadas e escopo único reconhecido nas fontes citadas. Interpretação ainda requer avaliação. |
 
 Não se atribui confiança alta nesta versão. As categorias não são probabilidades calibradas. O modelo pode interpretar incorretamente uma fonte válida ou avaliar incorretamente a cobertura. A avaliação humana e o teste reservado são necessários antes de afirmar mitigação comprovada de alucinações.
+
+O escopo das declarações associadas a cada trecho acompanha as fontes no contexto, inclusive na variante sem grafo. A mesma regra de confiança vale para todos os métodos. A presença de escopo desconhecido ou de mais de um escopo na fonte citada limita o nível documental. A validação também rejeita atribuições textuais à controladora ou ao consolidado quando essa qualificação não está nos metadados das fontes citadas, inclusive em afirmações negativas. A regra é conservadora e não substitui uma avaliação de entailment: uma qualificação presente não prova a correção de toda a afirmação.
+
+As regras atuais não identificaram escopo nos 85 enunciados publicados. O diagnóstico registra essa limitação do extrator, sem concluir que a informação esteja ausente do PDF completo. A qualificação a partir de cabeçalhos e contexto ampliado permanece pendente. A interface mantém o resultado original das execuções salvas; abrir um registro anterior não recalcula sua confiança com regras novas.
 
 Testes unitários cobrem referência inventada, valor inventado, conclusão absoluta, divergência e abstenção. Ainda faltam casos completos de respostas sustentadas/parciais/conflitantes/sem suporte com conferência independente.
 

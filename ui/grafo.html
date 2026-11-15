@@ -30,7 +30,8 @@ const cy=cytoscape({container:document.getElementById('grafo'),elements:dados.el
 const detalhe=document.getElementById('detalhe');
 function evidencia(aresta){
  const d=aresta.data();const bloco=document.createElement('div');
- bloco.textContent=d.tipo+' · '+d.periodo+' · '+d.documento+' · página '+d.pagina+'\n'+d.citacao+'\n';
+ const escopo=d.escopo==='nao_especificado'?'não identificado na extração':d.escopo;
+ bloco.textContent=d.tipo+' · '+d.periodo+' · '+d.documento+' · página '+d.pagina+'\nEscopo: '+escopo+'\n'+d.citacao+'\n';
  const link=document.createElement('a');link.textContent='Abrir documento na página';
  if(/^https?:\/\//.test(d.url)){link.href=d.url+'#page='+d.pagina;link.target='_blank';link.rel='noopener noreferrer';bloco.append(link);}
  detalhe.append(bloco);

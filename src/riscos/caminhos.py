@@ -16,11 +16,12 @@ def palavras(texto):
 CONSULTA_CAMINHOS = """MATCH (inicio:Empresa {id:$inicio}), (fim:Entidade)
 WHERE fim.id IN $destinos AND fim.id<>inicio.id
 MATCH p=shortestPath((inicio)-[:%s*1..4]->(fim))
-WHERE all(r IN relationships(p) WHERE r.empresa_id=$empresa AND r.periodo=$periodo AND coalesce(r.vigente,true)=true)
+WHERE all(r IN relationships(p) WHERE r.empresa_id=$empresa AND r.periodo=$periodo
+      AND coalesce(r.vigente,true)=true AND r.declaracao_id IN $declaracoes_permitidas)
 RETURN [n IN nodes(p) | {id:n.id,nome:n.nome,rotulos:labels(n)}] AS nos,
        [r IN relationships(p) | {id:r.declaracao_id,tipo:type(r),origem:startNode(r).id,
           destino:endNode(r).id,periodo:r.periodo,empresa_id:r.empresa_id}] AS relacoes,
-       length(p) AS saltos
+       length(p) AS saltos,$escopo AS escopo
 ORDER BY saltos DESC,fim.id LIMIT 12""" % "|".join(RELACOES)
 
 
@@ -29,12 +30,25 @@ def enriquecer(pergunta, recuperacao, banco=None):
     ids = [t["id"] for t in recuperacao["trechos"]]
     grupos = banco.consultar("""MATCH (t:Trecho)-[:PERTENCE_A]->(d:Documento)-[:REFERE_SE_A]->(e:Empresa)
         WHERE t.id IN $ids AND coalesce(d.vigente,true)=true
-        RETURN DISTINCT e.id AS inicio,e.empresa_id AS empresa,d.data_referencia AS periodo""", {"ids": ids})
+        MATCH (c:Declaracao)-[:EVIDENCIADA_POR]->(origem:Trecho)-[:PERTENCE_A]->(d)
+        RETURN DISTINCT e.id AS inicio,e.empresa_id AS empresa,c.periodo AS periodo,
+          coalesce(c.escopo,'nao_especificado') AS escopo,
+          CASE WHEN c.escopo IN ['controladora','consolidado'] THEN '' ELSE origem.id END AS trecho_escopo
+        ORDER BY inicio,periodo,escopo,trecho_escopo""", {"ids": ids})
     caminhos, consultas = [], []
     termos = palavras(pergunta)
     for grupo in grupos:
+        # Sem qualificação jurídica explícita, o trecho é o limite conservador:
+        # uma classe de dívida não autoriza ligar fatos de blocos independentes.
+        permitidas = banco.consultar("""MATCH (c:Declaracao)-[:EVIDENCIADA_POR]->(t:Trecho)-[:PERTENCE_A]->(d:Documento)
+            WHERE c.empresa_id=$empresa AND c.periodo=$periodo AND coalesce(d.vigente,true)=true
+              AND coalesce(c.escopo,'nao_especificado')=$escopo
+              AND ($trecho_escopo='' OR t.id=$trecho_escopo)
+            RETURN c.id AS id ORDER BY id""", grupo)
+        grupo = {**grupo, "declaracoes_permitidas": [d["id"] for d in permitidas]}
         entidades = banco.consultar("""MATCH (a:Entidade)-[r]->(b:Entidade)
             WHERE r.empresa_id=$empresa AND r.periodo=$periodo AND coalesce(r.vigente,true)=true
+              AND r.declaracao_id IN $declaracoes_permitidas
             UNWIND [a,b] AS n RETURN DISTINCT n.id AS id,n.nome AS nome,n.aliases AS aliases""", grupo)
         alvos = [(len(termos & palavras(e["nome"] + " " + " ".join(e["aliases"] or []))), e["id"])
                  for e in entidades if e["id"] != grupo["inicio"]]
@@ -44,6 +58,7 @@ def enriquecer(pergunta, recuperacao, banco=None):
             sementes = banco.consultar("""MATCH (c:Declaracao)-[:EVIDENCIADA_POR]->(t:Trecho)
                 MATCH (c)-[:OBJETO]->(n:Entidade)
                 WHERE t.id IN $ids AND c.empresa_id=$empresa AND c.periodo=$periodo
+                  AND c.id IN $declaracoes_permitidas
                 RETURN DISTINCT n.id AS id ORDER BY id LIMIT 12""", {**grupo, "ids": ids})
             destinos = [n["id"] for n in sementes]
             origem_destinos = "declaracoes_recuperadas"
@@ -62,9 +77,12 @@ def enriquecer(pergunta, recuperacao, banco=None):
         c.empresa_id AS empresa_id,c.periodo AS periodo,
         t.id AS trecho_id,t.texto AS texto,t.pagina_inicio AS pagina_inicio,t.pagina_fim AS pagina_fim,
         d.id AS documento_id,d.empresa AS empresa,d.url AS url,d.versao AS versao,
-        d.data_recebimento_cvm AS data_recebimento_cvm ORDER BY declaracao_id""", {"ids": declaracoes})
+        d.data_recebimento_cvm AS data_recebimento_cvm,
+        [(dc:Declaracao)-[:EVIDENCIADA_POR]->(t) | dc.escopo] AS escopos
+        ORDER BY declaracao_id""", {"ids": declaracoes})
     adicionais = list(dict.fromkeys(e["trecho_id"] for e in evidencias if e["trecho_id"] not in ids))
     return {"caminhos": caminhos, "evidencias": evidencias, "trechos_adicionais": adicionais,
-            "rastreio": {"algoritmo": "shortestPath dirigido, por par empresa/entidade, até 4 saltos",
+            "rastreio": {"algoritmo": "shortestPath dirigido, por empresa/entidade, período e escopo, até 4 saltos",
+                         "regra_escopo": "Não mistura controladora/consolidado; escopo não especificado exige relações do mesmo trecho.",
                          "consultas": consultas, "trechos_antes": ids,
                          "trechos_depois": list(dict.fromkeys(ids + adicionais))}}

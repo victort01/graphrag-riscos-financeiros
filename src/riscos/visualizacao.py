@@ -34,7 +34,8 @@ def pagina_grafo(resultado):
                 fonte = evidencias[relacao["id"]]
                 elementos.append({"data": {**relacao, "source": relacao["origem"], "target": relacao["destino"],
                     "label": relacao["tipo"], "citacao": fonte["citacao"], "pagina": fonte["pagina_inicio"],
-                    "url": fonte["url"], "documento": fonte["documento_id"], "trecho_id": fonte["trecho_id"]}})
+                    "url": fonte["url"], "documento": fonte["documento_id"], "trecho_id": fonte["trecho_id"],
+                    "escopo": fonte.get("escopo", "nao_especificado")}})
                 vistos.add(relacao["id"])
     fontes = resultado["contexto_enviado"]["fontes"]
     afirmacoes = [{"texto": a["texto"], "caminhos": a.get("caminhos", []), "trechos": [fontes[f]["trecho_id"] for f in a["fontes"]]}

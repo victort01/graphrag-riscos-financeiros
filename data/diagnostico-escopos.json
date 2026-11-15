@@ -1,0 +1,14 @@
+{
+  "uso": "Diagnostico de qualificacao pelo extrator; nao e gabarito humano nem metrica de precisao.",
+  "data_utc": "2026-11-15T09:31:53.724589+00:00",
+  "extrator": "regras-financeiras-v4",
+  "contagem": [
+    {
+      "escopo": "nao_especificado",
+      "total": 85
+    }
+  ],
+  "interpretacao": "Nao especificado significa que a regra nao identificou o escopo no enunciado; nao demonstra ausencia dessa informacao no relatorio completo.",
+  "regra_adotada": "Caminhos com mesmo escopo explicito podem cruzar documentos. Escopo nao especificado exige declaracoes do mesmo trecho e limita a confianca.",
+  "pendencia": "Validar escopo a partir de cabecalhos, notas e entidade responsavel, com anotacao independente."
+}
