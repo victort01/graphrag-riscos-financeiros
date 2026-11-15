@@ -21,6 +21,16 @@ class ValidacaoResposta(unittest.TestCase):
         resposta = {"afirmacoes": [{"texto": "A companhia tem proteção total.", "fontes": ["E1"]}], "cobertura": "direta"}
         self.assertTrue(validar_resposta(resposta, self.contexto))
 
+    def test_negacao_na_fonte_nao_sustenta_conclusao_positiva(self):
+        self.contexto["fontes"]["E1"]["texto"] = "As operações não asseguram proteção total."
+        resposta = {"afirmacoes": [{"texto": "Existe proteção total.", "fontes": ["E1"]}], "cobertura": "direta"}
+        self.assertTrue(validar_resposta(resposta, self.contexto))
+
+    def test_preserva_conclusao_negativa_sobre_protecao_total(self):
+        self.contexto["fontes"]["E1"]["texto"] = "As operações não asseguram proteção total."
+        resposta = {"afirmacoes": [{"texto": "As operações não asseguram proteção total.", "fontes": ["E1"]}], "cobertura": "direta"}
+        self.assertFalse(validar_resposta(resposta, self.contexto))
+
     def test_conflito_limita_confianca(self):
         resposta = {"afirmacoes": [{"texto": "Há dívida em USD.", "fontes": ["E1"]}],
                     "cobertura": "direta", "possivel_conflito": True}

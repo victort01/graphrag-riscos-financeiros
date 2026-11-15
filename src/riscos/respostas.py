@@ -8,6 +8,7 @@ from .llm import gerar_json
 from .recuperacao import recuperar
 from .caminhos import enriquecer, palavras
 from .config import ambiente
+from .versao import identificar
 
 REGRAS = """Responda em português somente com apoio nas fontes recebidas. Cada afirmação deve citar IDs de fontes.
 Se usar uma conexão do grafo, cite também seu ID de caminho C1, C2 etc. Inclua as fontes de todas as suas arestas.
@@ -68,6 +69,16 @@ def montar_contexto(recuperacao, grafo, limite_caracteres=3500):
     return {"fontes": fontes, "caminhos": compactar(fontes)}
 
 
+def mencao_positiva(texto, expressao):
+    for sentenca in re.split(r"(?<=[.!?;])\s+", texto.casefold()):
+        if expressao not in sentenca:
+            continue
+        restante = sentenca.replace(expressao, "").replace("não obstante", "")
+        if not re.search(r"\b(?:não|nao|nunca|jamais|sem)\b|ausência de|impossível", restante):
+            return True
+    return False
+
+
 def validar_resposta(resposta, contexto, pergunta=""):
     erros = []
     caminhos = {p["id"]: p for p in contexto.get("caminhos", [])}
@@ -87,7 +98,7 @@ def validar_resposta(resposta, contexto, pergunta=""):
             if numero not in numeros_apoio:
                 erros.append("Valor ausente das fontes citadas: " + numero)
         for expressao in ("proteção total", "risco eliminado", "elimina o risco", "integralmente protegida", "sem risco"):
-            if expressao in afirmacao["texto"].casefold() and expressao not in apoio.casefold():
+            if mencao_positiva(afirmacao["texto"], expressao) and not mencao_positiva(apoio, expressao):
                 erros.append("Conclusão de cobertura integral sem apoio literal.")
     if resposta["cobertura"] == "insuficiente" and resposta["afirmacoes"]:
         erros.append("Cobertura insuficiente deve produzir abstenção.")
@@ -176,6 +187,7 @@ def responder(pergunta, empresas=None, periodo="", usar_cypher=True, usar_caminh
             "resposta": final, "resposta_original_modelo": original,
             "complementos_procedencia": complementos, "afirmacoes_removidas_por_vocabulario": removidas,
             "contexto_enviado": entrada,
-            "recuperacao": busca, "grafo": grafo, "latencia_total_segundos": round(perf_counter()-inicio, 3),
+            "recuperacao": busca, "grafo": grafo, "versao_execucao": identificar(),
+            "latencia_total_segundos": round(perf_counter()-inicio, 3),
             "modelo_resposta": {"alias": ambiente().get("LLM_MODEL", "qwen-riscos-local"),
                                 "artefato": ambiente().get("LLM_ARTIFACT", "não registrado"), "temperatura": 0, "seed": 42}}

@@ -15,3 +15,7 @@ O pós-processamento verifica a existência das referências, valores numéricos
 Não se atribui confiança alta nesta versão. As categorias não são probabilidades calibradas. O modelo pode interpretar incorretamente uma fonte válida ou avaliar incorretamente a cobertura. A avaliação humana e o teste reservado são necessários antes de afirmar mitigação comprovada de alucinações.
 
 Testes unitários cobrem referência inventada, valor inventado, conclusão absoluta, divergência e abstenção. Ainda faltam casos completos de respostas sustentadas/parciais/conflitantes/sem suporte com conferência independente.
+
+A verificação de certas conclusões absolutas distingue menções positivas e negativas. Por exemplo, a fonte “não assegura proteção total” não sustenta a conclusão “existe proteção total”. Essa regra cobre padrões explícitos de negação; não substitui uma análise semântica geral.
+
+Novas execuções incluem o SHA-256 conjunto do código, catálogos e dependências declaradas, além de Python, plataforma e arquitetura. Segredos, documentos integrais e pesos não entram nesse hash; os pesos e documentos têm checksums próprios nos manifestos. A identificação permite distinguir execuções de versões diferentes, mas não prova a reprodução em outro computador. Arquivos antigos sem esse campo permanecem identificados como registros anteriores.
