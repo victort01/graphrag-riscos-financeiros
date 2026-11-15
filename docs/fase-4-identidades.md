@@ -21,3 +21,5 @@ Os resultados inicial e atual foram preservados em data/avaliacao-extracao-inici
 ## Estado da fase
 
 A canonicalização, a resolução contextual e seus testes funcionais estão implementados. A preparação da anotação e a medição de desenvolvimento também estão implementadas. A revisão do conjunto pelo grupo, a ampliação de cobertura e a avaliação fora da amostra permanecem necessárias para consolidar a validação de qualidade.
+
+O [pacote de revisão pelo grupo](revisao-extracao.md) contém dois formulários independentes para os oito excertos, com fontes, páginas e checksum, sem copiar as previsões ou preencher julgamentos humanos. O comparador exige revisores distintos e todos os casos finalizados, recusa fontes/textos divergentes e relata F1 simétrico/Jaccard e divergências de NER/RE. Casos rejeitados ficam explícitos fora dos denominadores. Os quatro testes desse módulo verificam essas condições; nenhuma concordância humana foi calculada, pois os formulários continuam pendentes.
