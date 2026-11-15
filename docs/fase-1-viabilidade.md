@@ -16,7 +16,7 @@ Foram adquiridos seis documentos anuais completos, em português, com notas expl
 | Irani DFP 2025 | 141 | 286.368 | 0 |
 | Total | 954 | 3.682.930 | 19 |
 
-A extensão do acervo não equivale à quantidade de evidências relevantes. A exploração identificou dez perguntas e dezesseis localizadores de evidência. As relações serão extraídas automaticamente nas fases seguintes. Os arquivos exploratórios registram a leitura humana usada para validar a viabilidade e desenvolver a extração.
+A extensão do acervo não equivale à quantidade de evidências relevantes. A exploração identificou dez perguntas e dezesseis localizadores de evidência. As relações serão extraídas automaticamente nas fases seguintes. Os arquivos exploratórios registram uma leitura assistida por IA, usada para validar a viabilidade e desenvolver a extração. A revisão humana independente permanece pendente.
 
 A Suzano e a Klabin estão classificadas na CVM como Papel e Celulose. A Irani está classificada como Embalagens. O grupo foi selecionado pela cadeia produtiva de papel, celulose e embalagens. Essa diferença de subsegmento será preservada nas comparações. O cadastro oficial e seu checksum estão em data/identidades-cvm.json.
 

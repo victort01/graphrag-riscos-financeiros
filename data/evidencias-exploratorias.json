@@ -6,7 +6,7 @@
     "secao": "4.4.1",
     "assunto": "Exposição estrutural, receitas de exportação e financiamento em dólar",
     "termo_de_conferencia": "hedge natural",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -16,7 +16,7 @@
     "secao": "4.4.1.2",
     "assunto": "Derivativos cambiais e parcela da receita",
     "termo_de_conferencia": "24 meses",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -26,7 +26,7 @@
     "secao": "4.4.1",
     "assunto": "Moedas das receitas, custos e financiamentos",
     "termo_de_conferencia": "hedge natural",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -36,7 +36,7 @@
     "secao": "4.4.1.2",
     "assunto": "Escopo de derivativos cambiais e horizonte",
     "termo_de_conferencia": "24 meses",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -46,7 +46,7 @@
     "secao": "28.1.1(a)",
     "assunto": "Exposição em dólar, dívida, swap e receitas futuras",
     "termo_de_conferencia": "altamente provável",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -56,7 +56,7 @@
     "secao": "29.1",
     "assunto": "Designação de dívida e derivativos como hedge de receitas",
     "termo_de_conferencia": "instrumentos de dívida",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -66,7 +66,7 @@
     "secao": "29.2",
     "assunto": "Programa de fluxo de caixa de taxa de juros IPCA/CDI",
     "termo_de_conferencia": "IPCA para CDI",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -76,7 +76,7 @@
     "secao": "27.1.1(a)",
     "assunto": "Dívida em moeda estrangeira, receitas e derivativos ZCC/NDF",
     "termo_de_conferencia": "Zero Cost Collar",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -86,7 +86,7 @@
     "secao": "28.1",
     "assunto": "Designação de instrumentos para receitas futuras",
     "termo_de_conferencia": "receitas futuras",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -96,7 +96,7 @@
     "secao": "28.3",
     "assunto": "Condições de proteção da exposição líquida",
     "termo_de_conferencia": "25% a 50%",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -106,7 +106,7 @@
     "secao": "28.4.1",
     "assunto": "Reclassificação de hedge de IPCA em 2025",
     "termo_de_conferencia": "valor justo",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -116,7 +116,7 @@
     "secao": "Fatores de risco financeiro",
     "assunto": "Finalidade de swap de taxa de juros",
     "termo_de_conferencia": "indexador de taxa de juros",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -126,7 +126,7 @@
     "secao": "Risco de exposição cambial",
     "assunto": "ACC e recebíveis de exportações",
     "termo_de_conferencia": "ACC",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -136,7 +136,7 @@
     "secao": "Risco de exposição cambial (continuação)",
     "assunto": "Pagamentos cambiais e carteira de exportação",
     "termo_de_conferencia": "clientes de exportações",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -146,7 +146,7 @@
     "secao": "Fatores de risco financeiro e exposição cambial",
     "assunto": "Swaps de juros e ACC com finalidades distintas",
     "termo_de_conferencia": "ACC",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   },
   {
@@ -156,7 +156,7 @@
     "secao": "Risco de exposição cambial (continuação)",
     "assunto": "Limite financeiro com carteira de exportações",
     "termo_de_conferencia": "clientes de exportações",
-    "origem": "leitura humana exploratoria",
+    "origem": "leitura exploratoria assistida por IA; revisao humana pendente",
     "uso": "desenvolvimento; excluida da avaliacao reservada"
   }
 ]
