@@ -9,7 +9,7 @@ permissions:
 jobs:
   corpus-e-consulta:
     runs-on: ubuntu-22.04
-    timeout-minutes: 40
+    timeout-minutes: 90
     services:
       neo4j:
         image: neo4j:5.26.0-community
@@ -57,31 +57,30 @@ jobs:
         run: |
           pip install neo4j==5.28.3
           python -m unittest discover -s tests -v
-      - name: Compilar servidor do modelo
+      - name: Preparar runtime fixado
         run: |
-          git clone --depth 1 --branch b7770 https://github.com/ggml-org/llama.cpp.git /tmp/llama-riscos
-          cmake -S /tmp/llama-riscos -B /tmp/llama-riscos/build -DCMAKE_BUILD_TYPE=Release -DGGML_NATIVE=OFF -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF
-          cmake --build /tmp/llama-riscos/build --target llama-server --parallel 2
-          mkdir -p data/models/llama-linux
-          cp /tmp/llama-riscos/build/bin/llama-server data/models/llama-linux/
-          tar -czf data/reports/llama-b7770-linux-x64.tar.gz -C data/models/llama-linux llama-server
-          sha256sum data/reports/llama-b7770-linux-x64.tar.gz > data/reports/llama-b7770-linux-x64.sha256
-      - name: Consulta real em ambiente limpo
-        run: |
-          data/models/llama-linux/llama-server --model data/models/qwen2.5-1.5b-instruct-q4_k_m.gguf --alias qwen-riscos-local --host 127.0.0.1 --port 18081 --ctx-size 4096 --threads 2 --parallel 1 --batch-size 128 > data/reports/llama-linux.log 2>&1 &
-          for tentativa in $(seq 1 90); do
-            if curl --fail --silent http://127.0.0.1:18081/health; then break; fi
-            sleep 2
-          done
-          curl --fail http://127.0.0.1:18081/health
-          python scripts/responder.py "Como a Irani conecta ACC a recebíveis de exportações?" --empresa 92791243000103 --periodo 2025-12-31 --salvar data/reports/consulta-clone-linux.json
-          python -c "import json; d=json.load(open('data/reports/consulta-clone-linux.json')); assert d['grafo']['caminhos']; assert d['contexto_enviado']['fontes']; print('Consulta concluida; verificar resposta documental no relatorio.')"
+          python - <<'PY'
+          import hashlib,json,tarfile,urllib.request
+          from pathlib import Path
+          catalogo=json.loads(Path('data/runtime-linux.json').read_text())
+          data=urllib.request.urlopen(catalogo['url'],timeout=120).read()
+          assert hashlib.sha256(data).hexdigest()==catalogo['sha256']
+          pasta=Path('data/models/llama-linux');pasta.mkdir(parents=True,exist_ok=True)
+          tar=pasta/'runtime.tar.gz';tar.write_bytes(data)
+          with tarfile.open(tar) as pacote:
+              membro=pacote.getmember('llama-server');assert membro.isfile()
+              servidor=pasta/'llama-server';servidor.write_bytes(pacote.extractfile(membro).read());servidor.chmod(0o700)
+          PY
+      - name: Auditoria da nova extração
+        run: python scripts/auditar_extracao.py --saida data/reports/auditoria-extracao-v2.json
+      - name: Comparar modelos em contextos idênticos
+        run: python scripts/comparar_modelos.py --saida data/reports/comparacao-v2
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: reproducao-linux
+          name: avaliacao-v2
           path: |
-            data/reports/*clone-linux.json
-            data/reports/llama-b7770-linux-x64.*
-            data/reports/llama-linux.log
+            data/reports/auditoria-clone-linux.json
+            data/reports/auditoria-extracao-v2.json
+            data/reports/comparacao-v2/
           retention-days: 30
