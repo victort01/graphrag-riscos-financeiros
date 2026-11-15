@@ -2,7 +2,7 @@
 
 Aplicação de consulta a exposições cambiais, obrigações e medidas de proteção descritas em relatórios oficiais de Suzano, Klabin e Irani. Combina busca vetorial e textual, Cypher gerado por um modelo de linguagem e caminhos financeiros no Neo4j. A interface exibe fontes, páginas, consultas e o subgrafo usado como contexto.
 
-O acervo reúne seis relatórios de 2024 e 2025, com 954 páginas. O índice cobre 3.918 trechos narrativos elegíveis e o grafo contém 85 declarações extraídas. A cobertura é narrativa: tabelas e montantes não estão validados para cálculo de exposição líquida ou classificação de risco entre empresas. A avaliação prospectiva usa perguntas e critérios assistidos sobre corpus conhecido. Os resultados não demonstram superioridade geral nem redução de alucinações em teste independente.
+O acervo reúne seis relatórios de 2024 e 2025, com 954 páginas. A rodada V1 documentou 3.918 trechos narrativos elegíveis e 85 declarações extraídas; esses totais identificam aquela versão do pipeline. O extrator atual integra as correções de tratamento contábil, programas e leitura em colunas e exige reingestão antes de atualizar os totais. A cobertura é narrativa: tabelas e montantes não estão validados para cálculo de exposição líquida ou classificação de risco entre empresas. A avaliação prospectiva usa perguntas e critérios assistidos sobre corpus conhecido. Os resultados não demonstram superioridade geral nem redução de alucinações em teste independente.
 
 ## Materiais
 
@@ -89,6 +89,16 @@ Em Linux/macOS, use `.venv/bin/python`, inicie o servidor GGUF com os argumentos
 Os testes unitários não exigem modelos ou banco. As verificações opcionais usam `TESTAR_NEO4J=1` para escrita no banco de teste e `TESTAR_CORPUS=1` para o corpus já ingerido. Execute testes de escrita com o banco em modo de ingestão e retorne a consulta ao terminar.
 
 O [protocolo de avaliação](docs/avaliacao.md) descreve extração, recuperação, respostas e revisão documental. Uma rodada de 12 perguntas fixadas antes da execução concluiu 36 recuperações e 34 gerações; dois timeouts foram preservados. O recall médio dos localizadores no contexto, em dez perguntas com evidência esperada, foi de 30% no vetor, 70% no híbrido e 65% na primeira política com caminhos. A correção posterior preserva as fontes híbridas e atingiu 70% na reanálise conhecida. Esses números não medem correção semântica das respostas.
+
+## Comparação de modelos
+
+A rodada V2 usa [perguntas diferentes de V1](data/perguntas-validacao-v2.json) e [dois modelos fixados](data/modelos-comparacao-v2.json): Qwen2.5 de 1.5B e 3B, ambos Q4_K_M. A recuperação é executada uma vez; os modelos recebem os mesmos contextos, conferidos por hash. O experimento compara geração, sem atribuir ao modelo maior uma melhoria ainda não medida.
+
+```bash
+python scripts/comparar_modelos.py --saida data/reports/nova-comparacao
+```
+
+O comando exige corpus reingerido/indexado e o runtime Linux catalogado em `data/models/llama-linux/llama-server`; `--servidor` permite outro caminho. A porta 18081 deve estar livre. Pesos são adquiridos pelos hashes oficiais, um modelo é carregado por vez e os resultados brutos ficam fora do Git. A revisão semântica permanece separada das métricas técnicas.
 
 ## Estrutura
 
