@@ -2,6 +2,8 @@
 
 Projeto final de Tendências em Ciência da Computação do Centro Universitário de João Pessoa (Unipê).
 
+Repositório público: https://github.com/victort01/graphrag-riscos-financeiros. Os [links de entrega e o estado da hospedagem](docs/entrega.md) ficam reunidos em um único documento. A aplicação em nuvem ainda não tem endereço público validado; o requisito definido é hospedagem permanente e gratuita.
+
 Consulte o [andamento por fase](docs/andamento.md) e a [matriz de requisitos do enunciado](docs/matriz-requisitos.md) para distinguir as entregas verificadas das pendências.
 
 O sistema consulta exposições cambiais, obrigações em moeda estrangeira e mecanismos de proteção declarados em documentos de companhias brasileiras. A implementação e a avaliação ainda estão em andamento.
@@ -126,7 +128,6 @@ A [avaliação de recuperação](docs/fase-9-protocolo.md) compara vetor, híbri
 ## Materiais para revisão
 
 - [Apresentação editável](docs/apresentacao/apresentacao-revisao.pptx) e [PDF de exibição](docs/apresentacao/apresentacao-revisao.pdf), com 14 slides e fontes nas notas.
-- [Falas dos quatro integrantes](docs/apresentacao/falas.md), incluindo transições, demonstração e perguntas de defesa. Paulo apresenta a parte técnica mais complexa.
 - [Artigo em PDF](docs/artigo/artigo-revisao.pdf) e [fonte LaTeX](docs/artigo/artigo-revisao.tex), usando IEEEtran conference, com instruções de [compilação e procedência](docs/artigo/README.md).
 
 São versões para revisão, correspondentes aos resultados de desenvolvimento disponíveis. A entrega final exige incorporar revisão independente, conjunto reservado e resultados consolidados. A [matriz de requisitos](docs/matriz-requisitos.md) e o [andamento por fase](docs/andamento.md) registram as pendências.
@@ -142,4 +143,4 @@ O perfil padrão do Neo4j usa heap de 128–384 MB e page cache de 64 MB, ajust�
 - Luiz Henrique Monteiro dos Santos.
 - Paulo Victor Oliveira de Barros Araújo.
 
-O professor terá acesso ao repositório quando o grupo autorizar o convite.
+O professor pode acessar o código pelo repositório público. Nenhum convite individual foi enviado.

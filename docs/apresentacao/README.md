@@ -2,7 +2,6 @@
 
 - `apresentacao-revisao.pptx`: 14 slides, textos, tabelas e diagrama editáveis, com notas e referências.
 - `apresentacao-revisao.pdf`: cópia de exibição dos previews revisados. O PDF é rasterizado; a edição é feita no PowerPoint ou na apresentação vinculada.
-- `falas.md`: roteiro dos quatro integrantes, transições, demonstração e preparação para perguntas. Paulo ficou com a parte técnica mais complexa.
 
 Este material registra o desenvolvimento em 15/11/2026. Não é a defesa final: a revisão independente, o teste reservado e a validação ampliada dos dados ainda precisam ser concluídos. O caso de comparação entre três empresas e a captura da interface são históricos, anteriores à expansão do índice. O smoke usa o índice completo e duas perguntas já conhecidas de desenvolvimento.
 

@@ -21,8 +21,8 @@ Referência: documento “Projeto Final — GraphRAG e KAG em Ciência da Comput
 | Interface funcional | Streamlit com pergunta, filtros, resposta e fontes; processamento separado da conexão. | Consulta real concluída após reconexão, abstenção sem acervo e fluxos de erro verificados; deployment local. |
 | Subgrafo interativo de contexto | Cytoscape com IDs reais, caminhos, seleção e fonte de aresta. | Realce por afirmação, arraste, pan, zoom, duas relações, citação e abertura de PDF oficial verificados visualmente. |
 | Nós consultados, Cypher e confiança | Rastreio separa candidatos, caminhos, contexto enviado e fontes citadas; nível documental explicado. | Implementado; interpretação e usabilidade em validação. |
-| Código completo no GitHub | Repositório privado graphrag-riscos-financeiros, commits por entrega. | Em desenvolvimento. |
-| Acesso do docente | Convite adiado por instrução expressa do usuário. | Pendente de autorização futura. |
+| Código completo no GitHub | Repositório público graphrag-riscos-financeiros, commits por entrega. | Implementação em desenvolvimento; acesso público habilitado. |
+| Acesso do docente | Leitura disponível pelo repositório público, conforme autorização posterior do usuário. | Atendido por visibilidade pública; sem convite individual. |
 | README com reprodução e deployment | Aquisição, banco, ingestão, modelos, consulta e implantação local. | Documentado; clone limpo de toda a solução ainda pendente. |
 | Testes operacionais | Unicidade, rollback, índices, extração, aliases, consultas indevidas, caminhos e respostas. | Executados por módulo; ampliar com avaliação final. |
 | Artigo SBC/IEEE | Rascunho de quatro páginas com IEEEtran conference, fonte LaTeX e PDF; método, resultados de desenvolvimento e erros observados. | Primeira versão revisada visualmente; consolidação após avaliação independente pendente. |

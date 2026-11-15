@@ -48,3 +48,9 @@ O índice completo cobre 3.918 trechos elegíveis. A comparação de recuperaç�
 A bateria posterior executou **79 testes em 3,522 s: 69 aprovados e dez testes de escrita ignorados no modo de consulta**. Os novos casos verificam a preservação das guardas na geração sobre contextos congelados, isolamento dos contratos de IDs entre consultas, separação entre falha e abstenção, retomada sem duplicação e recusa de revisões pendentes ou alteradas. O ambiente passou em `pip check`.
 
 A [apresentação de 14 slides e as falas](apresentacao/README.md) e o [artigo IEEE de quatro páginas](artigo/README.md) estão preparados como versões para revisão. As páginas foram renderizadas e inspecionadas; o PowerPoint passou nas verificações de estrutura, geometria e reimportação. Isso não encerra a fase 10: ainda é necessário incorporar resultados independentes, conferir os materiais com os integrantes e ensaiar a defesa. O repositório permanece privado e não foi enviado convite ao professor.
+
+## Visibilidade pública e hospedagem solicitada
+
+Posteriormente, em 15/11/2026, o usuário autorizou tornar o repositório público e definiu hospedagem permanente e gratuita. Antes da alteração, foram examinados 241 blobs do histórico alcançável, com busca por assinaturas de credenciais e pelos valores secretos locais conhecidos; não houve ocorrência. Essa verificação não é garantia universal de ausência de segredos. A visibilidade pública foi confirmada no GitHub e o convite individual ao professor continua sem envio.
+
+Os [links e condições de entrega](entrega.md) registram o endereço público do GitHub e a implantação em nuvem ainda pendente. Não há link de aplicação pública validado nem contratação de serviço pago. O roteiro de ensaio é entregue separadamente em PDF, fora do repositório, conforme solicitação do usuário.
