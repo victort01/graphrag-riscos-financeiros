@@ -1,0 +1,97 @@
+{
+  "extrator": "regras-financeiras-v4",
+  "metodo": "Anotação assistida dos excertos lidos na fase 1; desenvolvimento, sem revisão independente.",
+  "amostras": 8,
+  "metricas": {
+    "ner": {
+      "verdadeiros_positivos": 15,
+      "previstos": 15,
+      "esperados": 15,
+      "precisao": 1.0,
+      "revocacao": 1.0,
+      "f1": 1.0
+    },
+    "re": {
+      "verdadeiros_positivos": 23,
+      "previstos": 23,
+      "esperados": 23,
+      "precisao": 1.0,
+      "revocacao": 1.0,
+      "f1": 1.0
+    }
+  },
+  "casos": [
+    {
+      "documento": "suzano-dfp-2024",
+      "pagina": 40,
+      "ancora": "Esta exposição estrutural",
+      "ner_faltantes": [],
+      "ner_extras": [],
+      "re_faltantes": [],
+      "re_extras": []
+    },
+    {
+      "documento": "suzano-dfp-2025",
+      "pagina": 105,
+      "ancora": "A captação de financiamentos",
+      "ner_faltantes": [],
+      "ner_extras": [],
+      "re_faltantes": [],
+      "re_extras": []
+    },
+    {
+      "documento": "irani-dfp-2024",
+      "pagina": 117,
+      "ancora": "A Companhia mantém empréstimos",
+      "ner_faltantes": [],
+      "ner_extras": [],
+      "re_faltantes": [],
+      "re_extras": []
+    },
+    {
+      "documento": "irani-dfp-2025",
+      "pagina": 124,
+      "ancora": "Os instrumentos financeiros derivativos",
+      "ner_faltantes": [],
+      "ner_extras": [],
+      "re_faltantes": [],
+      "re_extras": []
+    },
+    {
+      "documento": "klabin-dfp-2024",
+      "pagina": 121,
+      "ancora": "Além dos empréstimos",
+      "ner_faltantes": [],
+      "ner_extras": [],
+      "re_faltantes": [],
+      "re_extras": []
+    },
+    {
+      "documento": "klabin-dfp-2025",
+      "pagina": 124,
+      "ancora": "A Companhia contrata instrumentos financeiros",
+      "ner_faltantes": [],
+      "ner_extras": [],
+      "re_faltantes": [],
+      "re_extras": []
+    },
+    {
+      "documento": "klabin-dfp-2025",
+      "pagina": 135,
+      "ancora": "A Companhia possui um programa",
+      "ner_faltantes": [],
+      "ner_extras": [],
+      "re_faltantes": [],
+      "re_extras": []
+    },
+    {
+      "documento": "irani-dfp-2024",
+      "pagina": 116,
+      "ancora": "A Companhia não efetua aplicações",
+      "ner_faltantes": [],
+      "ner_extras": [],
+      "re_faltantes": [],
+      "re_extras": []
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "escopo": "Identidades nos artefatos do corpus, incluindo menções ambíguas sem relação afirmativa.",
+  "documentos": 6,
+  "entidades_unicas": 35,
+  "entidades_com_variantes": 13,
+  "identidades_pendentes": [
+    {
+      "id": "medidaprotecao:8b7fbd888401b9b932673cb2bc3fa777",
+      "nome": "swap",
+      "empresa_id": "92791243000103"
+    },
+    {
+      "id": "medidaprotecao:4cd9ed725455acf1b0670499fffafad0",
+      "nome": "swap",
+      "empresa_id": "89637490000145"
+    },
+    {
+      "id": "medidaprotecao:980a279c6ddcadefa1962be70c2b9041",
+      "nome": "swap",
+      "empresa_id": "16404287000155"
+    }
+  ]
+}

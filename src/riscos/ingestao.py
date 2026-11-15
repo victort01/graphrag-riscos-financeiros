@@ -7,9 +7,10 @@ from .banco import Banco
 from .config import ROOT
 from .esquema import RELACOES, ROTULOS
 from .extracao import VERSAO, extrair
+from .identidade import VERSAO as IDENTIDADES
 from .segmentacao import VERSAO as SEGMENTACAO, segmentar
 
-PIPELINE = VERSAO + "/" + SEGMENTACAO
+PIPELINE = VERSAO + "/" + SEGMENTACAO + "/" + IDENTIDADES
 
 
 def validar_dados(dados):
@@ -22,6 +23,8 @@ def validar_dados(dados):
         objeto = entidades[declaracao["objeto_id"]]
         trecho = trechos[declaracao["trecho_id"]]
         tipos_origem, tipos_destino = RELACOES[declaracao["predicado"]]
+        if sujeito.get("revisao_identidade") or objeto.get("revisao_identidade"):
+            raise ValueError("Uma relação usa entidade ambígua que exige qualificação.")
         if sujeito["tipo"] not in tipos_origem or objeto["tipo"] not in tipos_destino:
             raise ValueError("Relação incompatível com o esquema.")
         if declaracao["evidencia"] not in trecho["texto"] or trecho["natureza"] != "narrativa":
@@ -45,8 +48,9 @@ def preparar(fonte):
             aliases = entidades[entidade["id"]]["aliases"]
             aliases.extend(a for a in entidade["aliases"] if a not in aliases)
         declaracoes.extend(relacoes)
+    declaracoes_unicas = {d["id"]: d for d in declaracoes}
     return {"fonte": fonte, "pipeline": PIPELINE, "trechos": trechos,
-            "entidades": list(entidades.values()), "declaracoes": declaracoes}
+            "entidades": list(entidades.values()), "declaracoes": list(declaracoes_unicas.values())}
 
 
 def publicar(banco, dados):
@@ -75,7 +79,8 @@ def publicar(banco, dados):
     comandos = [("MERGE (d:Documento {id:$id}) SET d.ultima_carga=datetime()", {"id": fonte["id"]}),
                 ("MATCH ()-[r]->() WHERE r.documento_id=$id DELETE r", {"id": fonte["id"]}),
                 ("MATCH (d:Declaracao {documento_id:$id}) DETACH DELETE d", {"id": fonte["id"]}),
-                ("MATCH (t:Trecho {documento_id:$id}) DETACH DELETE t", {"id": fonte["id"]})]
+                ("MATCH (t:Trecho {documento_id:$id}) WHERE NOT t.id IN $ids DETACH DELETE t",
+                 {"id": fonte["id"], "ids": [t["id"] for t in dados["trechos"]]})]
     for tipo, entidades in grupos_entidades.items():
         comandos.append((f"""UNWIND $linhas AS row MERGE (n:Entidade:{tipo} {{id:row.id}})
                          WITH n,row,coalesce(n.aliases,[]) AS anteriores SET n += row
@@ -90,7 +95,7 @@ def publicar(banco, dados):
                                   "inicio_original", "fim_original", "segmentacao", "natureza", "recorte")}
                for t in dados["trechos"]]
     comandos.append(("UNWIND $linhas AS row MATCH (d:Documento {id:row.documento_id}) "
-                     "CREATE (t:Trecho) SET t = row MERGE (t)-[:PERTENCE_A]->(d)", {"linhas": trechos}))
+                     "MERGE (t:Trecho {id:row.id}) SET t += row MERGE (t)-[:PERTENCE_A]->(d)", {"linhas": trechos}))
     comandos.append(("""UNWIND $linhas AS row MATCH (e:Empresa {id:$empresa}),
         (s:Entidade {id:row.sujeito_id}), (o:Entidade {id:row.objeto_id}), (t:Trecho {id:row.trecho_id})
         MERGE (d:Declaracao {id:row.id}) SET d = row

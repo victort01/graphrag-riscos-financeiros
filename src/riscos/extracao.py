@@ -4,19 +4,20 @@ As regras procuram construções financeiras em qualquer documento do manifesto.
 Elas produzem um baseline auditável, com cobertura medida na fase de avaliação.
 """
 import re
-from .identidade import entidade, chave_hash, normalizar
+from .identidade import entidade, chave_hash, normalizar, resolver_mencoes
 from .esquema import RELACOES
 
-VERSAO = "regras-financeiras-v2"
+VERSAO = "regras-financeiras-v4"
 TERMOS = [
-    ("Moeda", "USD", r"\bUSD\b|US\$|d[oó]lares? (?:americanos?|dos Estados Unidos(?: da Am[eé]rica)?)"),
-    ("Moeda", "BRL", r"\bBRL\b|R\$|\breais\b"),
+    ("Moeda", "USD", r"\bUSD\b|US\$|d[oó]lar(?:es)? (?:americanos?|dos Estados Unidos(?: da Am[eé]rica)?)"),
+    ("Moeda", "BRL", r"\bBRL\b|R\$|\breais\b|(?-i:\bReal\b)"),
     ("Indexador", "CDI", r"\bCDI\b"),
     ("Indexador", "IPCA", r"\bIPCA\b"),
     ("Indexador", "SOFR", r"\bSOFR\b"),
     ("ObrigacaoFinanceira", "ACC", r"\bACCs?\b|Adiantamento sobre Contrato de C[aâ]mbio"),
     ("MedidaProtecao", "Zero Cost Collar", r"Zero Cost Collar|\bZCCs?\b"),
     ("MedidaProtecao", "NDF", r"Non.?Deliverable Forward[s]?|Non.?Deriverable Forward[s]?|\bNDFs?\b"),
+    ("MedidaProtecao", "swap", r"\bswaps?\b"),
 ]
 
 
@@ -46,7 +47,7 @@ def extrair(trecho, fonte):
         natureza = "cenario" if re.search(r"analise de sensibilidade|cenario (?:adverso|remoto|base|provavel)", n) else "declaracao"
         if natureza == "cenario":
             continue
-        condicoes = sentenca if re.search(r"parcela|parte |limita|provav|politica|horizonte|objetivo|\d+%", sentenca, re.I) else ""
+        condicoes = sentenca if re.search(r"parcela|parte |limita|provav|politica|horizonte|objetivo", n) else ""
         escopo = "consolidado" if "consolidado" in n else "controladora" if "controladora" in n else "nao_especificado"
 
         def no(tipo, nome):
@@ -96,6 +97,13 @@ def extrair(trecho, fonte):
             rel(empresa, "TEM_OBRIGACAO", acc, "acc-mantido")
             if re.search(r"fazer frente.{0,100}clientes de exportacoes", n):
                 rel(acc, "COMPENSA_VARIACOES_DE", no("FluxoFinanceiro", "recebíveis de exportações"), "acc-recebiveis")
+        if "designando" in n and "instrumentos de divida" in n and "receitas futuras" in n and "hedge" in n:
+            obrigacao = no("ObrigacaoFinanceira", "instrumentos de dívida designados para hedge")
+            receita = no("FluxoFinanceiro", "receitas futuras altamente prováveis")
+            rel(empresa, "TEM_OBRIGACAO", obrigacao, "divida-designada-hedge")
+            rel(obrigacao, "PROTEGE", receita, "divida-designada-hedge")
+            if re.search(r"\bUSD\b|US\$|d[oó]lar(?:es)? americanos?", sentenca, re.I):
+                rel(receita, "DENOMINADO_EM", no("Moeda", "USD"), "receita-protegida-usd")
         if "swap" in n and re.search(r"(?:contratad|em vigencia|companhia adota)", n) and "taxa de juros" in n:
             medida = adotar("swap para troca de indexador de juros", "swap-finalidade-juros")
             rel(medida, "PROTEGE", no("Exposicao", "exposição a taxas de juros"), "swap-finalidade-juros")
@@ -105,10 +113,13 @@ def extrair(trecho, fonte):
             rel(medida, "CONVERTE_PARA", no("Moeda", "USD"), "swap-conversao-cambial")
         if re.search(r"companhia contrata|companhia se baseia na contratacao|objetivo de hedge", n):
             for tipo, nome, padrao in TERMOS:
-                if tipo == "MedidaProtecao" and re.search(padrao, sentenca, re.I):
+                if tipo == "MedidaProtecao" and nome != "swap" and re.search(padrao, sentenca, re.I):
                     medida = adotar(nome, "derivativo-contratado")
                     if re.search(r"exposicao liquida|exposicao cambial liquida", n):
                         exposicao = no("Exposicao", "exposição cambial líquida de caixa")
                         rel(empresa, "TEM_EXPOSICAO", exposicao, "exposicao-protegida")
                         rel(medida, "PROTEGE", exposicao, "derivativo-objeto-explicito")
+                        if re.search(r"variacao cambial|exposicao cambial", n):
+                            rel(exposicao, "ASSOCIADA_A", no("FatorRisco", "variação cambial"), "objeto-cambial-explicito")
+    resolver_mencoes(entidades, mencoes)
     return list(entidades.values()), mencoes, declaracoes

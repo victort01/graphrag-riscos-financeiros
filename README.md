@@ -50,8 +50,6 @@ python -m unittest discover -s tests -v
 
 Aguarde a mensagem Started. no log antes de configurar. O banco fica disponível em http://127.0.0.1:17474. A [modelagem LPG](docs/fase-2-modelagem.md) documenta declarações, temporalidade e regras de evidência. A fase 2 foi verificada com constraints, índices Range/Fulltext/vetorial e consultas operacionais.
 
-## Equipe
-
 ## Ingestão de narrativas
 
 ```powershell

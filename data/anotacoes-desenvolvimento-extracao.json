@@ -1,0 +1,250 @@
+{
+  "metodo": "Anotação assistida dos excertos lidos na fase 1; desenvolvimento, sem revisão independente.",
+  "amostras": [
+    {
+      "documento_id": "suzano-dfp-2024",
+      "pagina": 40,
+      "ancora": "Esta exposição estrutural",
+      "mencoes": [
+        [
+          "Moeda",
+          "Dólares dos Estados Unidos da América"
+        ],
+        [
+          "Moeda",
+          "US$"
+        ]
+      ],
+      "relacoes": [
+        [
+          "@empresa",
+          "TEM_OBRIGACAO",
+          "financiamentos de exportação em USD"
+        ],
+        [
+          "financiamentos de exportação em USD",
+          "DENOMINADO_EM",
+          "USD"
+        ],
+        [
+          "@empresa",
+          "ADOTA_PROTECAO",
+          "hedge natural de caixa"
+        ],
+        [
+          "hedge natural de caixa",
+          "PROTEGE",
+          "financiamentos de exportação em USD"
+        ]
+      ]
+    },
+    {
+      "documento_id": "suzano-dfp-2025",
+      "pagina": 105,
+      "ancora": "A captação de financiamentos",
+      "mencoes": [
+        [
+          "Moeda",
+          "Dólares dos Estados Unidos da América"
+        ],
+        [
+          "Moeda",
+          "Real"
+        ]
+      ],
+      "relacoes": [
+        [
+          "@empresa",
+          "TEM_RECEITA",
+          "receitas de exportação"
+        ],
+        [
+          "receitas de exportação",
+          "DENOMINADO_EM",
+          "USD"
+        ]
+      ]
+    },
+    {
+      "documento_id": "irani-dfp-2024",
+      "pagina": 117,
+      "ancora": "A Companhia mantém empréstimos",
+      "mencoes": [
+        [
+          "ObrigacaoFinanceira",
+          "ACC"
+        ]
+      ],
+      "relacoes": [
+        [
+          "@empresa",
+          "TEM_OBRIGACAO",
+          "obrigações em moeda estrangeira"
+        ],
+        [
+          "@empresa",
+          "TEM_OBRIGACAO",
+          "ACC"
+        ],
+        [
+          "ACC",
+          "COMPENSA_VARIACOES_DE",
+          "recebíveis de exportações"
+        ]
+      ]
+    },
+    {
+      "documento_id": "irani-dfp-2025",
+      "pagina": 124,
+      "ancora": "Os instrumentos financeiros derivativos",
+      "mencoes": [
+        [
+          "MedidaProtecao",
+          "swaps"
+        ]
+      ],
+      "relacoes": [
+        [
+          "@empresa",
+          "ADOTA_PROTECAO",
+          "swap para troca de indexador de juros"
+        ],
+        [
+          "swap para troca de indexador de juros",
+          "PROTEGE",
+          "exposição a taxas de juros"
+        ]
+      ]
+    },
+    {
+      "documento_id": "klabin-dfp-2024",
+      "pagina": 121,
+      "ancora": "Além dos empréstimos",
+      "mencoes": [
+        [
+          "MedidaProtecao",
+          "swap"
+        ],
+        [
+          "Moeda",
+          "dólares americanos"
+        ]
+      ],
+      "relacoes": [
+        [
+          "@empresa",
+          "ADOTA_PROTECAO",
+          "swap de BRL para USD"
+        ],
+        [
+          "swap de BRL para USD",
+          "CONVERTE_DE",
+          "BRL"
+        ],
+        [
+          "swap de BRL para USD",
+          "CONVERTE_PARA",
+          "USD"
+        ]
+      ]
+    },
+    {
+      "documento_id": "klabin-dfp-2025",
+      "pagina": 124,
+      "ancora": "A Companhia contrata instrumentos financeiros",
+      "mencoes": [
+        [
+          "MedidaProtecao",
+          "Zero Cost Collar"
+        ],
+        [
+          "MedidaProtecao",
+          "ZCCs"
+        ],
+        [
+          "MedidaProtecao",
+          "Non-Deriverable Forwards"
+        ],
+        [
+          "MedidaProtecao",
+          "NDFs"
+        ],
+        [
+          "Moeda",
+          "dólar americano"
+        ]
+      ],
+      "relacoes": [
+        [
+          "@empresa",
+          "ADOTA_PROTECAO",
+          "Zero Cost Collar"
+        ],
+        [
+          "@empresa",
+          "ADOTA_PROTECAO",
+          "NDF"
+        ],
+        [
+          "@empresa",
+          "TEM_EXPOSICAO",
+          "exposição cambial líquida de caixa"
+        ],
+        [
+          "Zero Cost Collar",
+          "PROTEGE",
+          "exposição cambial líquida de caixa"
+        ],
+        [
+          "NDF",
+          "PROTEGE",
+          "exposição cambial líquida de caixa"
+        ],
+        [
+          "exposição cambial líquida de caixa",
+          "ASSOCIADA_A",
+          "variação cambial"
+        ]
+      ]
+    },
+    {
+      "documento_id": "klabin-dfp-2025",
+      "pagina": 135,
+      "ancora": "A Companhia possui um programa",
+      "mencoes": [
+        [
+          "Moeda",
+          "US$"
+        ],
+        [
+          "MedidaProtecao",
+          "swaps"
+        ]
+      ],
+      "relacoes": [
+        [
+          "@empresa",
+          "TEM_OBRIGACAO",
+          "instrumentos de dívida designados para hedge"
+        ],
+        [
+          "instrumentos de dívida designados para hedge",
+          "PROTEGE",
+          "receitas futuras altamente prováveis"
+        ],
+        [
+          "receitas futuras altamente prováveis",
+          "DENOMINADO_EM",
+          "USD"
+        ]
+      ]
+    },
+    {
+      "documento_id": "irani-dfp-2024",
+      "pagina": 116,
+      "ancora": "A Companhia não efetua aplicações",
+      "mencoes": [],
+      "relacoes": []
+    }
+  ]
+}
