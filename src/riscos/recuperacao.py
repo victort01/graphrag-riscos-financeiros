@@ -7,11 +7,13 @@ from .consultas import validar_consulta
 from .embeddings import IDENTIFICADOR, codificar
 from .llm import gerar_json
 from .caminhos import palavras
+from .intencao import reconciliar
 
 CAMPOS = """t.id AS id,t.texto AS texto,t.pagina_inicio AS pagina_inicio,t.pagina_fim AS pagina_fim,
 d.id AS documento_id,d.empresa AS empresa,d.data_referencia AS periodo,d.url AS url"""
 FILTROS = """MATCH (t)-[:PERTENCE_A]->(d:Documento)-[:REFERE_SE_A]->(e:Empresa)
-WHERE ($empresas=[] OR e.id IN $empresas) AND ($periodo='' OR d.data_referencia=$periodo)"""
+WHERE ($empresas=[] OR e.id IN $empresas) AND ($periodo='' OR d.data_referencia=$periodo)
+AND t.natureza='narrativa' AND t.recorte=false"""
 
 
 def lexical(pergunta):
@@ -38,7 +40,8 @@ def sugerir_predicados(pergunta):
               ({"divida", "dividas", "obrigacoes", "financiamento"}, ["TEM_OBRIGACAO", "DENOMINADO_EM"]),
               ({"dolar", "dolares", "usd", "moeda"}, ["DENOMINADO_EM"]),
               ({"swap", "swaps", "hedge", "instrumentos"}, ["ADOTA_PROTECAO", "PROTEGE", "CONVERTE_DE", "CONVERTE_PARA"]),
-              ({"juros", "taxas"}, ["PROTEGE", "SENSIVEL_A", "ADOTA_PROTECAO"])]
+              ({"juros", "taxas"}, ["PROTEGE", "SENSIVEL_A", "ADOTA_PROTECAO"]),
+              ({"categoria", "classificacao", "enquadramento"}, ["CATEGORIZADA_COMO"])]
     return list(dict.fromkeys(p for conceitos, predicados in regras if termos & conceitos for p in predicados))
 
 
@@ -55,6 +58,7 @@ ADOTA_PROTECAO = adopted hedging instrument; PROTEGE = what the instrument prote
 TEM_OBRIGACAO = company's debt; TEM_RECEITA = company's revenue; TEM_EXPOSICAO = exposure;
 DENOMINADO_EM = currency denomination; COMPENSA_VARIACOES_DE = debt offsets receivables;
 CONVERTE_DE, CONVERTE_PARA = swap changes currency/index; ASSOCIADA_A, SENSIVEL_A = risk factor.
+DECORRE_DE = exposure originates from an obligation or revenue; CATEGORIZADA_COMO = hedge accounting category.
 Filter c.predicado using the values relevant to the question.
 Example question: Quais instrumentos de proteção a companhia declara?
 Example query:
@@ -82,6 +86,7 @@ Only MATCH, WHERE, RETURN, LIMIT. Always return DISTINCT t.id AS trecho_id LIMIT
 
 def recuperar(pergunta, empresas=None, periodo="", usar_llm=True, somente_vetor=False):
     inicio = perf_counter()
+    empresas, periodo = reconciliar(pergunta, empresas, periodo)
     if periodo and not re.fullmatch(r"20\d{2}-12-31", periodo):
         raise ValueError("O período deve ser o encerramento anual no formato AAAA-12-31.")
     if any(not re.fullmatch(r"empresa:\d{14}", e) for e in empresas or []):

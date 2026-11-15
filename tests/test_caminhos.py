@@ -12,6 +12,15 @@ from riscos.respostas import responder
 
 @unittest.skipUnless(os.getenv("TESTAR_CORPUS") == "1", "requer o corpus financeiro ingerido")
 class CaminhosFinanceiros(unittest.TestCase):
+    def test_pergunta_generica_usa_entidades_das_declaracoes_recuperadas(self):
+        sementes = Banco().consultar("""MATCH (c:Declaracao)-[:EVIDENCIADA_POR]->(t:Trecho)
+            WHERE c.empresa_id=$empresa AND c.periodo=$periodo AND c.predicado='ADOTA_PROTECAO'
+            RETURN t.id AS id LIMIT 1""", {"empresa": "92791243000103", "periodo": "2025-12-31"})
+        self.assertTrue(sementes)
+        resultado = enriquecer("Quais proteções financeiras foram declaradas?", {"trechos": sementes})
+        self.assertTrue(resultado["caminhos"])
+        self.assertEqual(resultado["rastreio"]["consultas"][0]["parametros"]["origem_destinos"], "declaracoes_recuperadas")
+
     def test_acervo_sem_exercicio_produz_abstencao_sem_chamar_modelos(self):
         with patch("riscos.recuperacao.codificar") as embedding, patch("riscos.recuperacao.gerar_json") as cypher, patch("riscos.respostas.gerar_json") as resposta:
             resultado = responder("Quais exposições constam no relatório de 2030?", ["empresa:92791243000103"], "2030-12-31")

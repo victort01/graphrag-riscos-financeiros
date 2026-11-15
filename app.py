@@ -6,12 +6,13 @@ import streamlit.components.v1 as componentes
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 from riscos.respostas import responder
 from riscos.visualizacao import pagina_grafo
+from riscos.intencao import EMPRESAS, FiltrosIncompativeis
 
 st.set_page_config(page_title="GraphRAG | Riscos financeiros", page_icon="◈", layout="wide")
 st.title("Mapa de exposições financeiras")
 st.caption("GraphRAG • Demonstrações financeiras de 2024 e 2025 • Unipê")
 st.info("Consulte exposições e proteções declaradas por Suzano, Klabin e Irani. A cobertura atual é narrativa; tabelas e montantes ainda estão em validação.")
-empresas = {"Irani": "empresa:92791243000103", "Klabin": "empresa:89637490000145", "Suzano": "empresa:16404287000155"}
+empresas = EMPRESAS
 with st.form("pergunta"):
     pergunta = st.text_input("Sua pergunta", placeholder="Como a Irani conecta ACC a recebíveis de exportações?", max_chars=1500)
     col1, col2 = st.columns(2)
@@ -25,6 +26,9 @@ if consultar:
         with st.spinner("Buscando fontes, validando Cypher e percorrendo o grafo…"):
             try:
                 st.session_state.resultado = responder(pergunta, [empresas[e] for e in escolhidas], "" if ano.startswith("Comparar") else ano+"-12-31")
+            except FiltrosIncompativeis as erro:
+                st.session_state.pop("resultado", None)
+                st.warning(str(erro))
             except Exception as erro:
                 st.session_state.pop("resultado", None)
                 st.error("A consulta não foi concluída. Verifique se o Neo4j e o modelo local estão disponíveis.")

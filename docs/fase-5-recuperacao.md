@@ -2,6 +2,8 @@
 
 O módulo `recuperacao.py` consulta o índice vetorial com cosseno e o índice Fulltext, filtra empresa/exercício e combina os candidatos por Reciprocal Rank Fusion, com constante 60. Cada método retorna até 12 candidatos e a fusão mantém até oito trechos. O índice vetorial contém 553 passagens narrativas selecionadas por vocabulário financeiro. Outros trechos continuam disponíveis no Fulltext. Essa seleção limita a cobertura semântica e deve ser considerada na avaliação.
 
+Somente trechos narrativos sem recorte entram na recuperação atual. `intencao.py` reconhece as três empresas do recorte e anos explícitos, distinguindo marcas monetárias simples. Quando a pergunta contradiz os filtros, a interface solicita o ajuste da seleção. Sem filtros explícitos, usa as menções reconhecidas. Essa heurística de âmbito não é um interpretador financeiro geral.
+
 Os embeddings usam o modelo e a revisão registrados em `data/modelos.json`, variante ONNX quantizada, mean pooling com máscara, normalização L2 e truncamento em 256 tokens. O identificador inclui a variante e o processamento. A indexação incremental evita misturar vetores de configurações diferentes na consulta. A versão anterior em PyTorch foi substituída por consumo de memória; todos os 553 vetores foram recalculados.
 
 O LLM recebe a pergunta, o esquema de declarações e sugestões de predicados por vocabulário. Ele produz a consulta Cypher completa em JSON. A aplicação não substitui uma consulta rejeitada por um template. O contrato deliberadamente restringe a geração a localizar declarações e seus trechos. A travessia entre entidades financeiras ocorre no módulo de caminhos, separadamente das ligações de procedência.

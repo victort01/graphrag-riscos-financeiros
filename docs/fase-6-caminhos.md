@@ -2,6 +2,8 @@
 
 O módulo `caminhos.py` executa `shortestPath` dirigido no Neo4j, antes da chamada que gera a resposta. Para cada empresa/exercício presente nos candidatos da busca, seleciona entidades cujos nomes ou aliases compartilham termos com a pergunta. Busca um caminho mínimo por par empresa/entidade, limitado a quatro saltos e aos tipos financeiros da ontologia.
 
+Quando a pergunta é genérica e não nomeia entidades do domínio, os destinos vêm dos objetos das declarações recuperadas. O rastreio informa a origem da seleção. Isso permite mostrar relações reais também em perguntas como quais proteções foram declaradas, sem depender de o usuário escrever o nome de um instrumento.
+
 Todas as arestas do caminho devem pertencer à mesma empresa e ao mesmo exercício. A consulta não usa relações de Documento/Trecho para contar saltos financeiros. Ela retorna nós persistentes, relações, IDs de declaração e número de saltos. As declarações fornecem a evidência de cada aresta. O rastreio guarda a consulta, parâmetros e trechos antes/depois do enriquecimento.
 
 ## Caso verificado

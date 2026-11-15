@@ -7,7 +7,8 @@ from .config import ambiente
 
 
 class Banco:
-    def __init__(self):
+    def __init__(self, timeout=90):
+        self.timeout = timeout
         config = ambiente()
         senha = config.get("NEO4J_PASSWORD")
         if not senha:
@@ -25,7 +26,7 @@ class Banco:
         if limite_ms:
             headers["max-execution-time"] = str(limite_ms)
         req = Request(self.url, headers=headers, data=json.dumps(payload).encode())
-        with urlopen(req, timeout=90) as resposta:
+        with urlopen(req, timeout=self.timeout) as resposta:
             resultado = json.load(resposta)
         if resultado["errors"]:
             erro = resultado["errors"][0]

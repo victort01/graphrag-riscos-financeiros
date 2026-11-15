@@ -38,9 +38,17 @@ def enriquecer(pergunta, recuperacao, banco=None):
         alvos = [(len(termos & palavras(e["nome"] + " " + " ".join(e["aliases"] or []))), e["id"])
                  for e in entidades if e["id"] != grupo["inicio"]]
         destinos = [id_ for pontos, id_ in sorted(alvos, key=lambda a: (-a[0], a[1])) if pontos > 0][:12]
+        origem_destinos = "termos_da_pergunta"
+        if not destinos:
+            sementes = banco.consultar("""MATCH (c:Declaracao)-[:EVIDENCIADA_POR]->(t:Trecho)
+                MATCH (c)-[:OBJETO]->(n:Entidade)
+                WHERE t.id IN $ids AND c.empresa_id=$empresa AND c.periodo=$periodo
+                RETURN DISTINCT n.id AS id ORDER BY id LIMIT 12""", {**grupo, "ids": ids})
+            destinos = [n["id"] for n in sementes]
+            origem_destinos = "declaracoes_recuperadas"
         if not destinos:
             continue
-        parametros = {**grupo, "destinos": destinos}
+        parametros = {**grupo, "destinos": destinos, "origem_destinos": origem_destinos}
         encontrados = banco.consultar(CONSULTA_CAMINHOS, parametros)
         caminhos.extend(encontrados)
         consultas.append({"cypher": CONSULTA_CAMINHOS, "parametros": parametros})

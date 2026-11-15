@@ -2,6 +2,8 @@
 
 Projeto final de Tendências em Ciência da Computação do Centro Universitário de João Pessoa (Unipê).
 
+Consulte o [andamento por fase](docs/andamento.md) e a [matriz de requisitos do enunciado](docs/matriz-requisitos.md) para distinguir as entregas verificadas das pendências.
+
 O sistema consulta exposições cambiais, obrigações em moeda estrangeira e mecanismos de proteção declarados em documentos de companhias brasileiras. A implementação e a avaliação ainda estão em andamento.
 
 A fase 1 está concluída. Foram baixadas e extraídas seis demonstrações financeiras completas de Suzano, Klabin e Irani, dos exercícios de 2024 e 2025. O conjunto tem 954 páginas, dez perguntas exploratórias e dezesseis localizadores de evidência. A diferença de subsegmento entre as empresas e os limites das tabelas extraídas estão documentados no [relatório de viabilidade](docs/fase-1-viabilidade.md).
