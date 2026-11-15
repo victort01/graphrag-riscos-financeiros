@@ -1,0 +1,78 @@
+{
+  "uso": "Verificação operacional de desenvolvimento; não é teste reservado.",
+  "modelo": {
+    "alias": "qwen-riscos-local",
+    "artefato": "Qwen2.5-1.5B-Instruct-GGUF@91cad51170dc346986eccefdc2dd33a9da36ead9:Q4_K_M",
+    "temperatura": 0,
+    "seed": 42
+  },
+  "corpus": {
+    "documentos": 6,
+    "declaracoes": 85,
+    "vetores": 553
+  },
+  "pergunta": "Como a Irani conecta ACC a recebíveis de exportações?",
+  "cypher_gerado": "MATCH (c:Declaracao)-[:EVIDENCIADA_POR]->(t:Trecho)-[:PERTENCE_A]->(d:Documento)-[:REFERE_SE_A]->(e:Empresa) WHERE ($empresas=[] OR e.id IN $empresas) AND ($periodo='' OR d.data_referencia=$periodo) AND c.predicado IN ['TEM_OBRIGACAO', 'COMPENSA_VARIACOES_DE'] RETURN DISTINCT t.id AS trecho_id LIMIT 16",
+  "tentativas_cypher": [
+    {
+      "consulta": "MATCH (c:Declaracao)-[:EVIDENCIADA_POR]->(t:Trecho)-[:PERTENCE_A]->(d:Documento)-[:REFERE_SE_A]->(e:Empresa) WHERE ($empresas=[] OR e.id IN $empresas) AND ($periodo='' OR d.data_referencia=$periodo) AND c.predicado IN ['TEM_OBRIGACAO', 'COMPENSA_VARIACOES_DE'] RETURN DISTINCT t.id AS trecho_id LIMIT 16",
+      "erro": null
+    }
+  ],
+  "primeira_resposta_real": {
+    "latencia_segundos": 327.773,
+    "cobertura": "insuficiente",
+    "erros": [
+      "Caminho citado sem as fontes de todas as arestas.",
+      "Caminho citado sem as fontes de todas as arestas."
+    ]
+  },
+  "segunda_resposta_real": {
+    "latencia_segundos": 41.363,
+    "cobertura": "parcial",
+    "observacao": "Incluiu contextualização desnecessária e referências de caminho pouco pertinentes."
+  },
+  "reavaliacao_pos_processamento": {
+    "nova_chamada_llm": false,
+    "afirmacoes_mantidas": 1,
+    "removidas": [
+      2,
+      3
+    ],
+    "erros": [],
+    "cobertura": "parcial"
+  },
+  "caminhos_contexto": [
+    {
+      "id": "C1",
+      "nos": [
+        "Irani Papel e Embalagem S.A.",
+        "ACC",
+        "recebíveis de exportações"
+      ],
+      "relacoes": [
+        "TEM_OBRIGACAO",
+        "COMPENSA_VARIACOES_DE"
+      ],
+      "fontes": [
+        "E1"
+      ],
+      "periodo": "2025-12-31"
+    },
+    {
+      "id": "C2",
+      "nos": [
+        "Irani Papel e Embalagem S.A.",
+        "ACC"
+      ],
+      "relacoes": [
+        "TEM_OBRIGACAO"
+      ],
+      "fontes": [
+        "E1"
+      ],
+      "periodo": "2025-12-31"
+    }
+  ],
+  "observacao": "Completar uma fonte não prova apoio semântico. Revisão independente e avaliação de abstenção permanecem pendentes."
+}

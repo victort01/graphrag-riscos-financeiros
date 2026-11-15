@@ -1,0 +1,22 @@
+{
+  "uso": "Smoke de desenvolvimento. Não é conjunto reservado ou evidência de generalização.",
+  "data_utc": "2026-11-15T04:06:39.208574+00:00",
+  "sha256_conjunto": "c39f8902d5ece72f8c46d67b836e2e1f5106f02a1fcea2fedb8f353c25cd9b3c",
+  "modelo_embedding": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2@e8f8c211226b894fcb81acc59f3b34ba3efd5f42:quint8-avx2:mean:256",
+  "modelo_llm": "Qwen2.5-1.5B-Instruct-GGUF@91cad51170dc346986eccefdc2dd33a9da36ead9:Q4_K_M",
+  "orcamento_contexto_caracteres": 3500,
+  "nota_latencia": "Tempos descritivos; incluem aquecimento e caches. Grafo reutiliza os candidatos híbridos para isolar o algoritmo.",
+  "estado": "interrompida_apos_timeout_no_banco",
+  "comparacao_valida": false,
+  "linhas": [
+    {
+      "pergunta_id": "S01",
+      "metodo": "vetorial",
+      "erro": "Neo.ClientError.Transaction.TransactionTimedOutClientConfiguration: The transaction has been terminated. Retry your operation in a new transaction, and you should see a successful result. The transaction has not completed within the timeout specified at its start by the client. You may want to retry with a longer timeout. ",
+      "recall_candidatos": null,
+      "recall_contexto": null,
+      "tempo_etapa_segundos": 254.698
+    }
+  ],
+  "observacao": "Falha operacional sob disputa de recursos. Não permite concluir superioridade ou inferioridade de nenhum método."
+}

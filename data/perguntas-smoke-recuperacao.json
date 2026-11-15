@@ -1,0 +1,19 @@
+{
+  "uso": "Smoke de desenvolvimento. Não é conjunto reservado ou evidência de generalização.",
+  "perguntas": [
+    {
+      "id": "S01",
+      "pergunta": "Quais instrumentos de proteção de juros a Irani declara em 2025?",
+      "empresas": ["empresa:92791243000103"],
+      "periodo": "2025-12-31",
+      "evidencias": [{"documento_id": "irani-dfp-2025", "pagina": 124, "termo": "troca de indexador de taxa de juros"}]
+    },
+    {
+      "id": "S02",
+      "pergunta": "Como a Irani conecta ACC a recebíveis de exportações?",
+      "empresas": ["empresa:92791243000103"],
+      "periodo": "2025-12-31",
+      "evidencias": [{"documento_id": "irani-dfp-2025", "pagina": 124, "termo": "ACC"}]
+    }
+  ]
+}
