@@ -1,4 +1,5 @@
 import json
+import os
 import sys
 from pathlib import Path
 import streamlit as st
@@ -41,24 +42,25 @@ if st.session_state.pop("enviar_consulta", False):
             st.warning(str(erro))
         except (OSError, ValueError) as erro:
             st.error("Não foi possível iniciar a consulta: " + str(erro))
-with st.expander("Execuções salvas neste computador"):
-    st.caption("Reabre um resultado arquivado, sem executar uma nova consulta. A pergunta, a data e a versão originais são preservadas.")
-    if st.button("Carregar última execução salva"):
-        try:
-            anterior = carregar_ultima()
-            if anterior is None:
-                st.info("Ainda não há uma execução salva.")
+if os.getenv("PUBLIC_DEPLOYMENT") != "1":
+    with st.expander("Execuções salvas neste computador"):
+        st.caption("Reabre um resultado arquivado, sem executar uma nova consulta. A pergunta, a data e a versão originais são preservadas.")
+        if st.button("Carregar última execução salva"):
+            try:
+                anterior = carregar_ultima()
+                if anterior is None:
+                    st.info("Ainda não há uma execução salva.")
+                else:
+                    st.session_state.resultado = anterior
+            except (OSError, ValueError) as erro:
+                st.error("Não foi possível ler a execução salva: " + str(erro))
+        if st.button("Retomar última consulta"):
+            ultima = gerenciador().ultima()
+            if ultima:
+                st.session_state.trabalho_id = ultima["id"]
+                st.session_state.pop("resultado", None)
             else:
-                st.session_state.resultado = anterior
-        except (OSError, ValueError) as erro:
-            st.error("Não foi possível ler a execução salva: " + str(erro))
-    if st.button("Retomar última consulta"):
-        ultima = gerenciador().ultima()
-        if ultima:
-            st.session_state.trabalho_id = ultima["id"]
-            st.session_state.pop("resultado", None)
-        else:
-            st.info("Ainda não há uma consulta iniciada nesta interface.")
+                st.info("Ainda não há uma consulta iniciada nesta interface.")
 
 
 @st.fragment(run_every="2s")

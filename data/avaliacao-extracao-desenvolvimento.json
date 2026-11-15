@@ -1,6 +1,6 @@
 {
-  "extrator": "regras-financeiras-v4",
-  "metodo": "Anotação assistida dos excertos lidos na fase 1; desenvolvimento, sem revisão independente.",
+  "extrator": "regras-financeiras-v5",
+  "metodo": "Anotação assistida por IA dos excertos lidos na fase 1; desenvolvimento, sem revisão humana independente.",
   "amostras": 8,
   "metricas": {
     "ner": {

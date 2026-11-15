@@ -1,0 +1,4 @@
+-r requirements.txt
+-r requirements-modelos.txt
+-r requirements-ui.txt
+neo4j==5.28.3

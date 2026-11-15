@@ -26,6 +26,12 @@ class FluxosDaInterface(unittest.TestCase):
         self.assertIn("Escreva uma pergunta", app.warning[0].value)
         self.assertFalse(app.exception)
 
+    def test_implantacao_publica_nao_expoe_historico_compartilhado(self):
+        with patch.dict("os.environ", {"PUBLIC_DEPLOYMENT": "1"}):
+            app = self.abrir()
+            self.assertFalse(any("última" in b.label.lower() for b in app.button))
+            self.assertFalse(app.exception)
+
     def test_falha_do_backend_e_explicita(self):
         self.servico.iniciar.return_value = "consulta-teste"
         self.servico.consultar.return_value = {"estado": "falhou", "pergunta": "Como a Irani descreve o ACC?", "erro": "modelo indisponível"}
