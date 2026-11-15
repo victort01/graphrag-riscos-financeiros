@@ -96,7 +96,9 @@ A interface fica em http://127.0.0.1:18501. Em Linux/macOS, use `.venv/bin/pytho
 
 No Windows, `./scripts/iniciar_aplicacao.ps1` também inicia a interface pelo ambiente virtual do projeto. Os parâmetros `-Servidor` e `-Modelo` de `iniciar_modelo.ps1` permitem outros caminhos. Se trocar o artefato, atualize `LLM_ARTIFACT` no `.env` e repita a avaliação.
 
-Cada resposta concluída pela interface ou pelo CLI é arquivada em `data/reports/execucoes/`, fora do Git. A opção **Carregar última execução salva** reabre o resultado com a pergunta, data, modelo e versão originais, sem nova inferência. A execução ainda em andamento não é um checkpoint retomável; uma desconexão pode exigir repetir a consulta. O JSON exportado preserva contexto, candidatos, consultas, caminhos, saída original e validação.
+Cada resposta concluída pela interface ou pelo CLI é arquivada em `data/reports/execucoes/`, fora do Git. A opção **Carregar última execução salva** reabre o resultado com a pergunta, data, modelo e versão originais, sem nova inferência. O JSON exportado preserva contexto, candidatos, consultas, caminhos, saída original e validação.
+
+A interface processa uma consulta por vez em segundo plano e mostra sua etapa. Se a página for recarregada ou desconectada, use **Retomar última consulta**; o processamento continua enquanto o servidor Streamlit estiver ativo. A reinicialização do servidor marca tarefas perdidas como interrompidas; a inferência não possui checkpoint retomável. O deployment atual usa um único processo de interface no computador local.
 
 O banco inicia somente leitura por padrão. Antes de alterar esquema, ingerir ou indexar, habilite o modo de ingestão; ao terminar, volte para consulta. Esse fluxo preserva o volume de dados. Não use `docker compose down -v` para trocar modos.
 
@@ -114,6 +116,8 @@ $env:TESTAR_CORPUS='1'
 ```
 
 Os testes de corpus exigem ingestão prévia dos seis documentos. Os testes unitários não precisam de modelos ou banco. As métricas de NER/RE publicadas são de desenvolvimento, sobre oito excertos usados para corrigir regras; não são resultado de teste independente. A extração de tabelas, a revisão humana das anotações, a avaliação reservada, o artigo e a defesa permanecem pendentes.
+
+Os [formulários de revisão da extração](docs/revisao-extracao.md) já estão preparados para dois integrantes, com fontes e campos de anotação vazios. O comparador recusa revisões pendentes e relata divergências; ele mede concordância entre revisores, sem tratar concordância como acurácia do extrator.
 
 Em caso de falha, consulte `docker compose logs neo4j`, confirme os endpoints no `.env` e verifique se o servidor GGUF está ativo. `WriteOnReadOnlyAccessDatabase` durante ingestão indica que é necessário trocar o modo. O modelo local pode ser lento em máquinas com pouca memória disponível; timeouts e rejeições de consulta são falhas de execução, não respostas sem evidência.
 

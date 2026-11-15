@@ -1,0 +1,53 @@
+{
+  "uso": "Desenvolvimento; execucao isolada, sem comparacao causal de desempenho nem revisao independente.",
+  "sha256_json_local": "535cb961d29a8ce9c7e3de87869fd6c199633d029fdb1b3b1aa149f91b970be2",
+  "execucao": {
+    "data_utc": "2026-11-15T07:17:06.624837+00:00",
+    "pergunta": "Como a Irani conecta ACC a recebíveis de exportações?",
+    "latencia_total_segundos": 301.843,
+    "versao_execucao": {
+      "sha256_codigo_catalogos_dependencias": "af6cb0aad1be5330bbe94081f808988326440ac931f1131ae8e7bcd492452670",
+      "python": "3.13.14",
+      "plataforma": "Windows",
+      "arquitetura": "AMD64"
+    },
+    "modelo_resposta": {
+      "alias": "qwen-riscos-local",
+      "artefato": "Qwen2.5-1.5B-Instruct-GGUF@91cad51170dc346986eccefdc2dd33a9da36ead9:Q4_K_M",
+      "temperatura": 0,
+      "seed": 42
+    }
+  },
+  "resultado": {
+    "afirmacoes": [
+      {
+        "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
+        "fontes": [
+          "E1"
+        ],
+        "caminhos": [
+          "C1"
+        ]
+      }
+    ],
+    "cobertura": "parcial",
+    "possivel_conflito": false,
+    "confianca": {
+      "nivel": "limitada",
+      "motivo": "Cobertura parcial ou possível divergência."
+    },
+    "validacao": {
+      "erros": [],
+      "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
+    }
+  },
+  "afirmacoes_removidas_por_vocabulario": [
+    2,
+    3
+  ],
+  "cypher_gerado": "MATCH (c:Declaracao)-[:EVIDENCIADA_POR]->(t:Trecho)-[:PERTENCE_A]->(d:Documento)-[:REFERE_SE_A]->(e:Empresa) WHERE ($empresas=[] OR e.id IN $empresas) AND ($periodo='' OR d.data_referencia=$periodo) AND c.predicado IN ['TEM_OBRIGACAO', 'COMPENSA_VARIACOES_DE'] RETURN DISTINCT t.id AS trecho_id LIMIT 16",
+  "saltos_contexto": [
+    2,
+    1
+  ]
+}

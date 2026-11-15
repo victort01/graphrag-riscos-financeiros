@@ -1,0 +1,49 @@
+{
+  "uso": "Verificacao operacional de desenvolvimento; nao e avaliacao independente de qualidade.",
+  "trabalho": {
+    "id": "20261115T072705928422-5bd82e5661ed4c0dbf922e7ba59f4f38",
+    "pergunta": "Como a Irani conecta ACC a recebíveis de exportações?",
+    "empresas": [
+      "empresa:92791243000103"
+    ],
+    "periodo": "2025-12-31",
+    "data_criacao": "2026-11-15T07:27:05.928563+00:00",
+    "estado": "concluida",
+    "etapa": "Concluída",
+    "arquivo_resultado": "20261115T073241400625-88a59848b2fd41e18dcabf66aec2b901.json"
+  },
+  "sha256_resultado_local": "fe587acfc8aa6f69a4859b345ccb38e874592d07a89be55fe180598f2f6de26e",
+  "data_resposta_utc": "2026-11-15T07:32:41.031321+00:00",
+  "latencia_total_segundos": 335.269,
+  "versao_execucao": {
+    "sha256_codigo_catalogos_dependencias": "016585fa7aaa15c58b8c0ad5d4a5023c5114a38dcc8188e482a173f46091e4fa",
+    "python": "3.13.14",
+    "plataforma": "Windows",
+    "arquitetura": "AMD64"
+  },
+  "cobertura": "parcial",
+  "confianca": {
+    "nivel": "limitada",
+    "motivo": "Cobertura parcial ou possível divergência."
+  },
+  "erros_validacao": [],
+  "saltos_contexto": [
+    2,
+    1
+  ],
+  "verificacoes_visuais": [
+    "Consulta iniciada no formulario com Irani e 2025",
+    "Pagina recarregada durante a inferencia",
+    "Retomar ultima consulta reanexou a tarefa original",
+    "Resposta apareceu apos conclusao",
+    "Selecao de afirmacao realcou o caminho citado",
+    "Arraste de no, pan, zoom e ajuste de enquadramento observados",
+    "Relacao COMPENSA_VARIACOES_DE abriu citacao da pagina 124"
+  ],
+  "captura": "docs/assets/interface-consulta-retomada.jpg",
+  "limites": [
+    "Deployment local de um processo, sem teste de carga",
+    "Resposta parcial, sem revisao humana independente",
+    "Parada do servidor interrompe o processamento; apenas desconexao do navegador e tolerada"
+  ]
+}

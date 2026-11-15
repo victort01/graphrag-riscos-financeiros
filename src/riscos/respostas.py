@@ -162,21 +162,26 @@ def concluir(resposta, contexto, erros):
             "validacao": {"erros": [], "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"}}
 
 
-def responder(pergunta, empresas=None, periodo="", usar_cypher=True, usar_caminhos=True):
+def responder(pergunta, empresas=None, periodo="", usar_cypher=True, usar_caminhos=True, andamento=None):
     inicio = perf_counter()
     if not pergunta.strip():
         raise ValueError("Escreva uma pergunta.")
     if len(pergunta) > 1500:
         raise ValueError("A pergunta deve ter até 1.500 caracteres.")
+    informar = andamento or (lambda etapa: None)
+    informar("Consultando fontes e validando Cypher")
     busca = recuperar(pergunta, empresas, periodo, usar_cypher)
     logging.getLogger(__name__).info("Selecionando caminhos e fontes para o contexto.")
+    informar("Selecionando caminhos financeiros e evidências")
     grafo = enriquecer(pergunta, busca) if usar_caminhos else {"caminhos": [], "evidencias": [], "rastreio": {}}
     contexto = montar_contexto(busca, grafo)
     entrada = {"pergunta": pergunta, **contexto}
     logging.getLogger(__name__).info("Gerando resposta com %s fontes e %s caminhos.", len(contexto["fontes"]), len(contexto["caminhos"]))
+    informar("Gerando a resposta documental")
     resposta = gerar_json(REGRAS, entrada, ESQUEMA, 800) if contexto["fontes"] else {
         "afirmacoes": [], "cobertura": "insuficiente", "possivel_conflito": False}
     original = resposta
+    informar("Verificando referências e conclusões")
     resposta, removidas = filtrar_pertinencia(resposta, pergunta)
     resposta, complementos = completar_procedencia(resposta, contexto)
     erros = validar_resposta(resposta, contexto, pergunta)

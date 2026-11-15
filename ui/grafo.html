@@ -40,11 +40,12 @@ cy.on('tap','node',e=>{detalhe.textContent=e.target.data('nome')+'\nID: '+e.targ
 function realcar(arestas){cy.elements().removeClass('realce');arestas.forEach(a=>{const e=cy.getElementById(a);e.addClass('realce');e.connectedNodes().addClass('realce')})}
 const caminho=document.getElementById('caminho');
 dados.caminhos.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.saltos+' saltos · '+p.nos.map(n=>n.nome).join(' → ');caminho.append(o)});
-caminho.onchange=()=>{document.getElementById('afirmacao').value='';realcar(caminho.value===''?[]:dados.caminhos[+caminho.value].relacoes.map(r=>r.id))};
+caminho.onchange=()=>{document.getElementById('afirmacao').value='';realcar(caminho.value===''?[]:dados.caminhos[+caminho.value].relacoes.map(r=>r.id));ajustar()};
 const afirmacao=document.getElementById('afirmacao');
 dados.afirmacoes.forEach((a,i)=>{const o=document.createElement('option');o.value=i;o.textContent=(i+1)+'. '+a.texto;afirmacao.append(o)});
 afirmacao.onchange=()=>{caminho.value='';const ids=afirmacao.value===''?[]:dados.afirmacoes[+afirmacao.value].caminhos;
  realcar(dados.caminhos.filter(p=>ids.includes(p.id)).flatMap(p=>p.relacoes.map(r=>r.id)));
+ ajustar();
  if(afirmacao.value!==''&&!ids.length)detalhe.textContent='Afirmação documental direta. Consulte as fontes citadas na aba Fontes.'};
 function ajustar(){
  const r=document.getElementById('grafo').getBoundingClientRect();
@@ -53,10 +54,13 @@ function ajustar(){
 }
 document.getElementById('ajustar').onclick=ajustar;
 // O iframe pode ganhar largura somente depois de o Streamlit montar a aba.
-new ResizeObserver(()=>requestAnimationFrame(ajustar)).observe(document.getElementById('grafo'));
+new ResizeObserver(ajustar).observe(document.getElementById('grafo'));
 new IntersectionObserver(es=>{
- if(es.some(e=>e.isIntersecting))requestAnimationFrame(()=>requestAnimationFrame(ajustar));
+ if(es.some(e=>e.isIntersecting))ajustar();
 }).observe(document.getElementById('grafo'));
-requestAnimationFrame(()=>requestAnimationFrame(ajustar));
+// Abas em segundo plano podem suspender requestAnimationFrame.
+document.fonts.ready.then(ajustar);
+window.addEventListener('load',ajustar);
+setTimeout(ajustar,250);
 if(!dados.elementos.length)detalhe.textContent='Nenhum caminho financeiro foi selecionado para esta pergunta.';
 </script></html>

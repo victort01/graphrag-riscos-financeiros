@@ -4,40 +4,43 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as componentes
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
-from riscos.respostas import responder
 from riscos.visualizacao import pagina_grafo, rastrear_nos
-from riscos.intencao import EMPRESAS, FiltrosIncompativeis
-from riscos.execucoes import salvar, carregar_ultima
+from riscos.intencao import EMPRESAS, FiltrosIncompativeis, reconciliar
+from riscos.execucoes import carregar_ultima
+from riscos.trabalhos import gerenciador, ConsultaEmAndamento
 
 st.set_page_config(page_title="GraphRAG | Riscos financeiros", page_icon="◈", layout="wide")
 st.title("Mapa de exposições financeiras")
 st.caption("GraphRAG • Demonstrações financeiras de 2024 e 2025 • Unipê")
 st.info("Consulte exposições e proteções declaradas por Suzano, Klabin e Irani. A cobertura atual é narrativa; tabelas e montantes ainda estão em validação.")
 empresas = EMPRESAS
+
+
+def solicitar_consulta():
+    st.session_state.enviar_consulta = True
+
+
 with st.form("pergunta"):
     pergunta = st.text_input("Sua pergunta", placeholder="Como a Irani conecta ACC a recebíveis de exportações?", max_chars=1500)
     col1, col2 = st.columns(2)
     escolhidas = col1.multiselect("Empresas", list(empresas), default=["Irani"])
     ano = col2.selectbox("Exercício", ["2025", "2024", "Comparar exercícios"])
-    consultar = st.form_submit_button("Consultar documentos", type="primary")
-if consultar:
+    st.form_submit_button("Consultar documentos", type="primary", on_click=solicitar_consulta)
+# A conclusão da tarefa refaz a tela; o evento consumido evita um segundo envio.
+if st.session_state.pop("enviar_consulta", False):
     if not pergunta.strip():
         st.session_state.pop("resultado", None)
         st.warning("Escreva uma pergunta para consultar.")
     else:
-        with st.spinner("Buscando fontes, validando Cypher e percorrendo o grafo…"):
-            try:
-                resultado = responder(pergunta, [empresas[e] for e in escolhidas], "" if ano.startswith("Comparar") else ano+"-12-31")
-                salvar(resultado)
-                st.session_state.resultado = resultado
-            except FiltrosIncompativeis as erro:
-                st.session_state.pop("resultado", None)
-                st.warning(str(erro))
-            except Exception as erro:
-                st.session_state.pop("resultado", None)
-                st.error("A consulta não foi concluída. Verifique se o Neo4j e o modelo local estão disponíveis.")
-                with st.expander("Detalhes da falha"):
-                    st.code(str(erro))
+        try:
+            filtros, periodo = reconciliar(pergunta, [empresas[e] for e in escolhidas], "" if ano.startswith("Comparar") else ano+"-12-31")
+            st.session_state.trabalho_id = gerenciador().iniciar(pergunta, filtros, periodo)
+            st.session_state.pop("resultado", None)
+        except (FiltrosIncompativeis, ConsultaEmAndamento) as erro:
+            st.session_state.pop("resultado", None)
+            st.warning(str(erro))
+        except (OSError, ValueError) as erro:
+            st.error("Não foi possível iniciar a consulta: " + str(erro))
 with st.expander("Execuções salvas neste computador"):
     st.caption("Reabre um resultado arquivado, sem executar uma nova consulta. A pergunta, a data e a versão originais são preservadas.")
     if st.button("Carregar última execução salva"):
@@ -49,6 +52,37 @@ with st.expander("Execuções salvas neste computador"):
                 st.session_state.resultado = anterior
         except (OSError, ValueError) as erro:
             st.error("Não foi possível ler a execução salva: " + str(erro))
+    if st.button("Retomar última consulta"):
+        ultima = gerenciador().ultima()
+        if ultima:
+            st.session_state.trabalho_id = ultima["id"]
+            st.session_state.pop("resultado", None)
+        else:
+            st.info("Ainda não há uma consulta iniciada nesta interface.")
+
+
+@st.fragment(run_every="2s")
+def acompanhar_consulta():
+    try:
+        servico = gerenciador()
+        estado = servico.consultar(st.session_state.trabalho_id)
+        if estado["estado"] == "concluida":
+            st.session_state.resultado = servico.carregar_resultado(estado)
+            st.session_state.pop("trabalho_id", None)
+            st.rerun()
+        st.caption("Consulta em acompanhamento: " + estado["pergunta"])
+        if estado["estado"] in {"falhou", "interrompida"}:
+            st.error("A consulta não foi concluída. Verifique se o Neo4j e o modelo local estão disponíveis.")
+            with st.expander("Detalhes da falha"):
+                st.code(estado["erro"])
+        else:
+            st.info(estado["etapa"] + ". O processamento continua se esta página for desconectada.")
+    except (OSError, ValueError, KeyError) as erro:
+        st.error("Não foi possível acompanhar a consulta: " + str(erro))
+
+
+if "trabalho_id" in st.session_state:
+    acompanhar_consulta()
 if "resultado" in st.session_state:
     resultado = st.session_state.resultado
     resposta = resultado["resposta"]

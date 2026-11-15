@@ -18,8 +18,8 @@ Referência: documento “Projeto Final — GraphRAG e KAG em Ciência da Comput
 | Travessia de dois ou mais saltos | Empresa → ACC → recebíveis; Empresa → swap de juros → exposição a juros. | Verificado com relações financeiras reais. |
 | Algoritmo enriquecendo contexto do LLM | Caminhos mínimos limitados, evidências por aresta e seleção antes da geração. | Módulo e integração de corpus testados; comparação de benefício pendente. |
 | Mitigação comprovada de alucinações | Fontes por afirmação, regras semânticas, verificações determinísticas e abstenção. | Implementação inicial; comprovação científica pendente. |
-| Interface funcional | Streamlit com pergunta, filtros, resposta e fontes. | Fluxo salvo e quatro fluxos AppTest verificados; estabilidade de nova consulta ao vivo pendente. |
-| Subgrafo interativo de contexto | Cytoscape com IDs reais, caminhos, seleção e fonte de aresta. | Realce por afirmação, duas relações, citação e abertura de PDF oficial verificados visualmente. |
+| Interface funcional | Streamlit com pergunta, filtros, resposta e fontes; processamento separado da conexão. | Consulta real concluída após reconexão, abstenção sem acervo e fluxos de erro verificados; deployment local. |
+| Subgrafo interativo de contexto | Cytoscape com IDs reais, caminhos, seleção e fonte de aresta. | Realce por afirmação, arraste, pan, zoom, duas relações, citação e abertura de PDF oficial verificados visualmente. |
 | Nós consultados, Cypher e confiança | Rastreio separa candidatos, caminhos, contexto enviado e fontes citadas; nível documental explicado. | Implementado; interpretação e usabilidade em validação. |
 | Código completo no GitHub | Repositório privado graphrag-riscos-financeiros, commits por entrega. | Em desenvolvimento. |
 | Acesso do docente | Convite adiado por instrução expressa do usuário. | Pendente de autorização futura. |
