@@ -25,8 +25,8 @@ Referência: documento “Projeto Final — GraphRAG e KAG em Ciência da Comput
 | Acesso do docente | Convite adiado por instrução expressa do usuário. | Pendente de autorização futura. |
 | README com reprodução e deployment | Aquisição, banco, ingestão, modelos, consulta e implantação local. | Documentado; clone limpo de toda a solução ainda pendente. |
 | Testes operacionais | Unicidade, rollback, índices, extração, aliases, consultas indevidas, caminhos e respostas. | Executados por módulo; ampliar com avaliação final. |
-| Artigo SBC/IEEE | Será escrito com método, resultados medidos e erros observados. | Pendente. |
-| Apresentação presencial em grupo | Quatro integrantes identificados; conteúdo mais complexo destinado a Paulo. | Slides e roteiro final pendentes dos resultados. |
+| Artigo SBC/IEEE | Rascunho de quatro páginas com IEEEtran conference, fonte LaTeX e PDF; método, resultados de desenvolvimento e erros observados. | Primeira versão revisada visualmente; consolidação após avaliação independente pendente. |
+| Apresentação presencial em grupo | 14 slides editáveis e PDF, notas e falas dos quatro integrantes; conteúdo mais complexo destinado a Paulo. | Versão para revisão preparada; atualização final, ensaio e defesa presencial pendentes. |
 | Atribuição de bibliotecas e originalidade | Manifesto de modelos, licença Cytoscape e registro de assistência no desenvolvimento. | Em consolidação; revisar antes da entrega. |
 
 O prazo sugerido de quatro semanas foi substituído por entregas verificáveis a pedido do usuário. Não se considera uma fase concluída apenas porque o código correspondente existe.
