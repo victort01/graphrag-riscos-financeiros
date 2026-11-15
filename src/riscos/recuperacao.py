@@ -8,6 +8,7 @@ from .embeddings import IDENTIFICADOR, codificar
 from .llm import gerar_json
 from .caminhos import palavras
 from .intencao import reconciliar
+from .selecao import selecionar, IGNORADAS
 
 CAMPOS = """t.id AS id,t.texto AS texto,t.pagina_inicio AS pagina_inicio,t.pagina_fim AS pagina_fim,
 d.id AS documento_id,d.empresa AS empresa,e.empresa_id AS empresa_id,e.id AS empresa_canonica_id,
@@ -21,7 +22,7 @@ AND coalesce(d.vigente,true)=true AND t.natureza='narrativa' AND t.recorte=false
 
 def lexical(pergunta):
     ignoradas = {"qual", "quais", "como", "sobre", "para", "dos", "das", "que", "uma", "com", "pelo", "pela", "tem"}
-    termos = [t.casefold() for t in re.findall(r"[A-Za-zÀ-ÿ]{3,}", pergunta) if t.casefold() not in ignoradas]
+    termos = [t.casefold() for t in re.findall(r"[A-Za-zÀ-ÿ]{3,}", pergunta) if t.casefold() not in ignoradas | IGNORADAS]
     if any("dólar" in t or "dolar" in t for t in termos):
         termos.extend(["USD", "dólares"])
     return " OR ".join(dict.fromkeys(termos[:18]))
@@ -45,6 +46,8 @@ def sugerir_predicados(pergunta):
               ({"swap", "swaps", "hedge", "instrumentos"}, ["ADOTA_PROTECAO", "PROTEGE", "CONVERTE_DE", "CONVERTE_PARA"]),
               ({"juros", "taxas"}, ["PROTEGE", "SENSIVEL_A", "ADOTA_PROTECAO"]),
               ({"categoria", "classificacao", "enquadramento"}, ["CATEGORIZADA_COMO"])]
+    if re.search(r"hedge accounting|contabilidade de hedge", pergunta, re.I):
+        regras.append(({"hedge", "accounting", "contabilidade"}, ["ADOTA_TRATAMENTO", "NAO_ADOTA_TRATAMENTO", "CATEGORIZADA_COMO"]))
     return list(dict.fromkeys(p for conceitos, predicados in regras if termos & conceitos for p in predicados))
 
 
@@ -63,6 +66,8 @@ TEM_OBRIGACAO = company's debt; TEM_RECEITA = company's revenue; TEM_EXPOSICAO =
 DENOMINADO_EM = currency denomination; COMPENSA_VARIACOES_DE = debt offsets receivables;
 CONVERTE_DE, CONVERTE_PARA = swap changes currency/index; ASSOCIADA_A, SENSIVEL_A = risk factor.
 DECORRE_DE = exposure originates from an obligation or revenue; CATEGORIZADA_COMO = hedge accounting category.
+ADOTA_TRATAMENTO = explicit adoption of accounting treatment; NAO_ADOTA_TRATAMENTO = explicit non-adoption.
+DO_TIPO = the type of a documented program; sharing a type does not imply equal contracts, indices or purposes.
 Filter c.predicado using the values relevant to the question.
 Example question: Quais instrumentos de proteção a companhia declara?
 Example query:
@@ -113,11 +118,11 @@ def recuperar(pergunta, empresas=None, periodo="", usar_llm=True, somente_vetor=
     if not total:
         raise ValueError("Execute a indexação antes de consultar.")
     consulta_vetor = ("CALL db.index.vector.queryNodes('trechos_vetor',$quantidade,$vetor) YIELD node AS t,score\n"
-                      + FILTROS + " AND t.modelo_embedding=$modelo\nRETURN " + CAMPOS + ",score ORDER BY score DESC LIMIT 12")
+                      + FILTROS + " AND t.modelo_embedding=$modelo\nRETURN " + CAMPOS + ",score ORDER BY score DESC LIMIT 24")
     vetoriais = banco.consultar(consulta_vetor, {**filtros, "vetor": vetor, "quantidade": total, "modelo": IDENTIFICADOR})
     texto_lucene = lexical(pergunta)
     consulta_texto = ("CALL db.index.fulltext.queryNodes('trechos_texto',$texto) YIELD node AS t,score\n"
-                      + FILTROS + "\nRETURN " + CAMPOS + ",score ORDER BY score DESC LIMIT 12")
+                      + FILTROS + "\nRETURN " + CAMPOS + ",score ORDER BY score DESC LIMIT 24")
     textuais = banco.consultar(consulta_texto, {**filtros, "texto": texto_lucene}) if texto_lucene and not somente_vetor else []
     registros = [("vetor", vetoriais), ("fulltext", textuais)]
     rastreio = {"vetorial": consulta_vetor, "fulltext": consulta_texto, "filtros": filtros, "modelo_embedding": IDENTIFICADOR}
@@ -133,6 +138,11 @@ def recuperar(pergunta, empresas=None, periodo="", usar_llm=True, somente_vetor=
     rastreio["latencia_segundos"] = round(perf_counter() - inicio, 3)
     rastreio["metodos_executados"] = [nome for nome, _ in registros if nome != "fulltext" or not somente_vetor]
     rastreio["candidatos_por_metodo"] = {nome: [linha["id"] for linha in linhas] for nome, linhas in registros}
-    selecionados = combinar(registros)[:8]
+    if somente_vetor:
+        selecionados = vetoriais[:8]
+        selecao = {"algoritmo": "ordem vetorial, sem reordenação lexical"}
+    else:
+        selecionados, selecao = selecionar(pergunta, combinar(registros))
+    rastreio["selecao_evidencias"] = selecao
     rastreio["trechos_apos_fusao"] = [t["id"] for t in selecionados]
     return {"trechos": selecionados, "rastreio": rastreio}

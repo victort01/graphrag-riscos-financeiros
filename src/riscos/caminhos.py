@@ -20,7 +20,8 @@ WHERE all(r IN relationships(p) WHERE r.empresa_id=$empresa AND r.periodo=$perio
       AND coalesce(r.vigente,true)=true AND r.declaracao_id IN $declaracoes_permitidas)
 RETURN [n IN nodes(p) | {id:n.id,nome:n.nome,rotulos:labels(n)}] AS nos,
        [r IN relationships(p) | {id:r.declaracao_id,tipo:type(r),origem:startNode(r).id,
-          destino:endNode(r).id,periodo:r.periodo,empresa_id:r.empresa_id}] AS relacoes,
+          destino:endNode(r).id,periodo:r.periodo,empresa_id:r.empresa_id,
+          modalidade:coalesce(r.modalidade,'nao_registrada'),condicoes:coalesce(r.condicoes,'')}] AS relacoes,
        length(p) AS saltos,$escopo AS escopo
 ORDER BY saltos DESC,fim.id LIMIT 12""" % "|".join(RELACOES)
 

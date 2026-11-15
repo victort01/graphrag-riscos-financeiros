@@ -1,7 +1,7 @@
 """Ontologia financeira e migrações idempotentes de constraints e índices."""
 ROTULOS = ("Entidade", "Empresa", "Documento", "Trecho", "Declaracao", "Periodo", "ObrigacaoFinanceira",
            "FluxoFinanceiro", "MedidaProtecao", "Exposicao", "FatorRisco", "Moeda",
-           "Indexador", "CategoriaHedge")
+           "Indexador", "CategoriaHedge", "TipoInstrumento")
 # Cada declaração preserva uma observação temporal. O conceito pode reaparecer em outro exercício.
 RELACOES = {
     "TEM_EXPOSICAO": (("Empresa",), ("Exposicao",)),
@@ -17,6 +17,9 @@ RELACOES = {
     "CONVERTE_DE": (("MedidaProtecao",), ("Indexador", "Moeda")),
     "CONVERTE_PARA": (("MedidaProtecao",), ("Indexador", "Moeda")),
     "CATEGORIZADA_COMO": (("MedidaProtecao",), ("CategoriaHedge",)),
+    "DO_TIPO": (("MedidaProtecao",), ("TipoInstrumento",)),
+    "ADOTA_TRATAMENTO": (("Empresa",), ("CategoriaHedge",)),
+    "NAO_ADOTA_TRATAMENTO": (("Empresa",), ("CategoriaHedge",)),
 }
 
 

@@ -88,7 +88,8 @@ def _montar_contexto_prioritario(recuperacao, grafo, limite_caracteres=3500):
                 selecionados.append({"id": caminho["id"], "nos": [n["nome"] for n in caminho["nos"]],
                     "relacoes": [r["tipo"] for r in caminho["relacoes"]],
                     "fontes": sorted(por_trecho[t] for t in trechos), "periodo": caminho["relacoes"][0]["periodo"],
-                    "escopo": caminho.get("escopo", "nao_especificado")})
+                    "escopo": caminho.get("escopo", "nao_especificado"),
+                    "modalidades": sorted({r.get("modalidade", "nao_registrada") for r in caminho["relacoes"]})})
         return selecionados
 
     for trecho in candidatos:
@@ -128,7 +129,15 @@ def combinar_contextos(base, enriquecido, limite_caracteres=3500):
 
 def montar_contexto(recuperacao, grafo, limite_caracteres=3500):
     vazio = {"caminhos": [], "evidencias": []}
-    base = _montar_contexto_prioritario(recuperacao, vazio, limite_caracteres)
+    # A mesma reserva é aplicada a todas as variantes; o grafo não expulsa
+    # uma fonte que o híbrido teria enviado sob esta política.
+    reserva = min(500, limite_caracteres // 7)
+    completa = _montar_contexto_prioritario(recuperacao, vazio, limite_caracteres)
+    base = _montar_contexto_prioritario(recuperacao, vazio, limite_caracteres-reserva)
+    def grupos(contexto):
+        return {(f["empresa"], f["periodo"]) for f in contexto["fontes"].values()}
+    if grupos(base) != grupos(completa):
+        base = completa
     if not grafo["caminhos"]:
         return base
     enriquecido = _montar_contexto_prioritario(recuperacao, grafo, limite_caracteres)

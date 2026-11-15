@@ -7,13 +7,17 @@ import re
 from .identidade import entidade, chave_hash, normalizar, resolver_mencoes
 from .esquema import RELACOES
 
-VERSAO = "regras-financeiras-v5"
+VERSAO = "regras-financeiras-v6-programas"
 TERMOS = [
     ("Moeda", "USD", r"\bUSD\b|US\$|d[oó]lar(?:es)? (?:americanos?|dos Estados Unidos(?: da Am[eé]rica)?)"),
     ("Moeda", "BRL", r"\bBRL\b|R\$|\breais\b|(?-i:\bReal\b)"),
     ("Indexador", "CDI", r"\bCDI\b"),
     ("Indexador", "IPCA", r"\bIPCA\b"),
     ("Indexador", "SOFR", r"\bSOFR\b"),
+    ("Indexador", "TJLP", r"\bTJLP\b"),
+    ("Indexador", "TLP", r"\bTLP\b"),
+    ("Indexador", "Selic", r"\bSelic\b"),
+    ("Indexador", "taxa pré-fixada", r"taxa pr[eé][ -]fixada"),
     ("ObrigacaoFinanceira", "ACC", r"\bACCs?\b|Adiantamento sobre Contrato de C[aâ]mbio"),
     ("MedidaProtecao", "Zero Cost Collar", r"Zero Cost Collar|\bZCCs?\b"),
     ("MedidaProtecao", "NDF", r"Non.?Deliverable Forward[s]?|Non.?Deriverable Forward[s]?|\bNDFs?\b"),
@@ -42,18 +46,22 @@ def extrair(trecho, fonte):
         n = normalizar(sentenca)
         if len(n) < 40:
             continue
-        if re.search(r"\bnao\b|\bnunca\b|vedad", n):
+        tratamento_negado = bool(re.search(r"nao adota.{0,65}(?:hedge accounting|contabili.{0,30}hedge)", n))
+        if re.search(r"\bnao\b|\bnunca\b|vedad", n) and not tratamento_negado:
             continue
         natureza = "cenario" if re.search(r"analise de sensibilidade|cenario (?:adverso|remoto|base|provavel)", n) else "declaracao"
         if natureza == "cenario":
             continue
-        condicoes = sentenca if re.search(r"parcela|parte |limita|provav|politica|horizonte|objetivo|permite|\bpode\b", n) else ""
+        condicoes = sentenca if re.search(r"parcela|parte |limita|provav|politica|horizonte|objetivo|permite|procura|eventua|\bpode\b", n) else ""
+        modalidade = ("negacao" if tratamento_negado else "objetivo" if re.search(r"objetivo|procura", n)
+                      else "possibilidade" if re.search(r"permite|\bpode\b", n)
+                      else "estrategia" if re.search(r"politica|estrategia", n) else "fato_declarado")
         escopos = {s for s in ("consolidado", "controladora") if re.search(r"\b" + s + r"\b", n)}
         # Mencionar as duas bases não permite escolher a qual delas pertence o fato.
         escopo = next(iter(escopos)) if len(escopos) == 1 else "nao_especificado"
 
-        def no(tipo, nome):
-            registro = entidade(tipo, nome, companhia)
+        def no(tipo, nome, qualificacao=""):
+            registro = entidade(tipo, nome, companhia, qualificacao)
             entidades[registro["id"]] = registro
             return registro
 
@@ -65,15 +73,41 @@ def extrair(trecho, fonte):
             declaracoes.append({"id": "declaracao:" + identificador, "sujeito_id": sujeito["id"],
                                 "objeto_id": objeto["id"], "predicado": predicado, "empresa_id": companhia,
                                 "periodo": fonte["data_referencia"], "periodo_origem": "referencia_documento",
-                                "escopo": escopo, "natureza": natureza, "polaridade": "afirmativa",
-                                "condicoes": condicoes, "evidencia": sentenca, "trecho_id": trecho["id"],
+                                "escopo": escopo, "natureza": natureza,
+                                "polaridade": "negativa" if tratamento_negado else "afirmativa",
+                                "condicoes": condicoes, "modalidade": modalidade,
+                                "evidencia": sentenca, "trecho_id": trecho["id"],
                                 "documento_id": fonte["id"], "regra": regra, "extrator": VERSAO,
                                 "revisao_temporal": bool(re.search(r"\b20\d{2}\b", sentenca))})
 
         def adotar(nome, regra):
-            medida = no("MedidaProtecao", nome)
+            # O tipo pode ser compartilhado; um programa documental não herda
+            # indexadores ou finalidades de outra sentença, dívida ou companhia.
+            descricao = nome
+            if "swap" in nome:
+                if "sofr" in n and re.search(r"pre.?fixada", n):
+                    descricao = "swap de juros de SOFR para taxa pré-fixada"
+                elif "ipca" in n and "cdi" in n:
+                    descricao = "swap de juros de IPCA para CDI"
+            medida = no("MedidaProtecao", descricao, chave_hash(fonte["id"], sentenca, nome))
+            medida["granularidade"] = "programa_documental"
             rel(empresa, "ADOTA_PROTECAO", medida, regra)
+            rel(medida, "DO_TIPO", no("TipoInstrumento", nome), regra)
             return medida
+
+        if tratamento_negado:
+            rel(empresa, "NAO_ADOTA_TRATAMENTO", no("CategoriaHedge", "hedge accounting"), "tratamento-contabil-negado")
+            continue
+        if re.search(r"companhia adota.{0,65}contabili.{0,30}hedge", n):
+            categoria = "hedge de valor justo" if "valor justo" in n else "hedge de fluxo de caixa" if "fluxo de caixa" in n else "hedge accounting"
+            rel(empresa, "ADOTA_TRATAMENTO", no("CategoriaHedge", categoria), "tratamento-contabil-explicito")
+
+        if re.search(r"(?:exposicao.{0,100}taxas de juros|emprestimos indexados)", n):
+            exposicao = no("Exposicao", "exposição a taxas de juros")
+            rel(empresa, "TEM_EXPOSICAO", exposicao, "juros-explicitos")
+            for tipo, nome, padrao in TERMOS:
+                if tipo == "Indexador" and re.search(padrao, sentenca, re.I):
+                    rel(exposicao, "SENSIVEL_A", no(tipo, nome), "indexador-explicito")
 
         if re.search(r"(?:companhia|controladas|ativos e passivos).{0,250}expost.{0,100}(?:cambial|moeda estrangeira|cambio)", n):
             exposicao = no("Exposicao", "exposição cambial declarada")
@@ -109,6 +143,12 @@ def extrair(trecho, fonte):
         if "swap" in n and re.search(r"(?:contratad|em vigencia|companhia adota)", n) and "taxa de juros" in n:
             medida = adotar("swap para troca de indexador de juros", "swap-finalidade-juros")
             rel(medida, "PROTEGE", no("Exposicao", "exposição a taxas de juros"), "swap-finalidade-juros")
+            if "sofr" in n and re.search(r"pre.?fixada", n):
+                rel(medida, "CONVERTE_DE", no("Indexador", "SOFR"), "swap-juros-indexadores")
+                rel(medida, "CONVERTE_PARA", no("Indexador", "taxa pré-fixada"), "swap-juros-indexadores")
+            elif "ipca" in n and "cdi" in n:
+                rel(medida, "CONVERTE_DE", no("Indexador", "IPCA"), "swap-juros-indexadores")
+                rel(medida, "CONVERTE_PARA", no("Indexador", "CDI"), "swap-juros-indexadores")
         if "swap" in n and re.search(r"convertendo|converter", n) and re.search(r"moeda (?:local|nacional)", n) and "dolares americanos" in n:
             medida = adotar("swap de BRL para USD", "swap-conversao-cambial")
             rel(medida, "CONVERTE_DE", no("Moeda", "BRL"), "swap-conversao-cambial")

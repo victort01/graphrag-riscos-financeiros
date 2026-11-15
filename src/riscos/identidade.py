@@ -13,7 +13,7 @@ def chave_hash(*partes):
     return hashlib.sha256("\x1f".join(str(p) for p in partes).encode()).hexdigest()[:32]
 
 
-GLOBAIS = {"Moeda", "Indexador", "FatorRisco", "CategoriaHedge"}
+GLOBAIS = {"Moeda", "Indexador", "FatorRisco", "CategoriaHedge", "TipoInstrumento"}
 VERSAO = "identidades-v2"
 ALIASES = {
     ("Moeda", "usd"): "USD",
