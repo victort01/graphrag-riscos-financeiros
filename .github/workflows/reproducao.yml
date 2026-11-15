@@ -1,0 +1,80 @@
+name: Reproducao completa
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  corpus-e-consulta:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    services:
+      neo4j:
+        image: neo4j:5.26.0-community
+        env:
+          NEO4J_AUTH: neo4j/senha-apenas-do-banco-descartavel
+          NEO4J_server_memory_heap_initial__size: 128m
+          NEO4J_server_memory_heap_max__size: 384m
+          NEO4J_server_memory_pagecache_size: 64m
+        ports:
+          - 17474:7474
+          - 17687:7687
+    env:
+      NEO4J_PASSWORD: senha-apenas-do-banco-descartavel
+      NEO4J_HTTP_URL: http://127.0.0.1:17474
+      LLM_URL: http://127.0.0.1:18081/v1/chat/completions
+      LLM_ARTIFACT: Qwen2.5-1.5B-Instruct-GGUF@91cad51170dc346986eccefdc2dd33a9da36ead9:Q4_K_M
+      TESTAR_NEO4J: '1'
+      TESTAR_CORPUS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt -r requirements-modelos.txt -r requirements-ui.txt
+      - name: Adquirir e conferir fontes e modelos
+        run: |
+          python scripts/validar_fontes.py
+          python scripts/verificar_corpus.py
+          python scripts/baixar_modelos.py
+      - name: Publicar corpus em banco vazio
+        run: |
+          python scripts/aguardar_banco.py --tempo 120
+          python scripts/configurar_banco.py
+          python scripts/ingerir.py
+          python scripts/indexar.py
+          python scripts/auditar_corpus.py --saida data/reports/auditoria-clone-linux.json
+      - name: Testes com corpus e banco
+        run: python -m unittest discover -s tests -v
+      - name: Compilar servidor do modelo
+        run: |
+          git clone --depth 1 --branch b7770 https://github.com/ggml-org/llama.cpp.git /tmp/llama-riscos
+          cmake -S /tmp/llama-riscos -B /tmp/llama-riscos/build -DCMAKE_BUILD_TYPE=Release -DGGML_NATIVE=OFF -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF
+          cmake --build /tmp/llama-riscos/build --target llama-server --parallel 2
+          mkdir -p data/models/llama-linux
+          cp /tmp/llama-riscos/build/bin/llama-server data/models/llama-linux/
+          tar -czf data/reports/llama-b7770-linux-x64.tar.gz -C data/models/llama-linux llama-server
+          sha256sum data/reports/llama-b7770-linux-x64.tar.gz > data/reports/llama-b7770-linux-x64.sha256
+      - name: Consulta real em ambiente limpo
+        run: |
+          data/models/llama-linux/llama-server --model data/models/qwen2.5-1.5b-instruct-q4_k_m.gguf --alias qwen-riscos-local --host 127.0.0.1 --port 18081 --ctx-size 4096 --threads 2 --parallel 1 --batch-size 128 > data/reports/llama-linux.log 2>&1 &
+          for tentativa in $(seq 1 90); do
+            if curl --fail --silent http://127.0.0.1:18081/health; then break; fi
+            sleep 2
+          done
+          curl --fail http://127.0.0.1:18081/health
+          python scripts/responder.py "Como a Irani conecta ACC a recebíveis de exportações?" --empresa 92791243000103 --periodo 2025-12-31 --salvar data/reports/consulta-clone-linux.json
+          python -c "import json; d=json.load(open('data/reports/consulta-clone-linux.json')); assert d['grafo']['caminhos']; assert d['contexto_enviado']['fontes']; print('Consulta concluida; verificar resposta documental no relatorio.')"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reproducao-linux
+          path: |
+            data/reports/*clone-linux.json
+            data/reports/llama-b7770-linux-x64.*
+            data/reports/llama-linux.log
+          retention-days: 30
