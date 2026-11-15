@@ -12,7 +12,7 @@ Pergunta → vetor + Fulltext + Cypher gerado → fusão → caminhos
 
 ## Documentos e declarações
 
-O manifesto registra URL, SHA-256, empresa, exercício e versão de cada PDF. A segmentação preserva páginas e posições. Regras financeiras automatizam NER e RE, mantendo a evidência de cada relação, além de condição, polaridade e escopo quando reconhecidos.
+O manifesto registra URL, SHA-256, empresa, exercício e versão de cada PDF. A segmentação preserva páginas e posições. Regras financeiras automatizam NER e RE, mantendo a evidência de cada relação, além de condição, polaridade e escopo quando reconhecidos. Desde `regras-financeiras-v6`, cada declaração de proteção registra o tratamento contábil (hedge accounting, proteção econômica ou não identificado) e a natureza (declaração, política ou possibilidade); a negativa explícita de hedge accounting é registrada como `DECLARA_CONTABILIDADE_HEDGE`, e swaps de juros são qualificados pelos indexadores.
 
 | Classe | Responsabilidade |
 |---|---|

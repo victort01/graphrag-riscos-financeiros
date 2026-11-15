@@ -7,7 +7,7 @@ import re
 from .identidade import entidade, chave_hash, normalizar, resolver_mencoes
 from .esquema import RELACOES
 
-VERSAO = "regras-financeiras-v5"
+VERSAO = "regras-financeiras-v6"
 TERMOS = [
     ("Moeda", "USD", r"\bUSD\b|US\$|d[oó]lar(?:es)? (?:americanos?|dos Estados Unidos(?: da Am[eé]rica)?)"),
     ("Moeda", "BRL", r"\bBRL\b|R\$|\breais\b|(?-i:\bReal\b)"),
@@ -19,6 +19,10 @@ TERMOS = [
     ("MedidaProtecao", "NDF", r"Non.?Deliverable Forward[s]?|Non.?Deriverable Forward[s]?|\bNDFs?\b"),
     ("MedidaProtecao", "swap", r"\bswaps?\b"),
 ]
+
+
+PROTECAO = {"ADOTA_PROTECAO", "PROTEGE", "COMPENSA_VARIACOES_DE", "DECLARA_CONTABILIDADE_HEDGE"}
+MODAIS = PROTECAO | {"TEM_OBRIGACAO", "DENOMINADO_EM"}
 
 
 def extrair(trecho, fonte):
@@ -42,11 +46,23 @@ def extrair(trecho, fonte):
         n = normalizar(sentenca)
         if len(n) < 40:
             continue
-        if re.search(r"\bnao\b|\bnunca\b|vedad", n):
+        negada = bool(re.search(r"\bnao\b|\bnunca\b|vedad", n))
+        if re.search(r"analise de sensibilidade|cenario (?:adverso|remoto|base|provavel)", n):
             continue
-        natureza = "cenario" if re.search(r"analise de sensibilidade|cenario (?:adverso|remoto|base|provavel)", n) else "declaracao"
-        if natureza == "cenario":
-            continue
+        # Política, objetivo ou possibilidade não comprovam contratação efetiva.
+        if re.search(r"objetivo de hedge|procura manter|politica interna que permite", n):
+            natureza = "politica"
+        elif re.search(r"permite que a companhia (?:contrate|concilie)|a companhia pode(?:ra)?\b", n):
+            natureza = "possibilidade"
+        else:
+            natureza = "declaracao"
+        # Proteção econômica (hedge natural) não equivale a hedge accounting.
+        if re.search(r"contabilidade de hedge|hedge accounting|designad|designando|designar|instrumentos? de hedge", n):
+            tratamento = "hedge_accounting"
+        elif "hedge natural" in n:
+            tratamento = "protecao_economica"
+        else:
+            tratamento = "nao_identificado"
         condicoes = sentenca if re.search(r"parcela|parte |limita|provav|politica|horizonte|objetivo|permite|\bpode\b", n) else ""
         escopos = {s for s in ("consolidado", "controladora") if re.search(r"\b" + s + r"\b", n)}
         # Mencionar as duas bases não permite escolher a qual delas pertence o fato.
@@ -65,7 +81,10 @@ def extrair(trecho, fonte):
             declaracoes.append({"id": "declaracao:" + identificador, "sujeito_id": sujeito["id"],
                                 "objeto_id": objeto["id"], "predicado": predicado, "empresa_id": companhia,
                                 "periodo": fonte["data_referencia"], "periodo_origem": "referencia_documento",
-                                "escopo": escopo, "natureza": natureza, "polaridade": "afirmativa",
+                                # Política/possibilidade qualifica instrumentos e obrigações, não a exposição factual.
+                                "escopo": escopo, "natureza": natureza if predicado in MODAIS else "declaracao",
+                                "polaridade": "negativa" if negada else "afirmativa",
+                                "tratamento_contabil": tratamento if predicado in PROTECAO else "nao_aplicavel",
                                 "condicoes": condicoes, "evidencia": sentenca, "trecho_id": trecho["id"],
                                 "documento_id": fonte["id"], "regra": regra, "extrator": VERSAO,
                                 "revisao_temporal": bool(re.search(r"\b20\d{2}\b", sentenca))})
@@ -75,6 +94,20 @@ def extrair(trecho, fonte):
             rel(empresa, "ADOTA_PROTECAO", medida, regra)
             return medida
 
+        contabil = r"(?:hedge accounting|contabilidade de hedge)"
+        if negada:
+            # Negativas não geram relações positivas. Só a negativa explícita do tratamento
+            # contábil é registrada, para que "não adota hedge accounting" não se perca.
+            if re.search(r"nao adota.{0,60}" + contabil, n):
+                rel(empresa, "DECLARA_CONTABILIDADE_HEDGE", no("CategoriaHedge", "sem hedge accounting"),
+                    "hedge-accounting-negado")
+            continue
+        if re.search(r"(?:adota|possui).{0,60}" + contabil, n):
+            # A categoria só é atribuída quando qualifica o próprio hedge, não qualquer menção a valor justo.
+            categoria = ("hedge accounting de valor justo" if re.search(r"hedge (?:accounting )?de valor justo", n) else
+                         "hedge accounting de fluxo de caixa" if re.search(r"hedge (?:accounting )?de fluxo de caixa", n) else
+                         "hedge accounting (categoria não especificada no trecho)")
+            rel(empresa, "DECLARA_CONTABILIDADE_HEDGE", no("CategoriaHedge", categoria), "hedge-accounting-adotado")
         if re.search(r"(?:companhia|controladas|ativos e passivos).{0,250}expost.{0,100}(?:cambial|moeda estrangeira|cambio)", n):
             exposicao = no("Exposicao", "exposição cambial declarada")
             rel(empresa, "TEM_EXPOSICAO", exposicao, "exposicao-explicita")
@@ -107,8 +140,21 @@ def extrair(trecho, fonte):
             if re.search(r"\bUSD\b|US\$|d[oó]lar(?:es)? americanos?", sentenca, re.I):
                 rel(receita, "DENOMINADO_EM", no("Moeda", "USD"), "receita-protegida-usd")
         if "swap" in n and re.search(r"(?:contratad|em vigencia|companhia adota)", n) and "taxa de juros" in n:
-            medida = adotar("swap para troca de indexador de juros", "swap-finalidade-juros")
-            rel(medida, "PROTEGE", no("Exposicao", "exposição a taxas de juros"), "swap-finalidade-juros")
+            # Indexadores qualificam a identidade: IPCA→CDI e SOFR→pré não são o mesmo instrumento.
+            par = re.search(r"\b(ipca|sofr|cdi)\b.{0,120}?\bpara\b.{0,40}?\b(cdi|ipca|sofr|pre ?fixad)", n)
+            if par:
+                nomes = {"ipca": "IPCA", "sofr": "SOFR", "cdi": "CDI"}
+                origem, destino = nomes[par.group(1)], nomes.get(par.group(2), "pré-fixado")
+                medida = adotar(f"swap de juros {origem}→{destino}", "swap-indexadores-explicitos")
+                rel(medida, "CONVERTE_DE", no("Indexador", origem), "swap-indexadores-explicitos")
+                rel(medida, "CONVERTE_PARA", no("Indexador", destino), "swap-indexadores-explicitos")
+                exposicao = no("Exposicao", f"exposição a {origem}")
+            else:
+                medida = adotar("swap para troca de indexador de juros", "swap-finalidade-juros")
+                exposicao = no("Exposicao", "exposição a taxas de juros")
+            # "Troca de indexador para otimizar a gestão" não é, literalmente, proteção.
+            if re.search(r"protec|proteg|hedge", n):
+                rel(medida, "PROTEGE", exposicao, "swap-finalidade-juros")
         if "swap" in n and re.search(r"convertendo|converter", n) and re.search(r"moeda (?:local|nacional)", n) and "dolares americanos" in n:
             medida = adotar("swap de BRL para USD", "swap-conversao-cambial")
             rel(medida, "CONVERTE_DE", no("Moeda", "BRL"), "swap-conversao-cambial")

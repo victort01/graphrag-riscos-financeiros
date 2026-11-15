@@ -17,6 +17,9 @@ RELACOES = {
     "CONVERTE_DE": (("MedidaProtecao",), ("Indexador", "Moeda")),
     "CONVERTE_PARA": (("MedidaProtecao",), ("Indexador", "Moeda")),
     "CATEGORIZADA_COMO": (("MedidaProtecao",), ("CategoriaHedge",)),
+    # Tratamento contábil declarado pela companhia, inclusive a negativa explícita
+    # ("sem hedge accounting"); o nome da categoria carrega a polaridade para o caminho.
+    "DECLARA_CONTABILIDADE_HEDGE": (("Empresa",), ("CategoriaHedge",)),
 }
 
 
