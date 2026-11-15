@@ -6,4 +6,5 @@ data/raw/
 data/processed/
 data/reports/
 data/extracted/
+data/models/
 .pytest_cache/

@@ -1,0 +1,28 @@
+{
+  "embedding": {
+    "repositorio": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "revisao": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+    "arquivo": "onnx/model_quint8_avx2.onnx",
+    "destino": "minilm-quint8.onnx",
+    "sha256": "98a01d88b7de996cdea58c32ca71208c09968d143798814b2ea09d3439dc334f",
+    "licenca": "Apache-2.0",
+    "configuracao": "384 dimensões; mean pooling com máscara; normalização L2; truncamento em 256 tokens; CPU"
+  },
+  "llm": {
+    "repositorio": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+    "revisao": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "arquivo": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "destino": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "licenca": "Apache-2.0",
+    "configuracao": "Q4_K_M; temperatura 0; seed 42; contexto 4096; llama.cpp b7770; CPU"
+  },
+  "experimento_anterior": {
+    "repositorio": "Qwen/Qwen2.5-3B-Instruct-GGUF",
+    "revisao": "7dabda4d13d513e3e842b20f0d435c732f172cbe",
+    "arquivo": "qwen2.5-3b-instruct-q4_k_m.gguf",
+    "sha256": "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d",
+    "licenca": "Consultar LICENSE oficial do modelo; metadados classificam como other.",
+    "observacao": "Geração Cypher verificada. Resposta com contexto maior excedeu 180 segundos nesta máquina; não usar como resultado final."
+  }
+}

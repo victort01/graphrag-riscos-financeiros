@@ -17,17 +17,20 @@ class Banco:
         self.url = config.get("NEO4J_HTTP_URL", "http://127.0.0.1:17474").rstrip("/") + "/db/neo4j/tx/commit"
         self.headers = {"Content-Type": "application/json", "Authorization": "Basic " + token}
 
-    def transacao(self, comandos):
+    def transacao(self, comandos, limite_ms=None):
         """Executa os comandos atomicamente, ou propaga a falha e o rollback."""
         payload = {"statements": [{"statement": texto, "parameters": parametros}
                                   for texto, parametros in comandos]}
-        req = Request(self.url, headers=self.headers, data=json.dumps(payload).encode())
+        headers = dict(self.headers)
+        if limite_ms:
+            headers["max-execution-time"] = str(limite_ms)
+        req = Request(self.url, headers=headers, data=json.dumps(payload).encode())
         with urlopen(req, timeout=90) as resposta:
             resultado = json.load(resposta)
         if resultado["errors"]:
             erro = resultado["errors"][0]
             raise RuntimeError(f"{erro['code']}: {erro['message']}")
-        return [dict(colunas=r["columns"], linhas=[d["row"] for d in r["data"]])
+        return [dict(colunas=r["columns"], linhas=[d["row"] for d in r["data"]], plano=r.get("plan"))
                 for r in resultado["results"]]
 
     def consultar(self, consulta, parametros=None):

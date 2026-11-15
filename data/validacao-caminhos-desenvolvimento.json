@@ -1,0 +1,163 @@
+{
+  "uso": "Desenvolvimento; ablation controlada do contexto, sem medir qualidade da resposta.",
+  "pergunta": "Como a Irani conecta ACC a recebíveis de exportações?",
+  "filtros": {
+    "empresas": [
+      "empresa:92791243000103"
+    ],
+    "periodo": "2025-12-31"
+  },
+  "orcamento_caracteres": 3500,
+  "sem_algoritmo": {
+    "fontes": {
+      "E1": {
+        "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 124,
+        "pagina_fim": 124,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:30003e9440b8483730de274fbbb3e572"
+      },
+      "E2": {
+        "texto": "Não obstante, a liquidação das transações envolvendo essas estimativas poderá resultar em valores diferentes dos estimados devido à subjetividade que está contida no processo utilizado na preparação dessas análises. A Companhia procura manter as suas operações de empréstimos e financiamentos, expostos à variação cambial, com pagamentos líquidos anuais equivalentes ou inferiores à sua carteira de clientes de exportações.",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 125,
+        "pagina_fim": 125,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:37d66aeee7084dea9475eb47ed1c2a77"
+      },
+      "E3": {
+        "texto": "As transações em moeda estrangeira são inicialmente registradas à taxa de câmbio em vigor na data da transação. Os ganhos e perdas resultantes da diferença entre a conversão dos saldos em moeda estrangeira para a moeda funcional são reconhecidos na demonst ração do resultado.",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 69,
+        "pagina_fim": 69,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:82d0fa9b6f7d8ba47ad18c0d7c5ce371"
+      },
+      "E4": {
+        "texto": "Todas as transações de venda geram recebíveis que estão descritos na nota explicativa nº 6. Não há outros ativos ou passivos de contrato reconhecidos.",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 120,
+        "pagina_fim": 120,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:e95d7f44804bd8f6a0727e6eac472b7b"
+      },
+      "E5": {
+        "texto": "Risco de exposição cambial A Companhia mantém operações no mercado externo expostas às mudanças nas cotações de moedas estrangeiras. Em 3 1 de dezembro de 2025 e 31 de dezembro de 2024, essas operações apresentaram exposição líquida conforme o quadro a seguir:",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 124,
+        "pagina_fim": 124,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:a6e3d46a0e2f4045ba2d467f08b31a33"
+      },
+      "E6": {
+        "texto": "A movimentação dos instrumentos financeiros derivativos – swaps segue:",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 78,
+        "pagina_fim": 78,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:7a2067bc37e3c299d222a6f9ef33a954"
+      }
+    },
+    "caminhos": []
+  },
+  "com_algoritmo": {
+    "fontes": {
+      "E1": {
+        "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 124,
+        "pagina_fim": 124,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:30003e9440b8483730de274fbbb3e572"
+      },
+      "E2": {
+        "texto": "Não obstante, a liquidação das transações envolvendo essas estimativas poderá resultar em valores diferentes dos estimados devido à subjetividade que está contida no processo utilizado na preparação dessas análises. A Companhia procura manter as suas operações de empréstimos e financiamentos, expostos à variação cambial, com pagamentos líquidos anuais equivalentes ou inferiores à sua carteira de clientes de exportações.",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 125,
+        "pagina_fim": 125,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:37d66aeee7084dea9475eb47ed1c2a77"
+      },
+      "E3": {
+        "texto": "As transações em moeda estrangeira são inicialmente registradas à taxa de câmbio em vigor na data da transação. Os ganhos e perdas resultantes da diferença entre a conversão dos saldos em moeda estrangeira para a moeda funcional são reconhecidos na demonst ração do resultado.",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 69,
+        "pagina_fim": 69,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:82d0fa9b6f7d8ba47ad18c0d7c5ce371"
+      },
+      "E4": {
+        "texto": "Todas as transações de venda geram recebíveis que estão descritos na nota explicativa nº 6. Não há outros ativos ou passivos de contrato reconhecidos.",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 120,
+        "pagina_fim": 120,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:e95d7f44804bd8f6a0727e6eac472b7b"
+      },
+      "E5": {
+        "texto": "Risco de exposição cambial A Companhia mantém operações no mercado externo expostas às mudanças nas cotações de moedas estrangeiras. Em 3 1 de dezembro de 2025 e 31 de dezembro de 2024, essas operações apresentaram exposição líquida conforme o quadro a seguir:",
+        "empresa": "Irani Papel e Embalagem S.A.",
+        "periodo": "2025-12-31",
+        "pagina_inicio": 124,
+        "pagina_fim": 124,
+        "documento_id": "irani-dfp-2025",
+        "url": "https://api.mziq.com/mzfilemanager/v2/d/516eff19-62b9-464f-af20-6d866d6fefd5/e29289bf-f658-c1af-8438-2d2610cb0539?origin=2",
+        "trecho_id": "trecho:a6e3d46a0e2f4045ba2d467f08b31a33"
+      }
+    },
+    "caminhos": [
+      {
+        "id": "C1",
+        "nos": [
+          "Irani Papel e Embalagem S.A.",
+          "ACC",
+          "recebíveis de exportações"
+        ],
+        "relacoes": [
+          "TEM_OBRIGACAO",
+          "COMPENSA_VARIACOES_DE"
+        ],
+        "fontes": [
+          "E1"
+        ],
+        "periodo": "2025-12-31"
+      },
+      {
+        "id": "C2",
+        "nos": [
+          "Irani Papel e Embalagem S.A.",
+          "ACC"
+        ],
+        "relacoes": [
+          "TEM_OBRIGACAO"
+        ],
+        "fontes": [
+          "E1"
+        ],
+        "periodo": "2025-12-31"
+      }
+    ]
+  },
+  "contexto_modificado": true
+}
