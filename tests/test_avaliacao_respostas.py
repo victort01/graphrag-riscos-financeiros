@@ -7,10 +7,23 @@ import unittest
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import avaliar_respostas as avaliador
-from riscos.respostas import responder_contexto
+from riscos.respostas import responder_contexto, esquema_contextual, ESQUEMA
 
 
 class GeracaoCongelada(unittest.TestCase):
+    def test_contratos_de_ids_nao_contaminam_consultas_subsequentes(self):
+        antes = json.loads(json.dumps(ESQUEMA))
+        sem = esquema_contextual({"fontes": {"E1": {}}, "caminhos": []})
+        com = esquema_contextual({"fontes": {"E2": {}}, "caminhos": [{"id": "C7"}]})
+        a = sem["properties"]["afirmacoes"]["items"]["properties"]
+        b = com["properties"]["afirmacoes"]["items"]["properties"]
+        self.assertEqual(a["caminhos"]["maxItems"], 0)
+        self.assertEqual(b["caminhos"]["items"]["enum"], ["C7"])
+        self.assertEqual(a["fontes"]["items"]["enum"], ["E1"])
+        self.assertEqual(b["fontes"]["items"]["enum"], ["E2"])
+        self.assertNotIn("maxItems", b["caminhos"])
+        self.assertEqual(ESQUEMA, antes)
+
     def test_sem_fontes_nao_invoca_modelo(self):
         with patch("riscos.respostas.gerar_json") as gerar:
             r = responder_contexto("Há dívida?", {"fontes": {}, "caminhos": []})

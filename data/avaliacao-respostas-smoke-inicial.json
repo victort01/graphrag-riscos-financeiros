@@ -1,0 +1,427 @@
+{
+  "uso": "Smoke de desenvolvimento. Não é conjunto reservado ou evidência de generalização.",
+  "data_utc": "2026-11-15T11:10:32.392573+00:00",
+  "sha256_recuperacao": "a3a48a9f3a5f8b29f7a2325816d01bd54301ee5ce3d88951364ae62dd58117ea",
+  "versao_recuperacao": {
+    "sha256_codigo_catalogos_dependencias": "2375556f7b58e9f720881fb97f69e59d35fc6a95f0ec64f6e139c33f316d8dad",
+    "python": "3.13.14",
+    "plataforma": "Windows",
+    "arquitetura": "AMD64",
+    "commit_git": "51de8c44583da7ff92476dd7f94531c0ae358d2b",
+    "arvore_git_alterada": false
+  },
+  "versao_geracao": {
+    "sha256_codigo_catalogos_dependencias": "53f755ba4609e4fb91661da3384f4a9e99c373ca24b991c4e1a9afea28ad0949",
+    "python": "3.13.14",
+    "plataforma": "Windows",
+    "arquitetura": "AMD64",
+    "commit_git": "00dac32308aec8ff5bcdebc555f011c6968fa087",
+    "arvore_git_alterada": false
+  },
+  "modelo": {
+    "artefato": "Qwen2.5-1.5B-Instruct-GGUF@91cad51170dc346986eccefdc2dd33a9da36ead9:Q4_K_M",
+    "alias": "qwen-riscos-local",
+    "temperatura": 0,
+    "seed": 42,
+    "max_tokens": 800
+  },
+  "estado": "concluida",
+  "ordem": [
+    [
+      "S02",
+      "vetorial"
+    ],
+    [
+      "S01",
+      "hibrido"
+    ],
+    [
+      "S01",
+      "grafo"
+    ],
+    [
+      "S02",
+      "hibrido"
+    ],
+    [
+      "S01",
+      "vetorial"
+    ],
+    [
+      "S02",
+      "grafo"
+    ]
+  ],
+  "limites": [
+    "Não mede suporte semântico automaticamente; nenhuma taxa de alucinação é calculada.",
+    "Latência de geração descritiva; não inclui a recuperação anterior.",
+    "O conjunto smoke contém perguntas já utilizadas no desenvolvimento."
+  ],
+  "sha256_relatorio_integral": "6b9c5b45d7543b3255a11ead1dffbcb1989274e12285cdb5c23e564e879c18b1",
+  "linhas": [
+    {
+      "pergunta_id": "S02",
+      "metodo": "vetorial",
+      "pergunta": "Como a Irani conecta ACC a recebíveis de exportações?",
+      "sha256_contexto": "456e9eb1ccbcda1e74cf3afc2ede3a9f3ca7301fdec8bcbe3cac46b90b047109",
+      "erro": null,
+      "resposta": {
+        "afirmacoes": [],
+        "cobertura": "insuficiente",
+        "possivel_conflito": false,
+        "confianca": {
+          "nivel": "sem suporte",
+          "motivo": "Não foi possível formar uma resposta validável com o contexto consultado."
+        },
+        "validacao": {
+          "erros": [
+            "Caminho inexistente no contexto enviado."
+          ],
+          "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
+        }
+      },
+      "resposta_original_modelo": {
+        "afirmacoes": [
+          {
+            "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
+            "fontes": [
+              "E3"
+            ],
+            "caminhos": [
+              "E3"
+            ]
+          },
+          {
+            "texto": "Os pagamentos do longo prazo, considerando seus fluxos de caixa futuros (não descontados) estão assim distribuídos:",
+            "fontes": [
+              "E4"
+            ],
+            "caminhos": [
+              "E4"
+            ]
+          },
+          {
+            "texto": "Demos um passo importante nessa jornada com a criação da Política de Diversidade, diretriz que consolida o respeito, a equidade e a valorização das diferenças em nossa cultura. Esses avanços confirmam que a inclusão e o pertencimento são prioridades estratégicas para a Irani.",
+            "fontes": [
+              "E5"
+            ],
+            "caminhos": [
+              "E5"
+            ]
+          }
+        ],
+        "cobertura": "direta",
+        "possivel_conflito": false
+      },
+      "complementos_procedencia": [],
+      "afirmacoes_removidas_por_vocabulario": [
+        2,
+        3
+      ],
+      "latencia_geracao_segundos": 68.924
+    },
+    {
+      "pergunta_id": "S01",
+      "metodo": "hibrido",
+      "pergunta": "Quais instrumentos de proteção de juros a Irani declara em 2025?",
+      "sha256_contexto": "ea02739ac6f5969e5fc4d762a861fb56cd46c389fb911a26fa403334df83ff46",
+      "erro": null,
+      "resposta": {
+        "afirmacoes": [],
+        "cobertura": "insuficiente",
+        "possivel_conflito": false,
+        "confianca": {
+          "nivel": "sem suporte",
+          "motivo": "Não foi possível formar uma resposta validável com o contexto consultado."
+        },
+        "validacao": {
+          "erros": [
+            "Caminho inexistente no contexto enviado.",
+            "Caminho inexistente no contexto enviado.",
+            "Caminho inexistente no contexto enviado.",
+            "Caminho inexistente no contexto enviado."
+          ],
+          "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
+        }
+      },
+      "resposta_original_modelo": {
+        "afirmacoes": [
+          {
+            "texto": "A Irani Papel e Embalagem S.A. declara instrumentos de proteção de juros como swaps em vigência.",
+            "fontes": [
+              "E1",
+              "E2"
+            ],
+            "caminhos": [
+              "E1",
+              "E2"
+            ]
+          },
+          {
+            "texto": "A Irani Papel e Embalagem S.A. possui controladas integrais que possuem instrumentos de proteção de juros.",
+            "fontes": [
+              "E3"
+            ],
+            "caminhos": [
+              "E3"
+            ]
+          },
+          {
+            "texto": "A Irani Papel e Embalagem S.A. declara instrumentos de proteção de juros como swaps em vigência e instrumentos derivativos como debêntures.",
+            "fontes": [
+              "E4"
+            ],
+            "caminhos": [
+              "E4"
+            ]
+          }
+        ],
+        "cobertura": "parcial",
+        "possivel_conflito": false
+      },
+      "complementos_procedencia": [],
+      "afirmacoes_removidas_por_vocabulario": [],
+      "latencia_geracao_segundos": 53.001
+    },
+    {
+      "pergunta_id": "S01",
+      "metodo": "grafo",
+      "pergunta": "Quais instrumentos de proteção de juros a Irani declara em 2025?",
+      "sha256_contexto": "64a5ef010011b4f84e46d73a4aa54aec273ccc4c9398cae1285ab54150cf2930",
+      "erro": null,
+      "resposta": {
+        "afirmacoes": [
+          {
+            "texto": "A Irani Papel e Embalagem S.A. declara instrumentos de proteção de juros como swaps para troca de indexador de juros.",
+            "fontes": [
+              "E1"
+            ],
+            "caminhos": [
+              "C1"
+            ]
+          }
+        ],
+        "cobertura": "direta",
+        "possivel_conflito": false,
+        "confianca": {
+          "nivel": "limitada",
+          "motivo": "Escopo jurídico sem qualificação unívoca na extração das fontes citadas."
+        },
+        "validacao": {
+          "erros": [],
+          "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
+        }
+      },
+      "resposta_original_modelo": {
+        "afirmacoes": [
+          {
+            "texto": "A Irani Papel e Embalagem S.A. declara instrumentos de proteção de juros como swaps para troca de indexador de juros.",
+            "fontes": [
+              "E1"
+            ],
+            "caminhos": [
+              "C1"
+            ]
+          }
+        ],
+        "cobertura": "direta",
+        "possivel_conflito": false
+      },
+      "complementos_procedencia": [],
+      "afirmacoes_removidas_por_vocabulario": [],
+      "latencia_geracao_segundos": 12.623
+    },
+    {
+      "pergunta_id": "S02",
+      "metodo": "hibrido",
+      "pergunta": "Como a Irani conecta ACC a recebíveis de exportações?",
+      "sha256_contexto": "524c33576b21612f2bd51a7dd4a6e191f8b12de0bf3e6e5b7493b7dd8b6d38d2",
+      "erro": null,
+      "resposta": {
+        "afirmacoes": [],
+        "cobertura": "insuficiente",
+        "possivel_conflito": false,
+        "confianca": {
+          "nivel": "sem suporte",
+          "motivo": "Não foi possível formar uma resposta validável com o contexto consultado."
+        },
+        "validacao": {
+          "erros": [
+            "Caminho inexistente no contexto enviado."
+          ],
+          "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
+        }
+      },
+      "resposta_original_modelo": {
+        "afirmacoes": [
+          {
+            "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
+            "fontes": [
+              "E1"
+            ],
+            "caminhos": [
+              "E1"
+            ]
+          },
+          {
+            "texto": "Preços médios líquidos de impostos Irani (R$/mil m2) +6,0% 2.902 3.153 3.076 2.763 3.064 -2,4% +10,9% 4T24 3T25 4T25 2024 2025 A participação das vendas da Irani por subsetores em 2025 é apresentada no gráfico a seguir:",
+            "fontes": [
+              "E2"
+            ],
+            "caminhos": [
+              "E2"
+            ]
+          },
+          {
+            "texto": "Evolução do Preço de Aparas (Preço Líquido R$/t|CIF) Irani Total +0,7% 1.051 1.209 1.058 1.158 894 -12,5% +29,5% 4T24 3T25 4T25 2024 2025 A composição do custo por segmento de atuação da Irani em 2025 pode ser verificada nos gráficos a seguir:",
+            "fontes": [
+              "E3"
+            ],
+            "caminhos": [
+              "E3"
+            ]
+          }
+        ],
+        "cobertura": "direta",
+        "possivel_conflito": false
+      },
+      "complementos_procedencia": [],
+      "afirmacoes_removidas_por_vocabulario": [
+        2,
+        3
+      ],
+      "latencia_geracao_segundos": 73.932
+    },
+    {
+      "pergunta_id": "S01",
+      "metodo": "vetorial",
+      "pergunta": "Quais instrumentos de proteção de juros a Irani declara em 2025?",
+      "sha256_contexto": "d3d4ad24a6403c3a28fd8590e138e30c08c1ab28a0ac0c698e543cbb3d20689e",
+      "erro": null,
+      "resposta": {
+        "afirmacoes": [],
+        "cobertura": "insuficiente",
+        "possivel_conflito": false,
+        "confianca": {
+          "nivel": "sem suporte",
+          "motivo": "Não foi possível formar uma resposta validável com o contexto consultado."
+        },
+        "validacao": {
+          "erros": [
+            "Caminho inexistente no contexto enviado."
+          ],
+          "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
+        }
+      },
+      "resposta_original_modelo": {
+        "afirmacoes": [
+          {
+            "texto": "Irani declara instrumentos de proteção de juros como debêntures simples privadas.",
+            "fontes": [
+              "E2"
+            ],
+            "caminhos": [
+              "trecho:1841da01b1bde41d0c6c867ac010d716"
+            ]
+          },
+          {
+            "texto": "Irani declara garantias como parte das iniciativas apoiadas pela Companhia.",
+            "fontes": [
+              "E3"
+            ],
+            "caminhos": [
+              "trecho:48478e41f577e6c8c6e792e0083b55c2"
+            ]
+          },
+          {
+            "texto": "Irani declara amortização de intangíveis como movimentações nos exercícios de 2025 e 2024.",
+            "fontes": [
+              "E6"
+            ],
+            "caminhos": [
+              "trecho:894177c73dd9fe72e3faa5f1dc48801b"
+            ]
+          }
+        ],
+        "cobertura": "direta",
+        "possivel_conflito": false
+      },
+      "complementos_procedencia": [],
+      "afirmacoes_removidas_por_vocabulario": [
+        2,
+        3
+      ],
+      "latencia_geracao_segundos": 63.845
+    },
+    {
+      "pergunta_id": "S02",
+      "metodo": "grafo",
+      "pergunta": "Como a Irani conecta ACC a recebíveis de exportações?",
+      "sha256_contexto": "ae8c5dec326ed7ab96e311ac7be525c0be14090e34780ac678412ed598ca92d7",
+      "erro": null,
+      "resposta": {
+        "afirmacoes": [
+          {
+            "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
+            "fontes": [
+              "E1"
+            ],
+            "caminhos": [
+              "C1"
+            ]
+          }
+        ],
+        "cobertura": "parcial",
+        "possivel_conflito": false,
+        "confianca": {
+          "nivel": "limitada",
+          "motivo": "Cobertura parcial da pergunta. Escopo jurídico sem qualificação unívoca na extração das fontes citadas."
+        },
+        "validacao": {
+          "erros": [],
+          "alcance": "referências, valores e conclusões absolutas; interpretação requer avaliação"
+        }
+      },
+      "resposta_original_modelo": {
+        "afirmacoes": [
+          {
+            "texto": "A Companhia mantém empréstimos e financiamentos em moeda estrangeira (ACC) que tem por objetivo fazer frente às eventuais variações do saldo de clientes de exportações.",
+            "fontes": [
+              "E1"
+            ],
+            "caminhos": [
+              "C1"
+            ]
+          },
+          {
+            "texto": "Preços médios líquidos de impostos Irani (R$/mil m2) +6,0% 2.902 3.153 3.076 2.763 3.064 -2,4% +10,9% 4T24 3T25 4T25 2024 2025 A participação das vendas da Irani por subsetores em 2025 é apresentada no gráfico a seguir:",
+            "fontes": [
+              "E2"
+            ],
+            "caminhos": [
+              "C1"
+            ]
+          },
+          {
+            "texto": "Evolução do Preço de Aparas (Preço Líquido R$/t|CIF) Irani Total +0,7% 1.051 1.209 1.058 1.158 894 -12,5% +29,5% 4T24 3T25 4T25 2024 2025 A composição do custo por segmento de atuação da Irani em 2025 pode ser verificada nos gráficos a seguir:",
+            "fontes": [
+              "E3"
+            ],
+            "caminhos": [
+              "C1"
+            ]
+          }
+        ],
+        "cobertura": "direta",
+        "possivel_conflito": false
+      },
+      "complementos_procedencia": [],
+      "afirmacoes_removidas_por_vocabulario": [
+        2,
+        3
+      ],
+      "latencia_geracao_segundos": 36.484
+    }
+  ],
+  "diagnostico": "Quatro respostas rejeitadas por referencias de caminhos inexistentes nas variantes sem grafo. Resultado de desenvolvimento anterior ao contrato de IDs dinamicos; nao mede suporte semantico."
+}
