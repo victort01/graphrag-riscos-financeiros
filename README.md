@@ -2,7 +2,7 @@
 
 Aplicação de consulta a exposições cambiais, obrigações e medidas de proteção descritas em relatórios oficiais de Suzano, Klabin e Irani. Combina busca vetorial e textual, Cypher gerado por um modelo de linguagem e caminhos financeiros no Neo4j. A interface exibe fontes, páginas, consultas e o subgrafo usado como contexto.
 
-O acervo reúne seis relatórios de 2024 e 2025, com 954 páginas. O índice cobre 3.918 trechos narrativos elegíveis e o grafo contém 85 declarações extraídas. A cobertura é narrativa: tabelas e montantes não estão validados para cálculo de exposição líquida ou classificação de risco entre empresas. Os resultados disponíveis são de desenvolvimento; não demonstram superioridade geral nem redução de alucinações em teste independente.
+O acervo reúne seis relatórios de 2024 e 2025, com 954 páginas. O índice cobre 3.918 trechos narrativos elegíveis e o grafo contém 85 declarações extraídas. A cobertura é narrativa: tabelas e montantes não estão validados para cálculo de exposição líquida ou classificação de risco entre empresas. A avaliação prospectiva usa perguntas e critérios assistidos sobre corpus conhecido. Os resultados não demonstram superioridade geral nem redução de alucinações em teste independente.
 
 ## Materiais
 
@@ -11,7 +11,9 @@ O acervo reúne seis relatórios de 2024 e 2025, com 954 páginas. O índice cob
 - [Arquitetura e modelo de dados](docs/arquitetura.md).
 - [Avaliação e reprodução dos experimentos](docs/avaliacao.md).
 
-O artigo e a apresentação são versões para revisão. A aplicação tem implantação local; ainda não há endereço público de execução validado.
+[Abrir a aplicação](https://graphrag-riscos-financeiros.streamlit.app/). Hospedagem gratuita no Streamlit Community Cloud com Neo4j AuraDB Free e inferência no próprio host. Uma consulta real com fontes, caminho no contexto e retomada após recarregar foi verificada. A geração em CPU pode levar minutos e os serviços podem hibernar. Consulte o [registro da implantação](data/validacao-implantacao.json) e a [configuração para reprodução](deploy/streamlit/README.md).
+
+O artigo e a apresentação registram os resultados disponíveis e os limites da avaliação. A revisão humana independente de extração e respostas permanece pendente.
 
 ## Requisitos
 
@@ -85,7 +87,7 @@ Em Linux/macOS, use `.venv/bin/python`, inicie o servidor GGUF com os argumentos
 
 Os testes unitários não exigem modelos ou banco. As verificações opcionais usam `TESTAR_NEO4J=1` para escrita no banco de teste e `TESTAR_CORPUS=1` para o corpus já ingerido. Execute testes de escrita com o banco em modo de ingestão e retorne a consulta ao terminar.
 
-O [protocolo de avaliação](docs/avaliacao.md) descreve extração, recuperação, respostas e revisão documental. As anotações de desenvolvimento participaram do ajuste das regras. O smoke de recuperação contém duas perguntas conhecidas; métricas de localização de evidência não medem correção semântica da resposta.
+O [protocolo de avaliação](docs/avaliacao.md) descreve extração, recuperação, respostas e revisão documental. Uma rodada de 12 perguntas fixadas antes da execução concluiu 36 recuperações e 34 gerações; dois timeouts foram preservados. O recall médio dos localizadores no contexto, em dez perguntas com evidência esperada, foi de 30% no vetor, 70% no híbrido e 65% na primeira política com caminhos. A correção posterior preserva as fontes híbridas e atingiu 70% na reanálise conhecida. Esses números não medem correção semântica das respostas.
 
 ## Estrutura
 

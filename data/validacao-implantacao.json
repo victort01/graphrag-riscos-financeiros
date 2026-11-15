@@ -1,0 +1,60 @@
+{
+  "uso": "Verificação operacional pontual na hospedagem gratuita; não é avaliação humana independente ou teste de carga.",
+  "data_utc": "2026-11-15T20:50:37.835075+00:00",
+  "url": "https://graphrag-riscos-financeiros.streamlit.app/",
+  "interface": "Streamlit Community Cloud",
+  "banco": "Neo4j AuraDB Free",
+  "inferencia": "Qwen GGUF em CPU no host da interface; sem dependência do computador de desenvolvimento",
+  "versao_execucao": {
+    "sha256_codigo_catalogos_dependencias": "0286ed2a25b078be01bec764c285ea621dc52404c9ccd94632a7aa84dd73bb55",
+    "python": "3.13.18",
+    "plataforma": "Linux",
+    "arquitetura": "x86_64",
+    "commit_git": "67770d7ecba2678d81bd52280bf1c19a623bb147",
+    "arvore_git_alterada": true
+  },
+  "corpus": {
+    "documentos": 6,
+    "declaracoes": 85,
+    "vetores": 3918
+  },
+  "health_sem_autenticacao": {
+    "status": 200,
+    "corpo": "ok",
+    "caminho": "/~/+/_stcore/health"
+  },
+  "consulta": {
+    "pergunta": "Como a Irani conecta ACC a recebíveis de exportações?",
+    "empresa": "Irani",
+    "exercicio": 2025,
+    "latencia_total_segundos": 111.361,
+    "tentativas_cypher": 1,
+    "erros_cypher": [],
+    "fontes_enviadas": 5,
+    "caminhos_enviados": 1,
+    "saltos_maior_caminho": 2,
+    "afirmacoes_publicadas": 1,
+    "fontes_citadas": [
+      "irani-dfp-2025, página PDF 124"
+    ],
+    "caminhos_citados_pelo_modelo": 0,
+    "cobertura": "parcial",
+    "confianca": "limitada",
+    "observacao": "O modelo recebeu um caminho de dois saltos e respondeu por citação direta; não atribuímos a resposta ao uso causal desse caminho. Duas afirmações irrelevantes da saída original foram removidas pelas guardas.",
+    "exportacao_json_baixada": true,
+    "sha256_exportacao": "f6ce6a7dd395905f43903e0217478097702b52d59413d410fcd3d93b45ae7e17",
+    "abertura_pdf_na_pagina_citada_verificada": true
+  },
+  "retomada_apos_recarregar": {
+    "verificada": true,
+    "mesma_tarefa": true
+  },
+  "limites": [
+    "Uma consulta simultânea; geração em CPU pode levar minutos.",
+    "Serviços gratuitos podem hibernar ou alterar limites; endereço fixo não garante disponibilidade contínua.",
+    "Sem teste de carga, de longa duração ou de retomada após hibernação prolongada.",
+    "O modo READ do driver roteia transações; não substitui permissões restritas do banco.",
+    "Reiniciar o processo interrompe tarefas em andamento."
+  ],
+  "interface_sem_login_verificada_em_janela_privada": true
+}
