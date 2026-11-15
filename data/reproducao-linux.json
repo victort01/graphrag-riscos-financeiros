@@ -1,0 +1,22 @@
+{
+  "uso": "Reprodução operacional em checkout limpo e banco vazio; não é validação semântica de respostas.",
+  "execucao": "https://github.com/victort01/graphrag-riscos-financeiros/actions/runs/43749704067",
+  "commit_verificado": "c7617988e7cb60b4074b7206b3af7f61da54a036",
+  "estado": "concluida",
+  "plataforma": "Ubuntu 22.04, Python 3.13, Neo4j 5.26.0 Community",
+  "testes": 83,
+  "falhas_testes": 0,
+  "corpus": {
+    "documentos": 6,
+    "declaracoes": 85,
+    "vetores": 3918
+  },
+  "sha256_declaracoes_por_conteudo": "9766c6d99819533bbc2d531e527ecf9170967e9782824d408ee61e4dfec3cf31",
+  "declaracoes_equivalentes_ao_windows": true,
+  "trechos_com_origem_divergente": 0,
+  "consulta_real_concluida": true,
+  "limites": [
+    "A consulta verifica execução e procedência, não correção semântica.",
+    "Alterações posteriores possuem seus próprios testes e registros; este resultado identifica somente o commit verificado."
+  ]
+}

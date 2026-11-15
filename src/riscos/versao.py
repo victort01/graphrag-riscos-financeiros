@@ -10,7 +10,7 @@ def identificar():
     arquivos = list((ROOT / "src").rglob("*.py"))
     arquivos += list((ROOT / "scripts").glob("*.py")) + list((ROOT / "scripts").glob("*.ps1"))
     arquivos += list(ROOT.glob("requirements*.txt"))
-    arquivos += [ROOT / p for p in ("app.py", "compose.yaml", ".env.example", "ui/grafo.html", "ui/vendor/cytoscape.min.js", "data/manifesto.json", "data/modelos.json")]
+    arquivos += [ROOT / p for p in ("app.py", "compose.yaml", ".env.example", "ui/grafo.html", "ui/vendor/cytoscape.min.js", "data/manifesto.json", "data/modelos.json", "data/runtime-linux.json")]
     hash_ = hashlib.sha256()
     for arquivo in sorted(arquivos, key=lambda p: p.relative_to(ROOT).as_posix()):
         hash_.update(arquivo.relative_to(ROOT).as_posix().encode())
