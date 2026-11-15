@@ -115,6 +115,17 @@ class ValidacaoResposta(unittest.TestCase):
         self.assertEqual(filtrada["cobertura"], "parcial")
         self.assertEqual(len(original["afirmacoes"]), 2)
 
+    def test_preserva_explicacao_de_liquidez_em_pergunta_sobre_financiamento(self):
+        original = {"afirmacoes": [{"texto": "A liquidez considera o fluxo de caixa esperado."}], "cobertura": "parcial"}
+        filtrada, removidas = filtrar_pertinencia(original, "Como monitora a liquidez e os planos de financiamento?")
+        self.assertFalse(removidas)
+        self.assertEqual(filtrada, original)
+
+    def test_empresa_na_afirmacao_exige_fonte_da_empresa(self):
+        self.contexto["fontes"]["E1"]["empresa"] = "Irani Papel e Embalagem S.A."
+        resposta = {"afirmacoes": [{"texto": "A Klabin possui dívida em USD.", "fontes": ["E1"]}], "cobertura": "direta"}
+        self.assertTrue(any("Empresa mencionada" in e for e in validar_resposta(resposta, self.contexto)))
+
 
 if __name__ == "__main__":
     unittest.main()

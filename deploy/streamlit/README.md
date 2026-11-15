@@ -4,17 +4,15 @@ A aplicação usa uma instância **AuraDB Free** e executa o mesmo Qwen GGUF em 
 
 1. Crie uma instância AuraDB Free, preservando as credenciais fora do Git. Não selecione o trial de um plano pago.
 2. Em um ambiente de preparação, instale `requirements-nuvem.txt` e configure `NEO4J_URI`, `NEO4J_USER`, `NEO4J_PASSWORD` e `NEO4J_ACCESS_MODE=WRITE`. Execute aquisição, configuração, ingestão e indexação conforme o README principal. Faça uma auditoria do corpus antes da publicação da interface.
-3. A execução manual `Reproducao completa` do GitHub Actions compila llama.cpp b7770 para Linux x86-64 e produz um pacote com SHA-256. Publique o pacote verificado como asset de uma release deste repositório. O pacote não inclui pesos ou credenciais.
+3. O catálogo `data/runtime-linux.json` identifica o runtime CPU publicado, seu SHA-256 e a execução do GitHub Actions que o compilou e verificou. O pacote não inclui pesos ou credenciais. Uma nova compilação pode ser feita pela execução manual `Reproducao completa`.
 4. No Community Cloud, selecione este repositório, a branch `main`, a entrada `deploy/streamlit/app.py` e Python 3.13.
-5. Cadastre os valores abaixo nos **Secrets** da aplicação. A URL e o hash do runtime precisam corresponder ao asset compilado e verificado, não a valores de exemplo.
+5. Cadastre os valores abaixo nos **Secrets** da aplicação. Use as credenciais reais da instância.
 
 ```toml
 NEO4J_URI = "neo4j+s://<instancia>.databases.neo4j.io"
 NEO4J_USER = "neo4j"
 NEO4J_PASSWORD = "<senha-da-instancia>"
 NEO4J_ACCESS_MODE = "READ"
-LLAMA_RUNTIME_URL = "https://github.com/victort01/graphrag-riscos-financeiros/releases/download/<tag>/llama-b7770-linux-x64.tar.gz"
-LLAMA_RUNTIME_SHA256 = "<sha256-do-pacote>"
 LLM_MODEL = "qwen-riscos-local"
 LLM_ARTIFACT = "Qwen2.5-1.5B-Instruct-GGUF@91cad51170dc346986eccefdc2dd33a9da36ead9:Q4_K_M"
 ```

@@ -1,0 +1,10 @@
+{
+  "servidor": "llama.cpp b7770",
+  "plataforma": "Linux x86-64, compilado em Ubuntu 22.04",
+  "url": "https://github.com/victort01/graphrag-riscos-financeiros/releases/download/runtime-b7770-linux-x64/llama-b7770-linux-x64.tar.gz",
+  "sha256": "d213a64d1cc83758a96b0d896cd8b823448e1c7943acd9e0978fcb76b956ad64",
+  "verificacao": "https://github.com/victort01/graphrag-riscos-financeiros/actions/runs/43749704067",
+  "fonte": "https://github.com/ggml-org/llama.cpp/tree/b7770",
+  "licenca": "MIT; texto disponível na mesma release",
+  "opcoes": ["GGML_NATIVE=OFF", "LLAMA_CURL=OFF", "BUILD_SHARED_LIBS=OFF"]
+}

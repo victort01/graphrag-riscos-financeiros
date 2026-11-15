@@ -10,6 +10,7 @@ from .recuperacao import recuperar
 from .caminhos import enriquecer, palavras
 from .config import ambiente
 from .versao import identificar
+from .intencao import EMPRESAS
 
 REGRAS = """Responda em português somente com apoio nas fontes recebidas. Cada afirmação deve citar IDs de fontes.
 Se usar uma conexão do grafo, cite também seu ID de caminho C1, C2 etc. Inclua as fontes de todas as suas arestas.
@@ -55,7 +56,7 @@ def esquema_contextual(contexto):
     return esquema
 
 
-def montar_contexto(recuperacao, grafo, limite_caracteres=3500):
+def _montar_contexto_prioritario(recuperacao, grafo, limite_caracteres=3500):
     candidatos = list(recuperacao["trechos"])
     vistos = {t["id"] for t in candidatos}
     for evidencia in grafo["evidencias"]:
@@ -101,6 +102,38 @@ def montar_contexto(recuperacao, grafo, limite_caracteres=3500):
     return {"fontes": fontes, "caminhos": compactar(fontes)}
 
 
+def combinar_contextos(base, enriquecido, limite_caracteres=3500):
+    """Acrescenta caminhos sem expulsar as fontes já selecionadas pelo híbrido."""
+    contexto = json.loads(json.dumps(base))
+    por_trecho = {f["trecho_id"]: id_ for id_, f in contexto["fontes"].items()}
+    for caminho in sorted(enriquecido["caminhos"], key=lambda c: -len(c["relacoes"])):
+        proposta = json.loads(json.dumps(contexto))
+        ids = dict(por_trecho)
+        fontes = []
+        for id_ in caminho["fontes"]:
+            fonte = enriquecido["fontes"][id_]
+            trecho = fonte["trecho_id"]
+            if trecho not in ids:
+                novo = f"E{len(proposta['fontes'])+1}"
+                proposta["fontes"][novo] = fonte
+                ids[trecho] = novo
+            fontes.append(ids[trecho])
+        proposta["caminhos"].append({**caminho, "fontes": sorted(set(fontes))})
+        # Fonte e conexão entram juntas; um caminho nunca fica sem suas arestas citadas.
+        if len(json.dumps(proposta, ensure_ascii=False)) <= limite_caracteres:
+            contexto, por_trecho = proposta, ids
+    return contexto
+
+
+def montar_contexto(recuperacao, grafo, limite_caracteres=3500):
+    vazio = {"caminhos": [], "evidencias": []}
+    base = _montar_contexto_prioritario(recuperacao, vazio, limite_caracteres)
+    if not grafo["caminhos"]:
+        return base
+    enriquecido = _montar_contexto_prioritario(recuperacao, grafo, limite_caracteres)
+    return combinar_contextos(base, enriquecido, limite_caracteres)
+
+
 def mencao_positiva(texto, expressao):
     for sentenca in re.split(r"(?<=[.!?;])\s+", texto.casefold()):
         if expressao not in sentenca:
@@ -125,6 +158,11 @@ def validar_resposta(resposta, contexto, pergunta=""):
             elif not set(caminhos[id_]["fontes"]) <= set(ids):
                 erros.append("Caminho citado sem as fontes de todas as arestas.")
         apoio = " ".join(contexto["fontes"][id_]["texto"] + " " + contexto["fontes"][id_]["periodo"] for id_ in ids)
+        empresas_fonte = " ".join(contexto["fontes"][id_].get("empresa", "") for id_ in ids)
+        for nome in EMPRESAS:
+            if (empresas_fonte and re.search(r"\b" + nome + r"\b", afirmacao["texto"], re.I)
+                    and not re.search(r"\b" + nome + r"\b", empresas_fonte, re.I)):
+                erros.append("Empresa mencionada sem documento correspondente nas fontes: " + nome)
         escopos = {e for id_ in ids for e in contexto["fontes"][id_].get("escopos", [])}
         for escopo, padrao in (("controladora", r"\bcontroladoras?\b"), ("consolidado", r"\bconsolidad[oa]s?\b")):
             if re.search(padrao, afirmacao["texto"], re.I) and escopo not in escopos:
@@ -177,7 +215,9 @@ def filtrar_pertinencia(resposta, pergunta):
               {"juros", "ipca", "cdi", "sofr", "indexador", "indexadores"},
               {"divida", "dividas", "obrigacoes", "emprestimos", "financiamentos", "financiamento"},
               {"cambial", "cambio", "dolar", "dolares", "usd", "estrangeira"},
-              {"swap", "swaps", "ndf", "zcc", "derivativos", "instrumentos", "hedge"}]
+              {"swap", "swaps", "ndf", "zcc", "derivativos", "instrumentos", "hedge"},
+              {"liquidez", "caixa", "liquidos", "fluxos", "financiamento", "projecoes"},
+              {"credito", "clientes", "recebimento", "contraparte", "contrapartes", "provisao"}]
     relevantes = set().union(*(grupo for grupo in grupos if grupo & termos))
     if not relevantes:
         return resposta, []

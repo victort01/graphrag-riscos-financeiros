@@ -27,8 +27,9 @@ def iniciar():
     if platform.system() != "Linux" or platform.machine() not in {"x86_64", "AMD64"}:
         raise RuntimeError("O runtime de nuvem requer Linux x86-64.")
     config = ambiente()
-    url = config.get("LLAMA_RUNTIME_URL", "")
-    esperado = config.get("LLAMA_RUNTIME_SHA256", "")
+    catalogo = json.loads((ROOT / "data/runtime-linux.json").read_text(encoding="utf-8"))
+    url = config.get("LLAMA_RUNTIME_URL", catalogo["url"])
+    esperado = config.get("LLAMA_RUNTIME_SHA256", catalogo["sha256"])
     if not url.startswith("https://github.com/victort01/graphrag-riscos-financeiros/releases/download/") or not re.fullmatch(r"[a-f0-9]{64}", esperado):
         raise ValueError("Configure o runtime publicado e seu SHA-256 antes de iniciar a aplicação.")
     pasta = ROOT / "data/models/llama-linux"
