@@ -1,0 +1,245 @@
+% Fonte do artigo técnico. Compilar com pdflatex (duas passagens) ou no Overleaf:
+%   pdflatex artigo-revisao.tex && pdflatex artigo-revisao.tex
+% Requer a classe IEEEtran (incluída no TeX Live, MiKTeX e Overleaf).
+\documentclass[conference]{IEEEtran}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+% A classe IEEEtran usa "Index Terms" e "Abstract" por padrão.
+\renewcommand{\IEEEkeywordsname}{Palavras-chave}
+\renewcommand{\abstractname}{Resumo}
+
+\begin{document}
+
+\title{GraphRAG para consulta rastreável de exposições financeiras em relatórios de companhias brasileiras}
+
+\author{
+\IEEEauthorblockN{Arysson André Oliveira da Luz \quad Caio Justino de Andrade\\
+Luiz Henrique Monteiro dos Santos \quad Paulo Victor Oliveira de Barros Araújo}
+\IEEEauthorblockA{Centro Universitário de João Pessoa (Unipê)\\
+Tendências em Ciência da Computação\\
+Professor Ricardo Roberto de Lima}
+}
+
+\maketitle
+
+\begin{abstract}
+Apresentamos um protótipo de consulta a exposições financeiras que combina recuperação textual e vetorial, consultas Cypher geradas por um modelo de linguagem e caminhos em um grafo de propriedades no Neo4j. O acervo reúne seis relatórios oficiais de Suzano, Klabin e Irani, referentes a 2024 e 2025, com 954 páginas. A rodada V1 indexou 3.918 trechos narrativos elegíveis e manteve 85 declarações com procedência. Regras preservam identidade, exercício, versão, condições e, na versão atual do extrator, tratamento contábil, natureza da declaração e a negativa explícita de hedge accounting. Caminhos financeiros participam da seleção do contexto antes da geração, e uma interface permite conferir afirmações, relações e páginas da fonte. Uma avaliação prospectiva assistida, com doze perguntas fixadas antes da execução, concluiu 36 recuperações sem falhas. Nas dez perguntas com evidência esperada, o recall médio dos localizadores no contexto foi de 30\% na busca vetorial, 70\% no híbrido e 65\% com caminhos. Uma correção posterior preservou as fontes híbridas dentro do mesmo orçamento e alcançou 70\% na reanálise dos contextos conhecidos. Uma revisão assistida por IA das saídas, conferida nas páginas dos PDFs e ainda pendente de revisão humana, sugeriu que 5 das 11 afirmações geradas contradizem os documentos e orientou as mudanças de extração descritas aqui. O estudo distingue funcionamento, localização de evidência e suporte semântico; não demonstra superioridade geral ou redução de alucinações em avaliação humana independente.
+\end{abstract}
+
+\begin{IEEEkeywords}
+GraphRAG, grafos de conhecimento, recuperação de informação, exposições financeiras, procedência.
+\end{IEEEkeywords}
+
+\section{Introdução}
+
+Relatórios financeiros associam obrigações, moedas, indexadores e medidas de proteção a empresas, exercícios e condições específicos. Uma consulta que localiza palavras semelhantes pode recuperar passagens úteis sem preservar todas essas relações. Por exemplo, identificar um instrumento de proteção em uma nota não permite concluir que a companhia eliminou seu risco, protegeu todos os passivos ou adotou contabilidade de hedge. A resposta precisa respeitar o objeto, o alcance e a natureza da declaração.
+
+Este trabalho investiga a pergunta: como combinar texto e relações financeiras para produzir respostas com evidências rastreáveis? Desenvolvemos um protótipo que transforma descrições narrativas em um grafo de propriedades e utiliza esse grafo na preparação do contexto de um modelo de linguagem. Cada afirmação retornada pode identificar fontes e caminhos inspecionáveis.
+
+O objetivo implementado é consultar exposições descritas nos documentos. O protótipo não estima probabilidade de insolvência nem calcula um ranking de risco financeiro. A denominação inicial de mapa de riscos foi delimitada a um mapa de relações e exposições declaradas. Essa delimitação acompanha a cobertura efetivamente validada dos dados.
+
+Este artigo apresenta um estudo exploratório com resultados até 15 de novembro de 2026. Distinguimos verificações operacionais, avaliação prospectiva assistida, revisão assistida por IA e reanálises posteriores à observação dos erros. O código e os registros são mantidos no repositório público do projeto~\cite{repo}.
+
+\section{Fundamentação e posicionamento}
+
+Edge et al.~\cite{edge} apresentam uma abordagem GraphRAG voltada a perguntas globais sobre coleções textuais. Seu método constrói um grafo de entidades, organiza comunidades e utiliza resumos dessas comunidades na geração. Nosso protótipo adota um esquema financeiro e caminhos dirigidos como mecanismo de enriquecimento do contexto. Portanto, não reproduz o pipeline de sumarização por comunidades desse trabalho.
+
+Liang et al.~\cite{kag} propõem KAG para combinar modelos de linguagem e grafos em domínios profissionais, incluindo representação de conhecimento, ligação entre grafo e trechos e raciocínio híbrido. Nosso projeto se aproxima desses princípios ao explicitar conceitos e regras financeiras e ao manter as relações ligadas às fontes. Não implementamos o framework KAG completo ou seu mecanismo de formas lógicas.
+
+O interesse acadêmico do protótipo está na integração verificável entre extração, busca, algoritmo e resposta. A existência de um grafo, isoladamente, não garante melhoria. O experimento precisa distinguir localização de evidência, suporte de cada afirmação e adequação da abstenção.
+
+\section{Acervo e limites da informação}
+
+Selecionamos demonstrações financeiras completas em português de três companhias da cadeia de papel, celulose e embalagens~\cite{suzano,klabin,irani}. Suzano e Klabin constam no cadastro consultado da CVM como Papel e Celulose; Irani consta como Embalagens. Essa diferença impede tratar a seleção como um único subsetor homogêneo. A Tabela~\ref{tab:acervo} apresenta as páginas dos PDFs efetivamente coletados.
+
+\begin{table}[htbp]
+\caption{Acervo documental coletado (páginas)}
+\label{tab:acervo}
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Empresa & 2024 & 2025 & Total \\
+\midrule
+Suzano & 184 & 181 & 365 \\
+Klabin & 153 & 156 & 309 \\
+Irani  & 139 & 141 & 280 \\
+\midrule
+Total  & 476 & 478 & 954 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Um manifesto versionado registra CNPJ, código CVM, exercício, protocolo DFP, versão declarada, URL oficial e SHA-256 de cada PDF. O protocolo é uma conferência de emissor, exercício e versão; o hash identifica o arquivo publicado pelo emissor que foi usado, inclusive quando esse arquivo reúne material adicional de divulgação. As fontes e os protocolos podem ser conferidos no manifesto e nos dados abertos da CVM~\cite{cvm}.
+
+Os arquivos contêm 3.682.930 caracteres extraídos. Das 954 páginas, 19 têm menos de cem caracteres. Esses indicadores auxiliam a triagem, mas não demonstram integridade de tabelas. A disposição de certas tabelas produz valores concatenados no texto, e uma figura pode conter informação relevante sem texto extraível. O mesmo conteúdo pode aparecer em seções diferentes de um arquivo, como notas explicativas, relatório da administração e release, e a DFP de um exercício pode reapresentar o comparativo do anterior com valores diferentes.
+
+A rodada V1 usou 3.918 trechos classificados como narrativa elegível. A quantidade de páginas coletadas não equivale à cobertura semântica do sistema. Tabelas, imagens, unidades e colunas comparativas ainda exigem validação específica. Por isso, a aplicação restringe respostas quantitativas e não calcula exposição líquida. O extrator também precisa de validação em amostras não utilizadas no ajuste das regras.
+
+\section{Método e implementação}
+
+\subsection{Extração e procedência}\label{sec:extracao}
+
+O pipeline verifica o checksum, extrai o texto com pypdf, preserva páginas e posições e segmenta o documento. Nos quadros de principais assuntos de auditoria reconhecidos pelo cabeçalho, as duas colunas são lidas separadamente, preservando as posições no texto; isso não constitui um detector geral de layout. Regras de domínio reconhecem entidades e relações financeiras, produzindo declarações com sujeito, predicado, objeto, companhia, período, escopo, polaridade, condição e evidência quando identificados. NER e RE são automáticos, porém dependem de vocabulário e construções previstos nas regras.
+
+Uma entidade representa um conceito identificável; uma declaração representa uma observação documentada. O modelo separa Empresa, Documento, Trecho e Declaracao de classes financeiras como ObrigacaoFinanceira, MedidaProtecao, Moeda, Indexador, CategoriaHedge e FatorRisco. Uma aresta financeira guarda o ID da declaração que a sustenta. A declaração aponta para o trecho por \texttt{EVIDENCIADA\_POR}, e o trecho aponta para seu documento por \texttt{PERTENCE\_A}.
+
+A versão atual do extrator (\texttt{regras-financeiras-v7-programas}) acrescenta qualificadores motivados pela revisão das saídas. Cada declaração de proteção registra o tratamento contábil: hedge accounting, proteção econômica (por exemplo, hedge natural) ou não identificado. Instrumentos e obrigações registram a natureza: declaração, política ou possibilidade, de modo que um objetivo como ``designar ZCC e/ou NDF para proteger de 25\% a 50\% da exposição'' não seja tratado como contratação. Negativas continuam sem gerar relações positivas, com uma exceção: a negativa explícita de adoção de hedge accounting gera \texttt{DECLARA\_CONTABILIDADE\_HEDGE} com polaridade negativa. Swaps de juros são qualificados pelos indexadores (por exemplo, IPCA para CDI e SOFR para taxa pré-fixada), e cada medida de proteção representa um programa documental ligado ao tipo de instrumento por \texttt{DO\_TIPO}. Compartilhar um tipo não equivale a compartilhar contrato, indexador ou finalidade.
+
+O reconhecimento de menções e relações foi verificado em oito excertos com quinze menções e vinte e três relações esperadas, anotados com assistência de IA. Esses excertos participaram da correção das regras. Portanto, seus resultados são de desenvolvimento, e não uma medida independente de precisão ou generalização. Uma auditoria automática verificou a integridade das 85 declarações da rodada V1, agrupadas em 33 excertos, sem encontrar inconsistências de procedência, tipos ou checksum. A auditoria não mede suporte semântico. As mudanças do extrator exigem reingestão antes de atualizar esses totais.
+
+\subsection{Identidade, versão e escopo}
+
+A companhia usa CNPJ normalizado como identidade. Moedas, indexadores e fatores podem ser conceitos globais; obrigações e medidas de proteção são vinculadas à companhia. Constraints de unicidade impedem IDs repetidos, mas não substituem a avaliação semântica das decisões de união e separação de menções.
+
+Documento, empresa, tipo e exercício definem uma série versionada. A publicação de uma revisão preserva o histórico e retira a anterior da busca corrente na mesma transação. Reprocessar uma versão antiga não a reativa. Testes verificaram substituição, idempotência e rollback com revisões sintéticas. As seis fontes reais continuam na versão declarada um.
+
+O escopo tem uma limitação relevante: as 85 declarações da rodada V1 estão qualificadas como não especificado pelo extrator. A regra procura qualificadores explícitos na sentença e não recupera o contexto de cabeçalhos de quadros e notas. A revisão assistida encontrou ``Consolidado'' ou ``Controladora'' na própria página em pelo menos 12 dos 33 excertos. Esse resultado descreve o reconhecimento automático; não significa ausência de escopo nos relatórios. Para evitar combinações indevidas, caminhos com escopo desconhecido usam declarações evidenciadas no mesmo trecho e limitam a confiança da resposta.
+
+\subsection{Banco e recuperação híbrida}
+
+Utilizamos Neo4j 5.26 Community, com labels, relacionamentos tipados, propriedades, constraints e índices Range, Fulltext e vetorial. Os vetores têm 384 dimensões e usam cosseno. A implementação de embeddings utiliza MiniLM multilíngue em ONNX quantizado, média com máscara, normalização L2 e truncamento em 256 tokens. Os artefatos e revisões estão fixados no catálogo do projeto.
+
+A recuperação aplica filtros de empresa, exercício e vigência. Busca vetorial e Fulltext consultam o mesmo universo narrativo elegível. Uma consulta Cypher completa também é produzida pelo LLM a partir da pergunta e do esquema permitido. Essa consulta passa por contrato de leitura, parâmetros, limite de resultados, limite de 15 segundos e inspeção do plano com \texttt{EXPLAIN}; execução e reparo ficam no rastreio. A implantação local desabilita escrita durante as consultas. No Aura, o driver usa roteamento de leitura, que não substitui permissões restritas de banco; as guardas de Cypher permanecem ativas.
+
+Combinamos as posições dos candidatos por Reciprocal Rank Fusion:
+\begin{equation}
+\mathrm{RRF}(t) = \sum_{m \in M:\, t \in L_m} \frac{1}{60 + r_m(t)},
+\end{equation}
+em que $L_m$ é a lista do método $m$ e $r_m(t)$ é a posição do trecho. Vetor e Fulltext retornam até 24 candidatos cada, e o Cypher gerado, até 16. A fusão por posição evita somar diretamente scores de escalas diferentes. Na variante híbrida, os candidatos fundidos são reordenados pela sobreposição lexical com a pergunta, ponderada pela raridade de cada termo entre os candidatos, com o RRF como desempate; textos repetidos para a mesma empresa e exercício são agrupados, preservando seus IDs no rastreio. A seleção mantém até oito trechos. O controle vetorial preserva a ordem do vetor, sem essa reordenação. O limite de 256 tokens do encoder pode truncar partes relevantes de trechos longos e constitui uma limitação de representação.
+
+\subsection{Algoritmo e formação do contexto}
+
+Aplicamos \texttt{shortestPath} sobre relações financeiras dirigidas permitidas, com até quatro saltos. Há caminhos de dois saltos verificados no acervo. A seleção verifica empresa, exercício, vigência, escopo e as declarações que sustentam cada aresta. Relações de procedência e de substituição documental não contam como saltos financeiros.
+
+O contexto inclui fontes e caminhos antes de o modelo gerar a resposta. Removemos duplicatas e prefixos cobertos por caminhos maiores com as mesmas arestas e o mesmo escopo. A distribuição por empresa e exercício reduz a concentração das fontes de uma única companhia em perguntas comparativas. Após o diagnóstico da avaliação, a política atual preserva as fontes selecionadas pelo híbrido e acrescenta caminho e evidências atomicamente somente quando cabem no orçamento. Uma reserva de até 500 caracteres para caminhos é aplicada também ao controle híbrido, para que as variantes partam da mesma base, e é dispensada quando reduziria a cobertura de empresas e exercícios. Caminhos de mais saltos têm precedência, sem expulsar uma fonte textual já escolhida. O orçamento total, incluindo relações, é de 3.500 caracteres. Os caminhos levam ao gerador qualificadores como natureza, polaridade e tratamento contábil quando diferem do padrão.
+
+Um fator canônico comum pode aparecer em declarações de empresas diferentes. Isso permite inspecionar um conceito compartilhado; não estabelece transação entre elas, risco equivalente, correlação ou contágio. O sistema proíbe transformar esse compartilhamento em uma conclusão financeira sem evidência adicional.
+
+\subsection{Geração e interface}
+
+O modelo local é Qwen2.5-1.5B-Instruct em GGUF Q4\_K\_M, servido por llama.cpp b7770 em CPU, contexto de 4.096 tokens, temperatura zero e seed 42. A saída estruturada contém até três afirmações, fontes, caminhos, cobertura e possível conflito. A decodificação restringe fontes e caminhos aos IDs existentes no contexto. O catálogo preserva revisões e checksums dos modelos.
+
+Guardas determinísticas verificam referências, atribuição de empresa, suporte literal de números, algumas conclusões absolutas, relevância por vocabulário e qualificação de escopo. Valores quantitativos são recusados mesmo quando aparecem na narrativa; dias de datas e números de notas explicativas não contam como montantes, e um escopo citado literalmente na fonte é aceito. Alegações sobre hedge accounting exigem declaração contábil específica para cada empresa, e uma negativa explícita de adoção não pode virar afirmação positiva. A aplicação preserva a saída original e todas as transformações. As categorias sem suporte, limitada e moderada são definidas por regras e não representam probabilidades calibradas. Esses controles não verificam toda implicação semântica.
+
+A interface Streamlit apresenta resposta, confiança, fontes, Cypher e um subgrafo interativo das relações efetivamente consultadas. A seleção de uma afirmação realça seu caminho e permite abrir a página do PDF. Tarefas continuam após desconexão do navegador em um deployment de processo único; a reinicialização do servidor interrompe a inferência. Esse comportamento foi verificado localmente, sem teste de carga.
+
+\section{Protocolo de avaliação}
+
+Comparamos três variantes: vetor, híbrido e híbrido com caminhos. O orçamento de contexto é igual. A variante com caminhos reutiliza os candidatos híbridos, permitindo observar o enriquecimento do contexto sem repetir uma geração Cypher que poderia mudar os candidatos.
+
+Na recuperação, uma evidência esperada é localizada quando há correspondência de documento, página e termo normalizado no texto. O recall é a fração de localizadores esperados encontrados, medida nos candidatos e nas fontes efetivamente enviadas. Um localizador representa uma evidência conhecida, não o conjunto exaustivo de passagens que poderiam apoiar a resposta.
+
+A avaliação de respostas usa os contextos congelados da recuperação e as mesmas regras de geração e validação. Falhas técnicas são registradas separadamente de abstenções. Suporte semântico, cobertura, correção de empresa e exercício e adequação da abstenção dependem de revisão. Não calculamos automaticamente uma taxa de alucinação a partir de referências válidas.
+
+O conjunto prospectivo V1 contém doze perguntas e critérios documentais registrados antes das execuções, com hash SHA-256 e configuração preservados. Dez perguntas têm evidências esperadas e duas exigem abstenção: exercício ausente do acervo e cálculo de exposição líquida com ranking, fora do escopo implementado. As perguntas cobrem as três empresas e os dois exercícios, incluindo comparação, negação e conexão de relações. V08--V10 retomam temas próximos ao desenvolvimento e são identificadas como controles. Excluí-las deixa sete perguntas positivas. A seleção e os critérios receberam assistência de IA sobre documentos conhecidos; não constituem teste em corpus externo ou gabarito humano independente.
+
+Uma segunda rodada (V2) foi fixada em commit antes da execução, com doze perguntas formuladas de modo diferente de V1, no mesmo corpus. Ela compara Qwen2.5 de 1.5B e de 3B, ambos Q4\_K\_M, sobre contextos idênticos da variante com caminhos, recuperados uma única vez e conferidos por hash. A comparação isola a etapa de geração; seus resultados não compõem este artigo.
+
+\section{Resultados}
+
+\subsection{Recuperação prospectiva}
+
+As 36 execuções de recuperação terminaram sem falhas. A Tabela~\ref{tab:recall} apresenta o recall macro dos localizadores esperados. Cada pergunta contribui com peso igual, incluindo comparações com mais de uma evidência. As duas perguntas sem evidência esperada não entram no denominador desse recall. Esses números são da política de seleção usada em V1, anterior à reordenação lexical e à reserva para caminhos.
+
+\begin{table}[htbp]
+\caption{Recall macro dos localizadores no contexto (V1)}
+\label{tab:recall}
+\centering
+\begin{tabular}{lrr}
+\toprule
+Variante & Dez perguntas & Sem controles ($n=7$) \\
+\midrule
+Vetorial     & 30,0\% & 28,6\% \\
+Híbrida      & 70,0\% & 64,3\% \\
+Com caminhos & 65,0\% & 50,0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Nos candidatos, antes do corte de contexto, o recall macro foi 40\% no vetor e 95\% nas variantes híbrida e com caminhos. A diferença entre candidatos e contexto evidencia perda durante a seleção sob orçamento. Os resultados são descritivos de uma amostra pequena, sem teste de significância ou conclusão de generalização.
+
+\subsection{Diagnóstico e preservação de evidências}
+
+Em V01, o híbrido encontrou na página PDF 35 da Suzano 2024 a negativa explícita sobre adoção de hedge accounting. A prioridade dada às evidências dos caminhos expulsou essa passagem, reduzindo o recall desse caso de um para zero. Relações sobre proteção econômica não substituem uma negativa sobre tratamento contábil.
+
+Esse erro motivou a política de preservação das fontes híbridas. Na reanálise dos mesmos contextos congelados, o recall com caminhos passou de 65\% para 70\%, mantendo as fontes do híbrido e o limite de 3.500 caracteres. Foram incluídos nove caminhos em sete perguntas; em V01, nenhum caminho coube sem remover fontes. Trata-se de correção avaliada sobre exemplos já observados, não de novo teste independente ou ganho sobre o híbrido. O algoritmo pode acrescentar estrutura explicativa sem melhorar a localização dos fatos.
+
+\subsection{Geração e abstenção}
+
+Os contextos da rodada original foram congelados antes da geração. Modelo, regras e configurações são comuns às variantes; a ordem de execução foi embaralhada com seed fixa. Saídas originais, filtros, rejeições e latências são preservados.
+
+Das 36 execuções previstas, 34 concluíram a inferência e duas atingiram timeout. As falhas ocorreram nas variantes híbrida e com caminhos e foram preservadas como falhas operacionais. Entre as execuções sem erro, o vetor entregou uma resposta com afirmações e onze abstenções; o híbrido, duas e nove; o grafo, cinco e seis. Os dois casos com abstenção obrigatória foram recusados pelas três variantes. Quantidade de respostas entregues não demonstra correção.
+
+Na reaplicação determinística das guardas atuais às mesmas saídas arquivadas, o híbrido passou a entregar uma resposta e o grafo três; o vetor permaneceu com uma. Nenhuma nova inferência foi realizada nessa revalidação. A redução descreve bloqueios após observar os erros, não uma taxa independente de mitigação de alucinações.
+
+\subsection{Revisão assistida por IA}
+
+Uma revisão assistida por IA conferiu nas páginas dos seis PDFs, com hashes verificados, os 33 excertos de extração (85 declarações) e as 34 respostas sem falha técnica. Ela produz sugestões para a conferência humana, que permanece pendente; não é gabarito e não permite calcular precisão, recall ou taxa de alucinação.
+
+Entre as 11 afirmações geradas, a revisão sugeriu 2 com apoio integral, 2 parciais, 2 sem apoio e 5 contraditas pelos documentos. O caso mais grave atribui adoção de hedge accounting à Suzano, que declara não adotar essa modalidade (DFP 2024, p.~35; DFP 2025, p.~100). Quatro das cinco afirmações contraditas citavam caminhos do grafo; em ao menos dois desses casos, os caminhos documentavam outro aspecto, como hedge natural ou programa cambial. Entre as 26 abstenções, 13 foram consideradas inadequadas, porque a página com a resposta estava entre as fontes recuperadas; várias dessas rejeições do validador citam números como ``31'' e ``29'', possivelmente dias de datas tratados como montantes. Outras 5 foram consideradas parcialmente adequadas e 8 adequadas: três de exercício fora do acervo e cinco adequadas ao contexto recebido, embora a resposta exista no acervo, o que caracteriza falha de recuperação, e não ausência de informação.
+
+Na extração, a revisão apontou a fusão de proteção econômica, hedge accounting e swaps de otimização em um mesmo predicado; o descarte de toda frase negativa; nós de instrumentos sem indexador, que uniam swaps diferentes; e objetivos de política registrados como contratação. Esses achados motivaram os qualificadores descritos na Seção~
+ef{sec:extracao} e o ajuste do validador. O efeito dessas mudanças ainda não foi medido em nova rodada.
+
+\subsection{Reprodução e interface}
+
+Uma execução em Linux, iniciada com checkout limpo e banco vazio, verificou aquisição dos seis PDFs, checksums, ingestão, indexação dos 3.918 trechos, testes operacionais e uma consulta real com o mesmo modelo GGUF. O checksum de conteúdo das 85 declarações coincidiu com o obtido no Windows. O procedimento está publicado como workflow executável no repositório. Esses resultados verificam execução; não demonstram qualidade semântica das respostas.
+
+A interface apresenta afirmações, fontes, consulta gerada e subgrafo efetivamente enviado ao modelo. Um teste operacional anterior retomou uma consulta após desconexão do navegador, com caminho de dois saltos e evidência na página PDF 124 da Irani 2025. Reiniciar o servidor interrompe a tarefa. A implantação gratuita em Streamlit Community Cloud e Neo4j AuraDB Free concluiu a mesma pergunta em 111,4 segundos, com cinco fontes e um caminho de dois saltos no contexto. O modelo citou diretamente a página 124, sem citar o caminho, e duas afirmações irrelevantes foram removidas pelas guardas. A retomada após recarregar e a exportação do rastreio foram verificadas no provedor. Os serviços podem hibernar, sem garantia de disponibilidade contínua. Não realizamos teste de carga ou de hibernação prolongada.
+
+\section{Limitações e ameaças à validade}
+
+A seleção de três companhias e dois exercícios limita a validade externa. As perguntas prospectivas foram fixadas antes da rodada, mas seus critérios são assistidos e usam corpus conhecido. Três casos retomam temas de desenvolvimento. Os excertos anotados participaram do ajuste das regras, e a revisão humana não foi concluída. A revisão assistida por IA também usa o corpus conhecido e não substitui a adjudicação entre revisores. Esses fatores impedem apresentar métricas de generalização de NER, RE ou resposta.
+
+O extrator baseado em regras pode omitir relações, interpretar objetos de forma incompleta e perder qualificadores distantes da sentença. A falta de escopo reconhecido restringe as travessias. A narrativa extraída também pode conter resíduos de gráficos e tabelas. O grafo publicado e os totais citados vêm da rodada V1; o extrator atual exige reingestão e nova avaliação. Quantidade de vetores e ausência de erros de execução não demonstram qualidade financeira das informações.
+
+O modelo local pequeno pode copiar passagens irrelevantes, produzir relações inadequadas e declarar cobertura excessiva. Restringir IDs impede certas referências inválidas, mas não comprova apoio semântico de uma afirmação em uma fonte existente. O pós-processamento pode ainda reduzir cobertura ao remover afirmações ou transformar uma resposta em abstenção.
+
+A comparação de latência exige rodadas controladas: aquecimento, cache e disputa de memória variam. O tempo adicional de enriquecimento por grafo não equivale ao tempo total da variante. As sementes e artefatos fixados favorecem rastreabilidade, sem garantir reprodução bit a bit em qualquer hardware.
+
+\section{Conclusão}
+
+O protótipo integra extração narrativa, Neo4j, recuperação híbrida, Cypher gerado, algoritmo de caminhos e interface com procedência. A reprodução em ambiente limpo verificou a operação do pipeline. No conjunto prospectivo assistido, a recuperação híbrida localizou mais evidências que a vetorial; o enriquecimento original com caminhos perdeu parte desse resultado sob orçamento limitado.
+
+A análise levou a uma regra que preserva as fontes híbridas antes de acrescentar relações. Sua reanálise evitou a perda observada, sem demonstrar ganho sobre o híbrido. A revisão assistida mostrou que caminhos válidos podem acompanhar afirmações contraditas quando o grafo não distingue tratamento contábil, política e contratação; o extrator atual passou a registrar essas distinções. O resultado reforça a necessidade de avaliar seleção de contexto e correção da resposta separadamente. Não há demonstração de superioridade geral ou mitigação semântica de alucinações em avaliação humana independente. Reingestão com o extrator atual, execução da rodada V2, revisão humana adjudicada e extração quantitativa de tabelas com escopo e data são os próximos passos.
+
+\section*{Reprodutibilidade e assistência de IA}
+
+O repositório contém configuração Docker, dependências fixadas do ambiente Windows, fontes e hashes, scripts de ingestão, indexação, consulta e avaliação, testes e instruções. PDFs integrais, pesos, credenciais e execuções locais ficam fora do Git. As fontes podem ser readquiridas e verificadas pelo manifesto.
+
+Foi utilizada assistência de IA no desenvolvimento, na redação, na preparação de anotações de desenvolvimento e na revisão assistida das saídas. Os resultados assistidos estão identificados e não substituem validação independente.
+
+\begin{thebibliography}{9}
+
+\bibitem{edge}
+D.~Edge \emph{et al.}, ``From Local to Global: A Graph RAG Approach to Query-Focused Summarization,'' arXiv:2404.16130, 2024. [Online]. Disponível: \url{https://arxiv.org/abs/2404.16130}
+
+\bibitem{kag}
+L.~Liang \emph{et al.}, ``KAG: Boosting LLMs in Professional Domains via Knowledge Augmented Generation,'' arXiv:2409.13731, 2024. [Online]. Disponível: \url{https://arxiv.org/abs/2409.13731}
+
+\bibitem{cvm}
+Comissão de Valores Mobiliários, ``Demonstrações Financeiras Padronizadas e cadastro de companhias abertas,'' Portal de Dados Abertos. [Online]. Disponível: \url{https://dados.cvm.gov.br/}. Acesso: 14 nov. 2026. URLs por documento e checksums no manifesto do projeto.
+
+\bibitem{repo}
+A.~A.~O. da Luz, C.~J. de Andrade, L.~H.~M. dos Santos e P.~V.~O. de B. Araújo, ``GraphRAG riscos financeiros,'' repositório público, 2026. [Online]. Disponível: \url{https://github.com/victort01/graphrag-riscos-financeiros}. Registros: \texttt{data/manifesto.json}, \texttt{data/modelos.json}, resumos de avaliação versionados e \texttt{docs/revisao-assistida-IA}.
+
+\bibitem{suzano}
+Suzano S.A., ``Demonstrações financeiras completas 2024 e 2025,'' Central de Resultados. [Online]. Disponível: \url{https://ir.suzano.com.br/Portuguese/informacoes-financeiras/central-de-resultados/default.aspx}. PDFs e hashes no manifesto.
+
+\bibitem{klabin}
+Klabin S.A., ``Demonstrações financeiras 2024 e 2025,'' Central de Resultados. [Online]. Disponível: \url{https://ri.klabin.com.br/divulgacoes-e-resultados/central-de-resultados/}. PDFs e hashes no manifesto.
+
+\bibitem{irani}
+Irani Papel e Embalagem S.A., ``Demonstrações financeiras 2024 e 2025,'' Relações com Investidores. [Online]. Disponível: \url{https://ri.irani.com.br/}. PDFs e hashes no manifesto.
+
+\end{thebibliography}
+
+\end{document}

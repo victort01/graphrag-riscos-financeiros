@@ -6,7 +6,7 @@ O acervo reúne seis relatórios de 2024 e 2025, com 954 páginas. A rodada V1 d
 
 ## Materiais
 
-- [Artigo técnico](docs/artigo/artigo-revisao.pdf).
+- [Artigo técnico](docs/artigo/artigo-revisao.pdf) e [fonte LaTeX](docs/artigo/artigo-revisao.tex). A fonte foi atualizada para o extrator atual e a revisão assistida; o PDF deve ser recompilado a partir dela (`pdflatex`, duas passagens, ou Overleaf).
 - [Apresentação em PDF](docs/apresentacao/apresentacao-revisao.pdf) e [PowerPoint](docs/apresentacao/apresentacao-revisao.pptx).
 - [Arquitetura e modelo de dados](docs/arquitetura.md).
 - [Avaliação e reprodução dos experimentos](docs/avaliacao.md).
