@@ -19,6 +19,25 @@ def rastrear_nos(resultado):
             "trechos_citados": {id_: fontes[id_]["trecho_id"] for id_ in sorted(fontes_citadas)}}
 
 
+def nos_consultados(resultado):
+    """Lista legível dos nós financeiros, do uso mais forte (citado) ao mais fraco (só recuperado)."""
+    rastro = rastrear_nos(resultado)
+    rotulos = {n["id"]: [r for r in n.get("rotulos", []) if r != "Entidade"]
+               for p in resultado["grafo"]["caminhos"] for n in p["nos"]}
+    linhas = []
+    for id_, nome in rastro["nos_financeiros_recuperados"].items():
+        situacao = ("citado na resposta" if id_ in rastro["nos_financeiros_citados"]
+                    else "enviado ao modelo" if id_ in rastro["nos_financeiros_enviados"] else "recuperado, fora do contexto")
+        linhas.append({"Nó": nome, "Tipo": ", ".join(rotulos.get(id_, [])) or "não registrado", "Situação": situacao, "ID": id_})
+    ordem = {"citado na resposta": 0, "enviado ao modelo": 1, "recuperado, fora do contexto": 2}
+    return sorted(linhas, key=lambda l: (ordem[l["Situação"]], l["Nó"]))
+
+
+def cypher_gerado(resultado):
+    """Consulta Cypher produzida pelo LLM, ou None quando a variante não a executou."""
+    return resultado["recuperacao"]["rastreio"].get("cypher_llm")
+
+
 def pagina_grafo(resultado):
     evidencias = {e["declaracao_id"]: e for e in resultado["grafo"]["evidencias"]}
     enviados = {p["id"] for p in resultado["contexto_enviado"]["caminhos"]}

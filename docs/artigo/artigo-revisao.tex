@@ -105,7 +105,7 @@ O escopo tem uma limitação relevante: as 85 declarações da rodada V1 estão 
 
 \subsection{Banco e recuperação híbrida}
 
-Utilizamos Neo4j 5.26 Community, com labels, relacionamentos tipados, propriedades, constraints e índices Range, Fulltext e vetorial. Os vetores têm 384 dimensões e usam cosseno. A implementação de embeddings utiliza MiniLM multilíngue em ONNX quantizado, média com máscara, normalização L2 e truncamento em 256 tokens. Os artefatos e revisões estão fixados no catálogo do projeto.
+Utilizamos Neo4j 5.26 Community, com labels, relacionamentos tipados, propriedades, constraints e índices Range, Fulltext e vetorial. Os índices Range substituem, no Neo4j 5, os índices BTree das versões anteriores e atendem às buscas por período, empresa e hash. Os vetores têm 384 dimensões e usam cosseno. A implementação de embeddings utiliza MiniLM multilíngue em ONNX quantizado, média com máscara, normalização L2 e truncamento em 256 tokens. Os artefatos e revisões estão fixados no catálogo do projeto.
 
 A recuperação aplica filtros de empresa, exercício e vigência. Busca vetorial e Fulltext consultam o mesmo universo narrativo elegível. Uma consulta Cypher completa também é produzida pelo LLM a partir da pergunta e do esquema permitido. Essa consulta passa por contrato de leitura, parâmetros, limite de resultados, limite de 15 segundos e inspeção do plano com \texttt{EXPLAIN}; execução e reparo ficam no rastreio. A implantação local desabilita escrita durante as consultas. No Aura, o driver usa roteamento de leitura, que não substitui permissões restritas de banco; as guardas de Cypher permanecem ativas.
 
@@ -129,7 +129,7 @@ O modelo local é Qwen2.5-1.5B-Instruct em GGUF Q4\_K\_M, servido por llama.cpp 
 
 Guardas determinísticas verificam referências, atribuição de empresa, suporte literal de números, algumas conclusões absolutas, relevância por vocabulário e qualificação de escopo. Valores quantitativos são recusados mesmo quando aparecem na narrativa; dias de datas e números de notas explicativas não contam como montantes, e um escopo citado literalmente na fonte é aceito. Alegações sobre hedge accounting exigem declaração contábil específica para cada empresa, e uma negativa explícita de adoção não pode virar afirmação positiva. A aplicação preserva a saída original e todas as transformações. As categorias sem suporte, limitada e moderada são definidas por regras e não representam probabilidades calibradas. Esses controles não verificam toda implicação semântica.
 
-A interface Streamlit apresenta resposta, confiança, fontes, Cypher e um subgrafo interativo das relações efetivamente consultadas. A seleção de uma afirmação realça seu caminho e permite abrir a página do PDF. Tarefas continuam após desconexão do navegador em um deployment de processo único; a reinicialização do servidor interrompe a inferência. Esse comportamento foi verificado localmente, sem teste de carga.
+A interface Streamlit apresenta resposta, confiança documental, fontes e um subgrafo interativo das relações efetivamente consultadas. Uma aba de rastreabilidade exibe a consulta Cypher gerada e a lista dos nós consultados, indicando se cada um foi citado na resposta, enviado ao modelo ou apenas recuperado. A seleção de uma afirmação realça seu caminho e permite abrir a página do PDF. Tarefas continuam após desconexão do navegador em um deployment de processo único; a reinicialização do servidor interrompe a inferência. Esse comportamento foi verificado localmente, sem teste de carga.
 
 \section{Protocolo de avaliação}
 

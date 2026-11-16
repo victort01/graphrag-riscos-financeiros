@@ -5,7 +5,7 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as componentes
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
-from riscos.visualizacao import pagina_grafo, rastrear_nos
+from riscos.visualizacao import pagina_grafo, rastrear_nos, nos_consultados, cypher_gerado
 from riscos.intencao import EMPRESAS, FiltrosIncompativeis, reconciliar
 from riscos.execucoes import carregar_ultima
 from riscos.trabalhos import gerenciador, ConsultaEmAndamento, FORMATO_ID
@@ -118,6 +118,19 @@ if "resultado" in st.session_state:
                 st.link_button("Abrir documento oficial", fonte["url"]+"#page="+str(fonte["pagina_inicio"]))
                 st.code(fonte["trecho_id"])
     with abas[2]:
+        st.markdown("**Consulta Cypher gerada pelo LLM**")
+        consulta = cypher_gerado(resultado)
+        if consulta:
+            st.code(consulta, language="cypher")
+        else:
+            st.caption("Esta execução não gerou Cypher (variante vetorial ou geração desativada).")
+        st.markdown("**Nós do grafo consultados**")
+        linhas = nos_consultados(resultado)
+        if linhas:
+            st.dataframe(linhas, hide_index=True, use_container_width=True)
+        else:
+            st.caption("Nenhum caminho financeiro foi recuperado para esta pergunta.")
+        st.markdown("**Registro completo**")
         st.caption("O JSON de contexto abaixo corresponde à entrada enviada ao modelo de resposta. A busca pode recuperar fontes que não cabem nesse contexto.")
         st.json({"versao": resultado.get("versao_execucao"), "data_utc": resultado["data_utc"], "modelo": resultado["modelo_resposta"]}, expanded=False)
         st.json(rastrear_nos(resultado), expanded=False)
